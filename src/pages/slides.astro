@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+// Reactコンポーネント
+import Sidebar from '../components/Sidebar';
+import SlideCard from '../components/SlideCard';
+import ogs from 'open-graph-scraper';
+
+// --- 1. データ定義 ---
+// ここに管理したいスライド情報を記述します
+const slideSources = [
+  {
+    id: 'tskaigi-hokuriku-2025',
+    link: 'https://hokuriku.tskaigi.org/talks/27',
+    speakerDec: 'https://speakerdeck.com/fkatsuhiro/zod-x-web-worker-woyong-itaxing-an-quan-katuuihuasutonaipadoresu-gua-deng-lu',
+    title: 'TSKaigi Hokuriku 2025',
+    sidebarLabel: 'TSKaigi Hokuriku 2025 LT',
+    time: '14:30 ~',
+    description: '「Zod × Web Worker を用いた型安全かつUIファーストなIPアドレス一括登録」',
+  },
+  // 以下にデータを追加していく
+];
+
+const fetchSlides = async () => {
+  const promises = slideSources.map(async (source) => {
+    try {
+      const targetUrl = source.speakerDec;
+      const { result } = await ogs({
+        url: targetUrl,
+        fetchOptions: {
+          headers: {
+            'user-agent':
+              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          },
+        },
+      });
+
+      const ogImage = result.ogImage?.[0]?.url;
+      return {
+        id: source.id,
+        sidebarLabel: source.sidebarLabel,
+        title: source.title || result.ogTitle || 'No Title',
+        link: source.link,
+        speakerDec: source.speakerDec,
+        time: source.time,
+        description: source.description,
+        image: ogImage,
+      };
+    } catch (e) {
+      console.error(`Fetch error for ${source.id}:`, e);
+      return {
+        ...source,
+        image: '/images/default-thumbnail.jpg',
+        sidebarLabel: source.sidebarLabel || 'Error',
+      };
+    }
+  });
+  return await Promise.all(promises);
+};
+
+const slides = await fetchSlides();
+const sidebarItems = slides.map((s) => ({ id: s.id, label: s.sidebarLabel }));
+---
+
+<Layout title="Slides | My Portfolio">
+  <div class="min-h-screen flex flex-col md:flex-row mt-10">
+    <Sidebar title="SLIDES" items={sidebarItems} />
+
+    <main class="w-full md:w-2/3 lg:w-3/4 py-12 px-6 md:px-16 bg-white dark:bg-gray-950">
+      <div class="max-w-3xl mx-auto space-y-24">
+        {slides.map((slide) => (
+          <SlideCard 
+            id={slide.id}
+            title={slide.title}
+            link={slide.link}
+            time={slide.time}
+            description={slide.description}
+            speakerDec={slide.speakerDec}
+            image={slide.image}
+          />
+        ))}
+
+      </div>
+    </main>
+  </div>
+</Layout>
