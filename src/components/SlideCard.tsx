@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLink, Speaker } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 interface SlideCardProps {
     id: string;
