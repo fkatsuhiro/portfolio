@@ -1,10 +1,51 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import { Timeline, type TimelineItem } from "../components/TimeLine";
+import { Image } from "astro:assets";
+import topIcon from "../assets/topicon.png";
+
+// 表示するデータ
+const historyData: TimelineItem[] = [
+  {
+    date: "2017/4 ~ 2020/3",
+    title: "三重県立四日市高等学校 普通科",
+    description: "三重県立四日市高等学校 普通科 に在籍していました。",
+  },
+  {
+    date: "2020/4 ~ 2024/3",
+    title: "千葉大学 理学部 物理学科",
+    description: "千葉大学 理学部 物理学科に在籍していました。",
+  },
+  {
+    date: "2024/4 ~ 2026/3",
+    title: "東京大学大学院 工学系研究科 バイオエンジニアリング専攻",
+    description:
+      "東京大学大学院 工学系研究科 バイオエンジニアリング専攻に在籍していました。",
+  },
+];
 ---
 
-<Layout title="About | My Portfolio">
-  <main class="pt-24 px-4 max-w-4xl mx-auto min-h-screen">
-    <h1 class="text-4xl font-bold mb-6">About Me</h1>
-    <p>ここに自己紹介が入ります。</p>
-  </main>
+<Layout title="My History">
+  <main class="min-h-screen pt-20">
+  <section class="p-10 max-w-6xl mx-auto">
+    <div
+      class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[2.5rem] p-4 shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row"
+    >
+      <div class="w-full md:w-1/2 p-4">
+        <Image src={topIcon} alt="topIcon" class="w-1/2 mx-auto" />
+      </div>
+      <div class="w-full md:w-1/2 p-4">
+        <h2 class="text-1xl md:text-2xl font-bold text-center">Furuichi Katsuhiro</h2>
+        <p>
+          <br />
+          Webフロントエンドに興味があります。<br/>
+          普段は React, Astro, TypeScript を用いた開発を行なっています。特にAstroが好きです。<br />
+          趣味はコーヒー、テニス、寝ることです。
+        </p>
+      </div>
+      
+    </div>
+  </section>
+  <Timeline items={historyData} />
+</main>
 </Layout>
