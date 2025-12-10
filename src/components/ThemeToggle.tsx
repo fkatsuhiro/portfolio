@@ -5,7 +5,6 @@ export default function ThemeToggle({ className = '' }: { className?: string }) 
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
-    // 初期設定：ローカルストレージ または システム設定
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       setTheme('dark');
       document.documentElement.classList.add('dark');
