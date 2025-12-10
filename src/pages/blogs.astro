@@ -1,11 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
-// Sidebarの表示も BlogList 内で行うため、ここでは BlogList だけを読み込みます
 import BlogList from '../components/BlogList';
 import ogs from 'open-graph-scraper';
 
-// --- 1. ブログ/スライド記事のデータ定義 ---
-// ここに新しい記事を追加していきます
 const slideSources = [
   {
     id: 'session-storage',
@@ -33,15 +30,10 @@ const slideSources = [
   },
 ];
 
-// --- 2. OGP画像の自動取得ロジック ---
-// ビルド時に一度だけ実行され、各リンク先のメタデータを取得します
 const fetchSlides = async () => {
   const promises = slideSources.map(async (source) => {
     try {
       const targetUrl = source.link;
-      
-      // スクレイピング実行
-      // User-Agentを偽装してブロックを回避します
       const { result } = await ogs({
         url: targetUrl,
         fetchOptions: {
@@ -53,19 +45,14 @@ const fetchSlides = async () => {
       });
 
       const ogImage = result.ogImage?.[0]?.url;
-
-      // 取得したデータと元のデータをマージして返します
       return {
-        ...source, // id, time, link, sidebarLabel を引き継ぐ
-        
-        // 自動取得したデータをセット
-        image: ogImage || '/images/default-thumbnail.jpg', // 画像がない場合のフォールバック
-        title: result.ogTitle || source.sidebarLabel,       // タイトルが取れなければサイドバーラベルで代用
+        ...source,
+        image: ogImage || '/images/default-thumbnail.jpg',
+        title: result.ogTitle || source.sidebarLabel,
         description: result.ogDescription || '',
       };
     } catch (e) {
       console.error(`Fetch error for ${source.id}:`, e);
-      // エラー時も最低限のデータで返す（ビルドを止めないため）
       return {
         ...source,
         image: '/images/default-thumbnail.jpg',
@@ -75,11 +62,9 @@ const fetchSlides = async () => {
     }
   });
 
-  // 全てのリクエストが完了するのを待ちます
   return await Promise.all(promises);
 };
 
-// ここでデータが生成されます
 const slides = await fetchSlides();
 ---
 
