@@ -14,7 +14,7 @@ interface SlideCardProps {
 export default function SlideCard({ id, title, link, time, description, speakerDec, image }: SlideCardProps) {
     return (
         <section id={id} className="scroll-mt-32">
-            <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[2.5rem] p-8 md:p-12 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[2.5rem] p-4 md:p-12 shadow-sm hover:shadow-md transition-shadow">
 
                 <div className="flex items-start justify-between mb-6">
                     <h3 className="text-1xl md:text-2xl font-bold text-gray-900 dark:text-white">
