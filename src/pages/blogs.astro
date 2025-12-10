@@ -84,9 +84,5 @@ const slides = await fetchSlides();
 ---
 
 <Layout title="Blogs | My Portfolio">
-  {/* レイアウト構築（サイドバー + メインエリア）はすべて BlogList にお任せします。
-    client:load をつけることで、Reactとしてブラウザ上で動作し、
-    ソートボタンなどのインタラクションが有効になります。
-  */}
   <BlogList items={slides} client:load />
 </Layout>

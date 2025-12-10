@@ -4,74 +4,89 @@ import BlogCard from './BlogCard';  // カードを読み込む
 import { ArrowUpDown } from 'lucide-react';
 
 interface BlogItem {
-  id: string;
-  link: string;
-  image: string;
-  time: string;
-  title?: string;
-  description?: string;
-  sidebarLabel: string;
+    id: string;
+    link: string;
+    image: string;
+    time: string;
+    title?: string;
+    description?: string;
+    sidebarLabel: string;
 }
 
 interface BlogListProps {
-  items: BlogItem[];
+    items: BlogItem[];
 }
 
 export default function BlogList({ items }: BlogListProps) {
-  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
+    const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
 
-  const toggleSort = () => {
-    setSortOrder((prev) => (prev === 'desc' ? 'asc' : 'desc'));
-  };
+    const toggleSort = () => {
+        setSortOrder((prev) => (prev === 'desc' ? 'asc' : 'desc'));
+    };
 
-  const sortedItems = useMemo(() => {
-    return [...items].sort((a, b) => {
-      const dateA = new Date(a.time).getTime();
-      const dateB = new Date(b.time).getTime();
-      return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
-    });
-  }, [items, sortOrder]);
+    const sortedItems = useMemo(() => {
+        return [...items].sort((a, b) => {
+            const dateA = new Date(a.time).getTime();
+            const dateB = new Date(b.time).getTime();
+            return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
+        });
+    }, [items, sortOrder]);
 
-  const sidebarItems = sortedItems.map((item) => ({
-    id: item.id,
-    label: item.sidebarLabel,
-  }));
+    const sidebarItems = sortedItems.map((item) => ({
+        id: item.id,
+        label: item.sidebarLabel,
+    }));
 
-  return (
-    <div className="min-h-screen flex flex-col md:flex-row mt-10">
-      
-      {/* 左サイドバー: ソート済みのデータを渡す */}
-      <Sidebar title="BLOGS" items={sidebarItems} />
+    return (
+        <div className="min-h-screen flex flex-col md:flex-row bg-gray-50 dark:bg-gray-950">
 
-      {/* 右メインエリア */}
-      <main className="w-full md:w-2/3 lg:w-3/4 py-12 px-6 md:px-16 bg-white dark:bg-gray-950">
-        <div className="max-w-3xl mx-auto space-y-8">
-          
-          {/* ソートボタン */}
-          <div className="flex justify-end">
-            <button
-              onClick={toggleSort}
-              className="fixed mt-7 flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-            >
-              <ArrowUpDown size={16} />
-              {sortOrder === 'desc' ? '新しい順' : '古い順'}
-            </button>
-          </div>
+            {/* 左サイドバーエリア */}
+            {/* カラム自体はFlexboxで配置し、その中のdivに sticky をつけて固定します */}
+            <div className="w-full md:w-1/3 lg:w-1/4 p-6 md:p-8 top-20 mb-10 mx-10">
+                {/* ▼ ここで固定します (top-24: 画面上部から少し空けた位置で止まる) */}
+                <div className="sticky top-24">
+                    <Sidebar title="BLOGS" items={sidebarItems} />
+                </div>
+            </div>
 
-          {/* カードリスト表示 */}
-          <div className="space-y-24">
-            {sortedItems.map((slide) => (
-              <BlogCard
-                key={slide.id}
-                id={slide.id}
-                link={slide.link}
-                image={slide.image}
-              />
-            ))}
-          </div>
+            {/* 右メインエリア */}
+            <main className="w-full md:w-2/3 lg:w-3/4 py-10 px-6 md:px-16">
+                <div className="max-w-3xl mx-auto space-y-8">
+                    <div className="flex justify-end pt-4 sticky top-24 z-10 pointer-events-none">
+                        <button
+                            onClick={toggleSort}
+                            className="
+                                pointer-events-auto 
+                                flex items-center gap-2 px-4 py-2 
+                                text-sm font-medium 
+                                text-gray-600 dark:text-gray-300 
+                                bg-white dark:bg-gray-900 
+                                border border-gray-200 dark:border-gray-800
+                                rounded-full 
+                                shadow-md 
+                                hover:bg-gray-100 dark:hover:bg-gray-800 
+                                transition-colors
+                            "
+                        >
+                            <ArrowUpDown size={16} />
+                            {sortOrder === 'desc' ? '新しい順' : '古い順'}
+                        </button>
+                    </div>
 
+                    {/* ブログカードリスト */}
+                    <div className="space-y-12">
+                        {sortedItems.map((slide) => (
+                            <BlogCard
+                                key={slide.id}
+                                id={slide.id}
+                                link={slide.link}
+                                image={slide.image}
+                            />
+                        ))}
+                    </div>
+
+                </div>
+            </main>
         </div>
-      </main>
-    </div>
-  );
+    );
 }
