@@ -4,7 +4,7 @@ import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://fkatsuhiro.github.io',
-  base: '/portfolio', 
+  base: '/', 
   
   integrations: [tailwind(), react()],
 });
