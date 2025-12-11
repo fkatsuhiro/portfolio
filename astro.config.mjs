@@ -3,7 +3,7 @@ import tailwind from "@astrojs/tailwind";
 import react from '@astrojs/react';
 
 export default defineConfig({
-  site: 'https://fkatsuhiro.github.io',
+  site: 'https://fkatsuhiro.github.io/portfolio',
   base: '/', 
   
   integrations: [tailwind(), react()],

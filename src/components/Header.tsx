@@ -8,7 +8,7 @@ export default function Header() {
   useEffect(() => {
     const path = window.location.pathname;
     const isHomePage = path === '/';
-    
+
     if (!isHomePage) {
       setIsVisible(true);
       return; 
