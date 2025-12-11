@@ -1,0 +1,45 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your repository using git
+        uses: actions/checkout@v4
+      
+      # pnpmをセットアップする公式アクションを追加
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8 # お使いのバージョンに合わせてください（例: 8, 9など）
+
+      - name: Install, build, and upload your site
+        uses: withastro/action@v2
+        with:
+          # ここで明示的にpnpmを指定します
+          package-manager: pnpm
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
