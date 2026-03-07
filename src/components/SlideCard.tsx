@@ -4,47 +4,47 @@ import { ExternalLink } from 'lucide-react';
 interface SlideCardProps {
     id: string;
     title: string;
-    link: string;
+    link: string; // 登壇詳細へのリンク
     time?: string;
     description: string;
-    speakerDec: string;
+    slideLink: string; // スライド共有用URL
     image?: string;
 }
 
-export default function SlideCard({ id, title, link, time, description, speakerDec, image }: SlideCardProps) {
+export default function SlideCard({ id, title, link, time, description, slideLink }: SlideCardProps) {
     return (
-        <section id={id} className="scroll-mt-32">
-            <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[2.5rem] p-4 md:p-12 shadow-sm hover:shadow-md transition-shadow">
+        <section id={id} className="scroll-mt-32 w-full">
+            <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all h-full flex flex-col">
 
-                <div className="flex items-start justify-between mb-6">
-                    <h3 className="text-1xl md:text-2xl font-bold text-gray-900 dark:text-white">
+                <div className="flex items-start justify-between mb-2 gap-2">
+                    <h3 className="text-sm md:text-base font-bold text-gray-900 dark:text-white leading-snug line-clamp-2">
                         {title}
                     </h3>
-                    <a
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                    >
-                        <ExternalLink className="w-6 h-6" />
+                    <a href={link} target="_blank" rel="noopener noreferrer" className="p-1 text-gray-400 hover:text-blue-500 flex-shrink-0">
+                        <ExternalLink className="w-4 h-4" />
                     </a>
                 </div>
 
                 {time && (
-                    <div className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+                    <div className="text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-2">
                         {time}
                     </div>
                 )}
 
-                <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed font-medium">
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 leading-normal line-clamp-2 flex-grow">
                     {description}
                 </p>
 
-                <div className="w-2/3 flex items-center justify-center rounded-xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800">
-                    <div className="aspect-video bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 relative group">
-                        <a href={speakerDec} target="_blank" rel="noopener noreferrer" className="w-full h-full block">
-                            <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                        </a>
+                {/* --- 修正箇所：スマホ(px-0)では端まで広げ、PC(md:px-4)では少し絞る --- */}
+                <div className="px-0 md:px-4 mt-auto">
+                    <div className="w-full aspect-video rounded-lg overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-black/20">
+                        <iframe
+                            src={slideLink}
+                            title={title}
+                            allowFullScreen
+                            className="w-full h-full border-0"
+                            loading="lazy"
+                        ></iframe>
                     </div>
                 </div>
             </div>
