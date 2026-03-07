@@ -1,8 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { Timeline, type TimelineItem } from "../components/TimeLine";
-import { Image } from "astro:assets";
-import topIcon from "../assets/topicon.png";
 
 // 表示するデータ
 const historyData: TimelineItem[] = [
@@ -25,27 +23,38 @@ const historyData: TimelineItem[] = [
 ];
 ---
 
-<Layout title="My History">
+<Layout title="About">
   <main class="min-h-screen pt-20">
-  <section class="p-10 max-w-6xl mx-auto">
-    <div
-      class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[2.5rem] p-4 shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row"
-    >
-      <div class="w-full md:w-1/2 p-4">
-        <Image src={topIcon} alt="topIcon" class="w-1/2 mx-auto" />
+    <section class="px-4 pt-10 md:px-10 max-w-7xl mx-auto">
+      <div
+        class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-12 shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-center md:items-start gap-8"
+      >
+        <div class="w-full flex-2">
+          <div class="w-full flex flex-col items-center md:items-start">
+            <h4
+              class="text-xl md:text-2xl font-bold text-center md:text-left text-gray-900 dark:text-white"
+            >
+              Furuichi Katsuhiro
+            </h4>
+          </div>
+
+          <div
+            class="mt-4 text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed"
+          >
+            <p>Webフロントエンドに興味があります。</p>
+            <p class="mt-2">
+              普段は <span
+                class="font-semibold text-blue-600 dark:text-blue-400"
+                >React, Astro, Qwik, TypeScript</span
+              > を用いた開発を行なっています。特にQwikが好きです。
+            </p>
+            <p class="mt-4 text-sm md:text-base opacity-80">
+              趣味：コーヒー、テニス、寝ること
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="w-full md:w-1/2 p-4">
-        <h2 class="text-1xl md:text-2xl font-bold text-center">Furuichi Katsuhiro</h2>
-        <p>
-          <br />
-          Webフロントエンドに興味があります。<br/>
-          普段は React, Astro, TypeScript を用いた開発を行なっています。特にAstroが好きです。<br />
-          趣味はコーヒー、テニス、寝ることです。
-        </p>
-      </div>
-      
-    </div>
-  </section>
-  <Timeline items={historyData} />
-</main>
+    </section>
+    <Timeline items={historyData} />
+  </main>
 </Layout>
