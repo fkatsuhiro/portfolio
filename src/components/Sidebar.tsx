@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface SidebarItem {
   id: string;
   label: string;
@@ -15,13 +13,13 @@ export default function Sidebar({ title, items, className = '' }: SidebarProps) 
   return (
     <aside className={`
       w-full
-      h-[66vh] /* 変更1: min-h ではなく h で高さを固定 */
+      h-[66vh]
       sticky top-8 
       bg-white dark:bg-gray-900 
       border border-gray-200 dark:border-gray-800 
       shadow-sm 
       p-6 md:p-8 
-      flex flex-col /* 変更2: 内部を縦並びのFlexboxにする */
+      flex flex-col
       ${className}
     `}>
       <div className="flex-shrink-0">
@@ -37,7 +35,7 @@ export default function Sidebar({ title, items, className = '' }: SidebarProps) 
         flex-1 
         overflow-y-auto 
         min-h-0
-        pr-2 /* スクロールバーが文字に被らないように少し右余白 */
+        pr-2
       ">
         {items.map((item) => (
           <div key={item.id} className="pl-6 relative group">

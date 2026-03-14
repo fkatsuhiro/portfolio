@@ -1,4 +1,3 @@
-// src/components/ContributionCard.tsx
 import React from 'react';
 
 interface PRProps {

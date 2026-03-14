@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Sidebar from './Sidebar';
 import BlogCard from './BlogCard';
 import { ArrowUpDown } from 'lucide-react';
@@ -50,12 +50,8 @@ export default function BlogList({ items }: BlogListProps) {
     return (
         <div className="min-h-screen flex flex-col md:flex-row bg-gray-50 dark:bg-gray-950">
             {isPcWidth && (
-                /* md:pl-20: 左側の余白を大きく取って、サイドバー全体を右に寄せる
-                   pt-32: 上からの余白を増やして、位置を下げる
-                   w-full md:w-1/3: 幅を少し広めに確保して、右側に余裕を持たせる
-                */
                 <div className="w-full md:w-1/3 lg:w-1/4 pt-48 pb-10 md:pl-20 pr-4">
-                    <div className="sticky top-48"> {/* stickyの開始位置も下げて、スクロールしても下の方に維持 */}
+                    <div className="sticky top-48">
                         <Sidebar title="BLOGS" items={sidebarItems} />
                     </div>
                 </div>
@@ -75,7 +71,6 @@ export default function BlogList({ items }: BlogListProps) {
                         </div>
                     )}
 
-                    {/* 2列グリッドの実装部分 */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         {sortedItems.map((slide) => (
                             <BlogCard

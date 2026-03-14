@@ -2,7 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import { ContributionCard } from "../components/ContributionCard";
 
-// 1. 型定義（TypeScriptで書くと補完が効いて楽になります）
 interface GitHubResponse {
   data: {
     viewer: {
@@ -39,7 +38,6 @@ const query = `
 }
 `;
 
-// 2. APIフェッチ（try-catchでエラー時に止まらないように保護）
 let allPrs = [];
 try {
   const response = await fetch("https://api.github.com/graphql", {
@@ -62,7 +60,8 @@ const techStack = [
   { name: "Astro-Docs", repo: "docs" },
   { name: "Qwik", repo: "qwik" },
   { name: "Yamada UI", repo: "yamada-ui" },
-  { name: "Dioxus", repo: "dioxus" }
+  { name: "Dioxus", repo: "dioxus" },
+  { name: "Dioxus-Docs", repo: "docsite" }
 ];
 ---
 
@@ -75,12 +74,9 @@ const techStack = [
 
     <div class="space-y-20">
       {techStack.map((tech) => {
-        // このセクションに該当するPRを抽出
         const filteredPrs = allPrs.filter(pr => 
           pr.repository.name.toLowerCase().includes(tech.repo.toLowerCase())
         );
-
-        // PRが1つもないセクションは表示しない（または「準備中」を出す）
         if (filteredPrs.length === 0) return null;
 
         return (

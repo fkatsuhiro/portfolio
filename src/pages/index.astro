@@ -4,13 +4,11 @@ import ThemeToggle from "../components/ThemeToggle";
 import HomeImage from "../assets/homeImg.png";
 import PageLinkBlock from "../components/PageLinkBlock";
 
-// 1. ベースパスを取得
 const basePath = import.meta.env.BASE_URL;
 
 const menuLinks = [
     {
         title: "About",
-        // 2. ベースパスと結合する (例: /portfolio/ + about)
         href: `${basePath}/about`, 
         desc1: "Who am I.",
         desc2: "My story, skills, and where to find me.",
