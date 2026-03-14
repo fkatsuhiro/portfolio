@@ -1,13 +1,12 @@
-import React from 'react';
 import { ExternalLink } from 'lucide-react';
 
 interface SlideCardProps {
     id: string;
     title: string;
-    link: string; // 登壇詳細へのリンク
+    link: string;
     time?: string;
     description: string;
-    slideLink: string; // スライド共有用URL
+    slideLink: string;
     image?: string;
 }
 
@@ -35,7 +34,6 @@ export default function SlideCard({ id, title, link, time, description, slideLin
                     {description}
                 </p>
 
-                {/* --- 修正箇所：スマホ(px-0)では端まで広げ、PC(md:px-4)では少し絞る --- */}
                 <div className="px-0 md:px-4 mt-auto">
                     <div className="w-full aspect-video rounded-lg overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-black/20">
                         <iframe
