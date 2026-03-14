@@ -31,7 +31,7 @@ jobs:
         with:
           package-manager: pnpm
         env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUBTOKEN }}
+          GITHUB_TOKEN: ${{ secrets.githubtoken }}
 
   deploy:
     needs: build
