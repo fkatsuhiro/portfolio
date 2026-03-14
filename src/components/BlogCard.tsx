@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface SlideCardProps {
     id: string;
     link: string;
