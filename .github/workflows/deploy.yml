@@ -20,18 +20,18 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
-      
-      # pnpmをセットアップする公式アクションを追加
+        
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8 # お使いのバージョンに合わせてください（例: 8, 9など）
+          version: 8
 
       - name: Install, build, and upload your site
         uses: withastro/action@v2
         with:
-          # ここで明示的にpnpmを指定します
           package-manager: pnpm
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUBTOKEN }}
 
   deploy:
     needs: build
