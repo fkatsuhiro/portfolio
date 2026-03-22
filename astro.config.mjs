@@ -1,10 +1,10 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
-import react from '@astrojs/react';
+import react from "@astrojs/react";
 
 export default defineConfig({
-  site: 'https://fkatsuhiro.github.io/',
-  base: '/portfolio', 
-  
+  site: "https://fkatsuhiro.github.io/",
+  base: "/portfolio",
+
   integrations: [tailwind(), react()],
 });

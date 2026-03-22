@@ -9,9 +9,10 @@ interface SidebarProps {
   className?: string;
 }
 
-export default function Sidebar({ title, items, className = '' }: SidebarProps) {
+export default function Sidebar({ title, items, className = "" }: SidebarProps) {
   return (
-    <aside className={`
+    <aside
+      className={`
       w-full
       h-[66vh]
       sticky top-8 
@@ -21,13 +22,15 @@ export default function Sidebar({ title, items, className = '' }: SidebarProps) 
       p-6 md:p-8 
       flex flex-col
       ${className}
-    `}>
+    `}
+    >
       <div className="flex-shrink-0">
         <h2 className="text-1xl font-bold text-gray-500 dark:text-gray-400 mb-6 tracking-wider uppercase">
           {title}
         </h2>
       </div>
-      <div className="
+      <div
+        className="
         relative 
         border-l-2 border-gray-300 dark:border-gray-700 
         ml-2 
@@ -36,12 +39,13 @@ export default function Sidebar({ title, items, className = '' }: SidebarProps) 
         overflow-y-auto 
         min-h-0
         pr-2
-      ">
+      "
+      >
         {items.map((item) => (
           <div key={item.id} className="pl-6 relative group">
             <span className="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-gray-300 group-hover:bg-gray-800 dark:group-hover:bg-gray-200 transition-colors border-2 border-white dark:border-gray-900"></span>
-            
-            <a 
+
+            <a
               href={`#${item.id}`}
               className="block text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white font-medium transition-colors"
             >

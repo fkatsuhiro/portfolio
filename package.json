@@ -1,12 +1,16 @@
 {
   "name": "frontend",
-  "type": "module",
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "oxlint . && astro check",
+    "lint:fix": "oxlint . --fix",
+    "fmt": "oxfmt . --write",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
@@ -22,6 +26,8 @@
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3"
+    "@types/react-dom": "^19.2.3",
+    "oxfmt": "^0.41.0",
+    "oxlint": "^1.56.0"
   }
 }
