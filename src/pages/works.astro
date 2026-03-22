@@ -75,7 +75,7 @@ const techStack = [
     <div class="space-y-20">
       {techStack.map((tech) => {
         const filteredPrs = allPrs.filter(pr => 
-          pr.repository.name.toLowerCase().includes(tech.repo.toLowerCase())
+          pr.repository.name.toLowerCase() === tech.repo.toLowerCase()
         );
         if (filteredPrs.length === 0) return null;
 
