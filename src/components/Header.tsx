@@ -10,7 +10,8 @@ export default function Header() {
     const path = window.location.pathname;
     const currentPathClean = path.replace(/\/$/, "");
     const basePathClean = basePath.replace(/\/$/, "");
-    const isHomePage = currentPathClean === basePathClean || currentPathClean === "";
+    const isHomePage =
+      currentPathClean === basePathClean || currentPathClean === "";
 
     if (!isHomePage) {
       setIsVisible(true);
@@ -42,7 +43,11 @@ export default function Header() {
           href={basePath}
           className="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition-colors"
         >
-          <img src={Home.src} alt="Home" className="w-8 h-8 rounded-full object-cover" />
+          <img
+            src={Home.src}
+            alt="Home"
+            className="w-8 h-8 rounded-full object-cover"
+          />
         </a>
         <div className="flex items-center gap-6">
           <nav className="flex gap-4">

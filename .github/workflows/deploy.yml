@@ -34,6 +34,9 @@ jobs:
       - name: Run Lint
         run: pnpm lint
 
+      - name: Run Format Check (Prettier)
+        run: pnpm exec prettier --check .
+
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
 
