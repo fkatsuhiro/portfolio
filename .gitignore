@@ -1,3 +1,6 @@
+# ignore pnpm-lock.yml fail
+pnpm-lock.yaml
+
 # build output
 dist/
 
