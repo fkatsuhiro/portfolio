@@ -1,8 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { ContributionCard } from "../components/ContributionCard";
+import { WorksTabs } from "../components/WorksTabs";
 
-interface GitHubResponse {
+/**
+ * GitHub API レスポンスの型定義
+ */
+export interface GitHubResponse {
   data: {
     viewer: {
       pullRequests: {
@@ -15,12 +18,39 @@ interface GitHubResponse {
           };
         }>;
       };
+      issues: {
+        nodes: Array<{
+          title: string;
+          url: string;
+          createdAt: string;
+          repository: {
+            name: string;
+          };
+        }>;
+      };
+      contributionsCollection: {
+        pullRequestReviewContributions: {
+          nodes: Array<{
+            pullRequest: {
+              title: string;
+              url: string;
+              repository: {
+                name: string;
+              };
+            };
+            occurredAt: string;
+          }>;
+        };
+      };
     };
   };
 }
 
 const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
 
+/**
+ * PR, Issues, Reviews を一括で取得するGraphQLクエリ
+ */
 const query = `
 {
   viewer {
@@ -34,11 +64,40 @@ const query = `
         }
       }
     }
+    issues(last: 50, orderBy: {field: CREATED_AT, direction: DESC}) {
+      nodes {
+        title
+        url
+        createdAt
+        repository {
+          name
+        }
+      }
+    }
+    contributionsCollection {
+      pullRequestReviewContributions(last: 50) {
+        nodes {
+          pullRequest {
+            title
+            url
+            repository {
+              name
+            }
+          }
+          occurredAt
+        }
+      }
+    }
   }
 }
 `;
 
-let allPrs = [];
+let contributions = {
+  prs: [],
+  issues: [],
+  reviews: []
+};
+
 try {
   const response = await fetch("https://api.github.com/graphql", {
     method: "POST",
@@ -50,7 +109,23 @@ try {
   });
 
   const json = (await response.json()) as GitHubResponse;
-  allPrs = json.data?.viewer?.pullRequests?.nodes || [];
+  const viewer = json.data?.viewer;
+
+  if (viewer) {
+    contributions = {
+      // 自分が作成したPR
+      prs: viewer.pullRequests?.nodes || [],
+      // 自分が作成したIssue
+      issues: viewer.issues?.nodes || [],
+      // 自分がレビューしたPR (型を他のデータに合わせる)
+      reviews: viewer.contributionsCollection?.pullRequestReviewContributions?.nodes.map(node => ({
+        title: node.pullRequest.title,
+        url: node.pullRequest.url,
+        createdAt: node.occurredAt,
+        repository: node.pullRequest.repository
+      })) || []
+    };
+  }
 } catch (e) {
   console.error("GitHub APIの取得に失敗しました:", e);
 }
@@ -61,55 +136,39 @@ const techStack = [
   { name: "Qwik", repo: "qwik" },
   { name: "Yamada UI", repo: "yamada-ui" },
   { name: "Dioxus", repo: "dioxus" },
-  { name: "Dioxus-Docs", repo: "docsite" }
+  { name: "Dioxus-Docs", repo: "docsite" },
+  { name: "Valibot", repo: "valibot" }
+];
+
+const products = [
+  {
+    title: "My Portfolio",
+    description: "This website built with Astro and Tailwind CSS.",
+    url: "https://github.com/yourname/portfolio",
+    tech: ["Astro", "TypeScript", "TailwindCSS"]
+  },
+  {
+    title: "Sample App",
+    description: "A simple todo application built with React.",
+    url: "https://github.com/yourname/sample-app",
+    tech: ["React", "Vite"]
+  },
 ];
 ---
 
 <Layout title="Works">
   <main class="max-w-4xl mx-auto pt-32 pb-20 px-6">
-    <div class="mb-16">
-      <h1 class="text-4xl font-black text-slate-900 dark:text-white mb-2">OSS Comtribution</h1>
-      <p class="text-slate-500 dark:text-slate-400 font-medium">My contributions to the open source community.</p>
+    <div class="mb-12">
+      <h1 class="text-4xl font-black text-slate-900 dark:text-white mb-2">Works</h1>
+      <p class="text-slate-500 dark:text-slate-400 font-medium">My products and contributions.</p>
     </div>
 
-    <div class="space-y-20">
-      {techStack.map((tech) => {
-        const filteredPrs = allPrs.filter(pr => 
-          pr.repository.name.toLowerCase() === tech.repo.toLowerCase()
-        );
-        if (filteredPrs.length === 0) return null;
+    <WorksTabs 
+      client:load 
+      products={products} 
+      contributions={contributions} 
+      techStack={techStack} 
+    />
 
-        return (
-          <section class="animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div class="flex items-center gap-4 mb-8">
-              <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">
-                {tech.name}
-              </h2>
-              <div class="h-[1px] flex-grow bg-gradient-to-r from-slate-200 to-transparent dark:from-slate-800"></div>
-              <span class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-900 px-2 py-1 rounded border border-slate-100 dark:border-slate-800">
-                {filteredPrs.length} items
-              </span>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {filteredPrs.map(pr => (
-                <ContributionCard 
-                  title={pr.title}
-                  url={pr.url}
-                  repoName={pr.repository.name}
-                  date={pr.createdAt}
-                />
-              ))}
-            </div>
-          </section>
-        );
-      })}
-    </div>
-
-    {allPrs.length === 0 && (
-      <div class="py-20 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl">
-        <p class="text-slate-500 text-lg">No contributions found. Check your GITHUB_TOKEN.</p>
-      </div>
-    )}
   </main>
 </Layout>
