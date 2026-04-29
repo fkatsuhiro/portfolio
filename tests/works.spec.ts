@@ -17,10 +17,9 @@ test.describe("Works Page - OSS Contributions", () => {
   test("should render contribution sections based on tech stack", async ({
     page,
   }) => {
-    const sections = ["Astro", "Astro-Docs", "Qwik", "Yamada UI", "Dioxus"];
     const headings = page.locator("h2");
     const visibleHeadings = await headings.allInnerTexts();
-    //expect(visibleHeadings.length).toBeGreaterThan(0);
+    expect(visibleHeadings.length).toBeGreaterThan(0);
   });
 
   test("should display individual contribution cards with links", async ({

@@ -54,7 +54,7 @@ const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
 const query = `
 {
   viewer {
-    pullRequests(states: MERGED, last: 50, orderBy: {field: CREATED_AT, direction: DESC}) {
+    pullRequests(first: 50, states: MERGED, orderBy: {field: CREATED_AT, direction: DESC}) {
       nodes {
         title
         url
@@ -99,32 +99,40 @@ let contributions = {
 };
 
 try {
-  const response = await fetch("https://api.github.com/graphql", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-    },
-    body: JSON.stringify({ query }),
-  });
+  if (!GITHUB_TOKEN) {
+    console.error("GITHUB_TOKEN が設定されていません");
+  } else {
+    const response = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
+      },
+      body: JSON.stringify({ query }),
+    });
 
-  const json = (await response.json()) as GitHubResponse;
-  const viewer = json.data?.viewer;
+    const json = (await response.json()) as any;
 
-  if (viewer) {
-    contributions = {
-      // 自分が作成したPR
-      prs: viewer.pullRequests?.nodes || [],
-      // 自分が作成したIssue
-      issues: viewer.issues?.nodes || [],
-      // 自分がレビューしたPR (型を他のデータに合わせる)
-      reviews: viewer.contributionsCollection?.pullRequestReviewContributions?.nodes.map(node => ({
-        title: node.pullRequest.title,
-        url: node.pullRequest.url,
-        createdAt: node.occurredAt,
-        repository: node.pullRequest.repository
-      })) || []
-    };
+    if (json.errors) {
+      console.error("GitHub API エラー:", json.errors);
+    } else if (json.data?.viewer) {
+      const viewer = json.data.viewer;
+      contributions = {
+        // 自分が作成したPR
+        prs: viewer.pullRequests?.nodes || [],
+        // 自分が作成したIssue
+        issues: viewer.issues?.nodes || [],
+        // 自分がレビューしたPR (型を他のデータに合わせる)
+        reviews: viewer.contributionsCollection?.pullRequestReviewContributions?.nodes.map((node: any) => ({
+          title: node.pullRequest.title,
+          url: node.pullRequest.url,
+          createdAt: node.occurredAt,
+          repository: node.pullRequest.repository
+        })) || []
+      };
+    } else {
+      console.error("GitHub API レスポンスが予期しない形式:", json);
+    }
   }
 } catch (e) {
   console.error("GitHub APIの取得に失敗しました:", e);
