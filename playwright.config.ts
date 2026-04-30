@@ -6,16 +6,12 @@ export default defineConfig({
   fullyParallel: true,
   retries: process.env.CI ? 1 : 0,
 
-  projects: [
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-    },
-    {
-      name: "chrome",
-      use: { ...devices["Desktop Chrome"] },
-    },
-  ],
+  projects: process.env.CI
+    ? [{ name: "chrome", use: { ...devices["Desktop Chrome"] } }]
+    : [
+        { name: "webkit", use: { ...devices["Desktop Safari"] } },
+        { name: "chrome", use: { ...devices["Desktop Chrome"] } },
+      ],
 
   webServer: {
     command: process.env.CI
