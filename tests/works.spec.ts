@@ -34,5 +34,4 @@ test.describe("Works Page", () => {
     await expect(page.getByRole("button", { name: /Issues/ })).toBeVisible();
     await expect(page.getByRole("button", { name: /Reviews/ })).toBeVisible();
   });
-
 });
