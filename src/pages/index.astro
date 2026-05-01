@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
 import ThemeToggle from "../components/ThemeToggle";
 import HomeImage from "../assets/homeImg.png";
 import PageLinkBlock from "../components/PageLinkBlock";
@@ -67,9 +68,11 @@ const menuLinks = [
             <div
                 class="w-1/2 h-full bg-white dark:bg-gray-950 flex items-center justify-center relative"
             >
-                <img
-                    src={HomeImage.src}
-                    alt="Portrait"
+                <Image
+                    src={HomeImage}
+                    alt="Portrait of Furuichi Katsuhiro"
+                    loading="eager"
+                    fetchpriority="high"
                     class="w-4/5 md:w-3/5 h-auto md:h-3/5 object-contain"
                 />
             </div>

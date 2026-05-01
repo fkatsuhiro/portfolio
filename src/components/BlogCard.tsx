@@ -18,6 +18,8 @@ export default function SlideCard({ id, link, image }: SlideCardProps) {
             <img
               src={image}
               alt={link}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           </a>

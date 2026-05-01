@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fkatsuhiro.github.io/portfolio/sitemap-index.xml
