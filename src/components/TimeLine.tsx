@@ -95,9 +95,9 @@ const TimelineCard: React.FC<CardProps> = ({
           }
         `}
       />
-      <p className="text-lg font-bold text-gray-800 dark:text-white mb-2">
+      <h6 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
         {item.title}
-      </p>
+      </h6>
       <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">
         {item.description}
       </p>
