@@ -1,10 +1,11 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://fkatsuhiro.github.io/",
+  site: "https://fkatsuhiro.github.io/portfolio",
   base: "/portfolio",
 
-  integrations: [tailwind(), react()],
+  integrations: [tailwind(), react(), sitemap()],
 });

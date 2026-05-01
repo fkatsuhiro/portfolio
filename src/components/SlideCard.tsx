@@ -29,7 +29,8 @@ export default function SlideCard({
             href={link}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1 text-gray-400 hover:text-blue-500 flex-shrink-0"
+            aria-label={`${title} の詳細を開く`}
+            className="p-1 text-gray-400 hover:text-blue-500 flex-shrink-0 transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
           </a>
