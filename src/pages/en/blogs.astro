@@ -1,0 +1,73 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import BlogList from "../../components/BlogList";
+import ogs from "open-graph-scraper";
+import { translations } from "../../i18n/translations";
+
+const t = translations.en;
+
+const slideSources = [
+  {
+    id: "session-storage",
+    time: "2025-10-21",
+    link: "https://zenn.dev/kattu/articles/469528b9bd5150",
+    sidebarLabel: "Controlling toast display using SessionStorage",
+  },
+  {
+    id: "pyconjp-2025",
+    time: "2025-09-30",
+    link: "https://zenn.dev/kattu/articles/37e76909dc555e",
+    sidebarLabel: "PyCon JP 2025 Attendance Report",
+  },
+  {
+    id: "judge-ip-in-cidr",
+    time: "2025-09-23",
+    link: "https://zenn.dev/kattu/articles/29be5bfc452e53",
+    sidebarLabel: "How to check if an IP is within a CIDR range",
+  },
+  {
+    id: "frontend-conf-tokyo-2025",
+    time: "2025-09-21",
+    link: "https://zenn.dev/kattu/articles/e977ff28185cbf",
+    sidebarLabel: "Frontend Conference Tokyo 2025 Attendance Report",
+  },
+];
+
+const fetchSlides = async () => {
+  const promises = slideSources.map(async (source) => {
+    try {
+      const { result } = await ogs({
+        url: source.link,
+        fetchOptions: {
+          headers: {
+            "user-agent":
+              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          },
+        },
+      });
+      const ogImage = result.ogImage?.[0]?.url;
+      return {
+        ...source,
+        image: ogImage || "/images/default-thumbnail.jpg",
+        title: result.ogTitle || source.sidebarLabel,
+        description: result.ogDescription || "",
+      };
+    } catch (e) {
+      console.error(`Fetch error for ${source.id}:`, e);
+      return {
+        ...source,
+        image: "/images/default-thumbnail.jpg",
+        title: source.sidebarLabel,
+        description: "Failed to fetch description.",
+      };
+    }
+  });
+  return await Promise.all(promises);
+};
+
+const slides = await fetchSlides();
+---
+
+<Layout title={t.meta.blogs.title} description={t.meta.blogs.description}>
+  <BlogList items={slides} client:load />
+</Layout>

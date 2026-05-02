@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header';
 import '../styles/global.css';
+import type { Lang } from '../i18n/translations';
 
 interface Props {
 	title: string;
@@ -13,10 +14,19 @@ const {
 	description = 'Furuichi Katsuhiro — Frontend Developer. OSS contributor to Astro, Qwik, Yamada UI and more.',
 	ogImage,
 } = Astro.props;
+
+const lang = (Astro.currentLocale ?? 'ja') as Lang;
 const siteUrl = 'https://fkatsuhiro.github.io/portfolio';
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const fullTitle = title === 'Portfolio' ? 'Furuichi Katsuhiro | Frontend Developer' : `${title} | Furuichi Katsuhiro`;
 const ogImageURL = ogImage ? new URL(ogImage, siteUrl).href : `${siteUrl}/topicon.png`;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const pathname = Astro.url.pathname.replace(/\/$/, '');
+const altLangHref =
+	lang === 'ja'
+		? `${base}/en${pathname.replace(base, '') || '/'}`
+		: `${base}${pathname.replace(`${base}/en`, '') || '/'}`;
 
 const jsonLd = {
 	'@context': 'https://schema.org',
@@ -24,10 +34,7 @@ const jsonLd = {
 	name: 'Furuichi Katsuhiro',
 	url: siteUrl,
 	jobTitle: 'Frontend Developer',
-	worksFor: {
-		'@type': 'Organization',
-		name: 'Fast Retailing',
-	},
+	worksFor: { '@type': 'Organization', name: 'Fast Retailing' },
 	alumniOf: [
 		{ '@type': 'CollegeOrUniversity', name: '千葉大学' },
 		{ '@type': 'CollegeOrUniversity', name: '東京大学大学院' },
@@ -38,7 +45,7 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -50,6 +57,7 @@ const jsonLd = {
 		<title>{fullTitle}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalURL} />
+		<link rel="alternate" hreflang={lang === 'ja' ? 'en' : 'ja'} href={altLangHref} />
 
 		<!-- OGP -->
 		<meta property="og:type" content="website" />
@@ -60,7 +68,7 @@ const jsonLd = {
 		<meta property="og:image" content={ogImageURL} />
 		<meta property="og:image:width" content="400" />
 		<meta property="og:image:height" content="400" />
-		<meta property="og:locale" content="ja_JP" />
+		<meta property="og:locale" content={lang === 'ja' ? 'ja_JP' : 'en_US'} />
 
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary" />
@@ -69,7 +77,7 @@ const jsonLd = {
 		<meta name="twitter:image" content={ogImageURL} />
 
 		<!-- JSON-LD Structured Data -->
-		<script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
 
 		<script is:inline>
 			if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -80,7 +88,7 @@ const jsonLd = {
 		</script>
 	</head>
 	<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-		<Header client:load />
+		<Header lang={lang} altLangHref={altLangHref} client:load />
 		<slot />
 	</body>
 </html>
