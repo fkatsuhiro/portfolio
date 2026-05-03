@@ -28,43 +28,50 @@ test.describe("Works Page", () => {
   test("should show repo cards on OSS Contribution tab", async ({ page }) => {
     await page.getByRole("button", { name: "OSS Contribution" }).click();
 
-    // repo selection screen: sub-tabs are not yet visible
-    await expect(page.getByRole("button", { name: /PRs/ })).not.toBeVisible();
+    // repo selection screen: sub-tab bar is not yet rendered
+    await expect(
+      page.locator('[data-testid="contrib-subtabs"]'),
+    ).not.toBeVisible();
 
-    // at least one repo card with "total" count should be present
-    const repoCard = page
-      .locator("button")
-      .filter({ hasText: /total/ })
-      .first();
-    await expect(repoCard).toBeVisible();
+    // at least one repo card should be present in the grid
+    const repoGrid = page.locator('[data-testid="contrib-repo-grid"]');
+    await expect(repoGrid).toBeVisible();
+    await expect(repoGrid.locator("button").first()).toBeVisible();
   });
 
   test("should drill into a repo and show sub-tabs", async ({ page }) => {
     await page.getByRole("button", { name: "OSS Contribution" }).click();
 
-    const repoCard = page
-      .locator("button")
-      .filter({ hasText: /total/ })
-      .first();
-    await repoCard.click();
+    const repoGrid = page.locator('[data-testid="contrib-repo-grid"]');
+    await repoGrid.locator("button").first().click();
 
-    await expect(page.getByRole("button", { name: /PRs/ })).toBeVisible();
-    await expect(page.getByRole("button", { name: /Issues/ })).toBeVisible();
-    await expect(page.getByRole("button", { name: /Reviews/ })).toBeVisible();
+    const subTabs = page.locator('[data-testid="contrib-subtabs"]');
+    await expect(subTabs).toBeVisible();
+    await expect(subTabs.getByRole("button", { name: /PRs/ })).toBeVisible();
+    await expect(subTabs.getByRole("button", { name: /Issues/ })).toBeVisible();
     await expect(
-      page.getByRole("button", { name: /← Repositories/ }),
+      subTabs.getByRole("button", { name: /Reviews/ }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "← Repositories" }),
     ).toBeVisible();
   });
 
   test("should go back to repo list from detail view", async ({ page }) => {
     await page.getByRole("button", { name: "OSS Contribution" }).click();
-    await page.locator("button").filter({ hasText: /total/ }).first().click();
-    await page.getByRole("button", { name: /← Repositories/ }).click();
+    await page
+      .locator('[data-testid="contrib-repo-grid"]')
+      .locator("button")
+      .first()
+      .click();
+    await page.getByRole("button", { name: "← Repositories" }).click();
 
-    // back to repo selection: sub-tabs gone, repo cards visible again
-    await expect(page.getByRole("button", { name: /PRs/ })).not.toBeVisible();
+    // back to repo selection: sub-tab bar gone, repo grid visible again
     await expect(
-      page.locator("button").filter({ hasText: /total/ }).first(),
+      page.locator('[data-testid="contrib-subtabs"]'),
+    ).not.toBeVisible();
+    await expect(
+      page.locator('[data-testid="contrib-repo-grid"]'),
     ).toBeVisible();
   });
 });

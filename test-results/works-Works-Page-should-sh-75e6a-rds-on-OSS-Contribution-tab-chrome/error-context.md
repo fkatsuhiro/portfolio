@@ -6,8 +6,8 @@
 
 # Test info
 
-- Name: blogs.spec.ts >> Blogs Page >> should show sidebar navigation on desktop and hide on mobile
-- Location: tests/blogs.spec.ts:29:3
+- Name: works.spec.ts >> Works Page >> should show repo cards on OSS Contribution tab
+- Location: tests/works.spec.ts:28:3
 
 # Error details
 

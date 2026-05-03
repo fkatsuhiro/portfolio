@@ -254,7 +254,10 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
         <div className="animate-in fade-in duration-500">
           {/* リポジトリ一覧画面 */}
           {!selectedRepo && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div
+              data-testid="contrib-repo-grid"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+            >
               {techStack.map((tech) => {
                 const prCount = filterByRepo(
                   contributions.prs,
@@ -304,7 +307,10 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
               </div>
 
               {/* サブタブ (PRs / Issues / Reviews) */}
-              <div className="flex gap-4 mb-8 border-b border-slate-100 dark:border-slate-800">
+              <div
+                data-testid="contrib-subtabs"
+                className="flex gap-4 mb-8 border-b border-slate-100 dark:border-slate-800"
+              >
                 {subTabs.map((tab) => (
                   <button
                     key={tab.id}
