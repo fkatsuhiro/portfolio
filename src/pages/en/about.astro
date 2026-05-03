@@ -1,12 +1,11 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import { Timeline, type TimelineItem } from "../components/TimeLine";
-import SkillBadges from "../components/SkillBadges";
-import ContributionGraph, { type ContributionCalendar } from "../components/ContributionGraph";
-import { translations, type Lang } from "../i18n/translations";
+import Layout from "../../layouts/Layout.astro";
+import { Timeline, type TimelineItem } from "../../components/TimeLine";
+import SkillBadges from "../../components/SkillBadges";
+import ContributionGraph, { type ContributionCalendar } from "../../components/ContributionGraph";
+import { translations } from "../../i18n/translations";
 
-const lang = (Astro.currentLocale ?? "ja") as Lang;
-const t = translations[lang];
+const t = translations.en;
 
 const historyData: TimelineItem[] = t.about.history.map((item) => ({
   date: item.date,
@@ -85,7 +84,7 @@ try {
           </div>
 
           <SkillBadges
-            lang={lang}
+            lang="en"
             heading={t.about.skills.heading}
             client:load
           />

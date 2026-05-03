@@ -7,5 +7,13 @@ export default defineConfig({
   site: "https://fkatsuhiro.github.io/portfolio",
   base: "/portfolio",
 
+  i18n: {
+    defaultLocale: "ja",
+    locales: ["ja", "en"],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+
   integrations: [tailwind(), react(), sitemap()],
 });
