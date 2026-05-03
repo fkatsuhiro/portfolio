@@ -8,7 +8,10 @@ interface HeaderProps {
   altLangHref?: string;
 }
 
-export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) {
+export default function Header({
+  lang = "ja",
+  altLangHref = "/",
+}: HeaderProps) {
   const [isVisible, setIsVisible] = useState(false);
   const basePath = import.meta.env.BASE_URL;
   const ticking = useRef(false);
@@ -59,7 +62,8 @@ export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) 
   ];
 
   const langLabel = lang === "ja" ? "EN" : "JA";
-  const langAriaLabel = lang === "ja" ? "Switch to English" : "日本語に切り替える";
+  const langAriaLabel =
+    lang === "ja" ? "Switch to English" : "日本語に切り替える";
 
   return (
     <header
