@@ -55,4 +55,46 @@ test.describe("Talks Page", () => {
       "https://hokuriku.tskaigi.org/talks/27",
     );
   });
+
+  test("should open slide modal on expand button click", async ({ page }) => {
+    const expandBtn = page.locator('[data-testid="slide-expand-btn"]').first();
+    await expandBtn.click();
+    await expect(page.locator('[data-testid="slide-modal"]')).toBeVisible();
+  });
+
+  test("should close slide modal with close button", async ({ page }) => {
+    await page.locator('[data-testid="slide-expand-btn"]').first().click();
+    await page.locator('[data-testid="slide-modal"]').waitFor({
+      state: "visible",
+    });
+    await page.locator('[data-testid="slide-modal-close"]').click();
+    await expect(page.locator('[data-testid="slide-modal"]')).not.toBeVisible();
+  });
+
+  test("should close slide modal with Escape key", async ({ page }) => {
+    await page.locator('[data-testid="slide-expand-btn"]').first().click();
+    await page.locator('[data-testid="slide-modal"]').waitFor({
+      state: "visible",
+    });
+    await page.keyboard.press("Escape");
+    await expect(page.locator('[data-testid="slide-modal"]')).not.toBeVisible();
+  });
+
+  test("should show modal iframe for full-screen slide view", async ({
+    page,
+  }) => {
+    await page.locator('[data-testid="slide-expand-btn"]').first().click();
+    await page.locator('[data-testid="slide-modal"]').waitFor({
+      state: "visible",
+    });
+    // modal iframe is rendered inside the portal
+    const modalIframe = page
+      .locator('[data-testid="slide-modal"]')
+      .locator("iframe");
+    await expect(modalIframe).toBeVisible();
+    await expect(modalIframe).toHaveAttribute(
+      "src",
+      /docs\.google\.com\/presentation/,
+    );
+  });
 });

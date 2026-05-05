@@ -33,7 +33,9 @@ export default function Header({
     if (hero) {
       const observer = new IntersectionObserver(
         ([entry]) => setIsVisible(!entry.isIntersecting),
-        { threshold: 0 },
+        {
+          threshold: 0,
+        },
       );
       observer.observe(hero);
       return () => observer.disconnect();

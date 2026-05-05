@@ -6,8 +6,8 @@
 
 # Test info
 
-- Name: talks.spec.ts >> Talks Page >> should embed Google Slides iframes correctly
-- Location: tests/talks.spec.ts:24:3
+- Name: works.spec.ts >> Works Page >> should drill into a repo and show sub-tabs
+- Location: tests/works.spec.ts:42:3
 
 # Error details
 
