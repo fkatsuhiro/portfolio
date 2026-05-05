@@ -2,6 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import BlogList from '../components/BlogList';
 import ogs from 'open-graph-scraper';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+const lang = (Astro.currentLocale ?? "ja") as Lang;
+const t = useTranslations(lang);
 
 const slideSources = [
   {
@@ -68,6 +72,6 @@ const fetchSlides = async () => {
 const slides = await fetchSlides();
 ---
 
-<Layout title="Blogs" description="Technical articles and notes by Furuichi Katsuhiro about frontend development, TypeScript, and web technologies.">
-  <BlogList items={slides} client:load />
+<Layout title={t("meta.blogs.title")} description={t("meta.blogs.description")}>
+  <BlogList items={slides} lang={lang} client:load />
 </Layout>

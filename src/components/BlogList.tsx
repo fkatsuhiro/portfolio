@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import Sidebar from "./Sidebar";
 import BlogCard from "./BlogCard";
 import { ArrowUpDown } from "lucide-react";
+import { useTranslations, type Lang } from "../i18n/ui";
 
 interface BlogItem {
   id: string;
@@ -15,10 +16,12 @@ interface BlogItem {
 
 interface BlogListProps {
   items: BlogItem[];
+  lang?: Lang;
 }
 
-export default function BlogList({ items }: BlogListProps) {
+export default function BlogList({ items, lang = "ja" }: BlogListProps) {
   const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
+  const t = useTranslations(lang);
 
   const toggleSort = () => {
     setSortOrder((prev) => (prev === "desc" ? "asc" : "desc"));
@@ -37,6 +40,8 @@ export default function BlogList({ items }: BlogListProps) {
     label: item.sidebarLabel,
   }));
 
+  const sortLabel = sortOrder === "desc" ? t("blogs.sortNewest") : t("blogs.sortOldest");
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-50 dark:bg-gray-950">
       <div className="hidden md:block w-full md:w-1/3 lg:w-1/4 pt-48 pb-10 md:pl-20 pr-4">
@@ -51,21 +56,16 @@ export default function BlogList({ items }: BlogListProps) {
             <button
               onClick={toggleSort}
               className="pointer-events-auto flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              aria-label={`並び替え: 現在${sortOrder === "desc" ? "新しい順" : "古い順"}`}
+              aria-label={`Sort: ${sortLabel}`}
             >
               <ArrowUpDown size={16} />
-              {sortOrder === "desc" ? "新しい順" : "古い順"}
+              {sortLabel}
             </button>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {sortedItems.map((slide) => (
-              <BlogCard
-                key={slide.id}
-                id={slide.id}
-                link={slide.link}
-                image={slide.image}
-              />
+              <BlogCard key={slide.id} id={slide.id} link={slide.link} image={slide.image} />
             ))}
           </div>
         </div>

@@ -6,31 +6,31 @@ import HomeImage from "../../assets/homeImg.png";
 import PageLinkBlock from "../../components/PageLinkBlock";
 import { useTranslations } from "../../i18n/ui";
 
-const t = useTranslations("en");
+const t = useTranslations("ko");
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const menuLinks = [
   {
     title: t("home.menu.about.title"),
-    href: `${basePath}/en/about`,
+    href: `${basePath}/ko/about`,
     desc1: t("home.menu.about.desc1"),
     desc2: t("home.menu.about.desc2"),
   },
   {
     title: t("home.menu.works.title"),
-    href: `${basePath}/en/works`,
+    href: `${basePath}/ko/works`,
     desc1: t("home.menu.works.desc1"),
     desc2: t("home.menu.works.desc2"),
   },
   {
     title: t("home.menu.talks.title"),
-    href: `${basePath}/en/talks`,
+    href: `${basePath}/ko/talks`,
     desc1: t("home.menu.talks.desc1"),
     desc2: t("home.menu.talks.desc2"),
   },
   {
     title: t("home.menu.blogs.title"),
-    href: `${basePath}/en/blogs`,
+    href: `${basePath}/ko/blogs`,
     desc1: t("home.menu.blogs.desc1"),
     desc2: t("home.menu.blogs.desc2"),
   },

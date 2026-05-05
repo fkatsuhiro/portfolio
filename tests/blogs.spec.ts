@@ -5,22 +5,16 @@ test.describe("Blogs Page", () => {
     await page.goto("/portfolio/blogs");
   });
 
-  test("should display the blog list with fetched OGP data", async ({
-    page,
-  }) => {
+  test("should display the blog list with fetched OGP data", async ({ page }) => {
     await page.goto("/portfolio/blogs");
 
-    const ogpTitle = page.getByText(
-      "SessionStorage を活用してトースト表示を制御する",
-    );
+    const ogpTitle = page.getByText("SessionStorage を活用してトースト表示を制御する");
 
     await expect(ogpTitle).toBeVisible({ timeout: 10000 });
   });
 
   test("should have working links to Zenn articles", async ({ page }) => {
-    const firstBlogLink = page
-      .locator('a[href^="https://zenn.dev/kattu/articles/"]')
-      .first();
+    const firstBlogLink = page.locator('a[href^="https://zenn.dev/kattu/articles/"]').first();
 
     await expect(firstBlogLink).toHaveAttribute("target", "_blank");
     await expect(firstBlogLink).toHaveAttribute("rel", /noopener/);
@@ -40,10 +34,7 @@ test.describe("Blogs Page", () => {
     }
   });
 
-  test("should toggle sorting order when the button is clicked", async ({
-    page,
-    isMobile,
-  }) => {
+  test("should toggle sorting order when the button is clicked", async ({ page, isMobile }) => {
     test.skip(isMobile, "Sort button is only available on Desktop");
 
     const sortButton = page.getByRole("button", { name: /順/ });

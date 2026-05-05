@@ -7,12 +7,7 @@ interface PRProps {
   date: string;
 }
 
-export const ContributionCard: React.FC<PRProps> = ({
-  title,
-  url,
-  repoName,
-  date,
-}) => {
+export const ContributionCard: React.FC<PRProps> = ({ title, url, repoName, date }) => {
   return (
     <a
       href={url}
