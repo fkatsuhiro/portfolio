@@ -78,14 +78,12 @@ export const translations = {
         {
           date: "2024/4 ~ 2026/3",
           title: "東京大学大学院 工学系研究科バイオエンジニアリング専攻",
-          description:
-            "東京大学大学院 工学系研究科 バイオエンジニアリング専攻に在籍していました。",
+          description: "東京大学大学院 工学系研究科 バイオエンジニアリング専攻に在籍していました。",
         },
         {
           date: "2026/3 ~",
           title: "株式会社ファーストリテイリング",
-          description:
-            "フロントエンドエンジニアとして開発業務に取り組んでいます。",
+          description: "フロントエンドエンジニアとして開発業務に取り組んでいます。",
         },
       ],
     },
@@ -166,27 +164,23 @@ export const translations = {
         {
           date: "2017/4 ~ 2020/3",
           title: "Mie Prefectural Yokkaichi High School",
-          description:
-            "Attended Mie Prefectural Yokkaichi High School, General Course.",
+          description: "Attended Mie Prefectural Yokkaichi High School, General Course.",
         },
         {
           date: "2020/4 ~ 2024/3",
           title: "Chiba University, Department of Physics",
-          description:
-            "Attended the Department of Physics, Faculty of Science, Chiba University.",
+          description: "Attended the Department of Physics, Faculty of Science, Chiba University.",
         },
         {
           date: "2024/4 ~ 2026/3",
-          title:
-            "The University of Tokyo Graduate School, Dept. of Bioengineering",
+          title: "The University of Tokyo Graduate School, Dept. of Bioengineering",
           description:
             "Attended the Department of Bioengineering, Graduate School of Engineering, The University of Tokyo.",
         },
         {
           date: "2026/3 ~",
           title: "Fast Retailing Co., Ltd.",
-          description:
-            "Working as a frontend engineer on development projects.",
+          description: "Working as a frontend engineer on development projects.",
         },
       ],
     },

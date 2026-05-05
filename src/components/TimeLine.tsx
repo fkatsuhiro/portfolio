@@ -21,10 +21,7 @@ export const Timeline: React.FC<TimelineProps> = ({ items }) => {
             const isEven = index % 2 === 0;
 
             return (
-              <div
-                key={index}
-                className="relative flex items-center md:justify-between"
-              >
+              <div key={index} className="relative flex items-center md:justify-between">
                 <div className="hidden md:block w-5/12">
                   {isEven ? (
                     <TimelineCard item={item} position="left" />
@@ -44,11 +41,7 @@ export const Timeline: React.FC<TimelineProps> = ({ items }) => {
                     </span>
                   </div>
                   <div className="block md:hidden">
-                    <TimelineCard
-                      item={item}
-                      position="right"
-                      isMobile={true}
-                    />
+                    <TimelineCard item={item} position="right" isMobile={true} />
                   </div>
                   <div className="hidden md:block">
                     {isEven ? (
@@ -77,11 +70,7 @@ interface CardProps {
   isMobile?: boolean;
 }
 
-const TimelineCard: React.FC<CardProps> = ({
-  item,
-  position,
-  isMobile = false,
-}) => {
+const TimelineCard: React.FC<CardProps> = ({ item, position, isMobile = false }) => {
   return (
     <div className="relative bg-white dark:bg-gray-800 p-6 rounded-lg border-b-4 border-gray-600 dark:border-gray-500 shadow-md transition-colors duration-300">
       <div
@@ -95,9 +84,7 @@ const TimelineCard: React.FC<CardProps> = ({
           }
         `}
       />
-      <h6 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
-        {item.title}
-      </h6>
+      <h6 className="text-lg font-bold text-gray-800 dark:text-white mb-2">{item.title}</h6>
       <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">
         {item.description}
       </p>
