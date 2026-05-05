@@ -6,8 +6,8 @@
 
 # Test info
 
-- Name: works.spec.ts >> Works Page >> should show repo cards on OSS Contribution tab
-- Location: tests/works.spec.ts:28:3
+- Name: index.spec.ts >> Index Page >> should display main navigation blocks correctly
+- Location: tests/index.spec.ts:14:3
 
 # Error details
 

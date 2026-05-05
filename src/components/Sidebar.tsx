@@ -9,11 +9,7 @@ interface SidebarProps {
   className?: string;
 }
 
-export default function Sidebar({
-  title,
-  items,
-  className = "",
-}: SidebarProps) {
+export default function Sidebar({ title, items, className = "" }: SidebarProps) {
   return (
     <aside
       className={`

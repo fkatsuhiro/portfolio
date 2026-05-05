@@ -5,33 +5,33 @@ import SkillBadges from "../../components/SkillBadges";
 import ContributionGraph, { type ContributionCalendar } from "../../components/ContributionGraph";
 import { useTranslations } from "../../i18n/ui";
 
-const lang = "en";
+const lang = "ko";
 const t = useTranslations(lang);
 
 const historyData: TimelineItem[] = [
   {
     date: "2017/4 ~ 2020/3",
-    title: "Mie Prefectural Yokkaichi High School",
+    title: "미에 현립 요카이치 고등학교 보통과",
     description:
-      "Attended Mie Prefectural Yokkaichi High School, General Course.",
+      "미에 현립 요카이치 고등학교 보통과에 재학했습니다.",
   },
   {
     date: "2020/4 ~ 2024/3",
-    title: "Chiba University, Department of Physics",
+    title: "치바 대학 이학부 물리학과",
     description:
-      "Attended the Department of Physics, Faculty of Science, Chiba University.",
+      "치바 대학 이학부 물리학과에 재학했습니다.",
   },
   {
     date: "2024/4 ~ 2026/3",
     title:
-      "The University of Tokyo Graduate School, Dept. of Bioengineering",
+      "도쿄 대학 대학원 공학계 연구과 바이오 엔지니어링 전공",
     description:
-      "Attended the Department of Bioengineering, Graduate School of Engineering, The University of Tokyo.",
+      "도쿄 대학 대학원 공학계 연구과 바이오 엔지니어링 전공에 재학했습니다.",
   },
   {
     date: "2026/3 ~",
-    title: "Fast Retailing Co., Ltd.",
-    description: "Working as a frontend engineer on development projects.",
+    title: "주식회사 패스트 리테일링",
+    description: "프론트엔드 엔지니어로서 개발 업무에 종사하고 있습니다.",
   },
 ].map((item) => ({
   date: item.date,
@@ -110,7 +110,7 @@ try {
           </div>
 
           <SkillBadges
-            lang="en"
+            lang={lang}
             heading={t("about.skills.heading")}
             client:load
           />

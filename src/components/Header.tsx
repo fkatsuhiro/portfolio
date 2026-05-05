@@ -1,20 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import ThemeToggle from "./ThemeToggle";
 import Home from "./../assets/icon.png";
-import type { Lang } from "../i18n/translations";
+import { useTranslations, type Lang } from "../i18n/ui";
 
 interface HeaderProps {
   lang?: Lang;
   altLangHref?: string;
 }
 
-export default function Header({
-  lang = "ja",
-  altLangHref = "/",
-}: HeaderProps) {
+export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) {
   const [isVisible, setIsVisible] = useState(false);
   const basePath = import.meta.env.BASE_URL;
   const ticking = useRef(false);
+  const t = useTranslations(lang);
 
   useEffect(() => {
     const baseClean = basePath.replace(/\/$/, "");
@@ -22,7 +20,8 @@ export default function Header({
     const isHome =
       pathClean === baseClean ||
       pathClean === "" ||
-      pathClean === `${baseClean}/en`;
+      pathClean === `${baseClean}/en` ||
+      pathClean === `${baseClean}/ko`;
 
     if (!isHome) {
       setIsVisible(true);
@@ -31,12 +30,9 @@ export default function Header({
 
     const hero = document.querySelector("[data-hero]");
     if (hero) {
-      const observer = new IntersectionObserver(
-        ([entry]) => setIsVisible(!entry.isIntersecting),
-        {
-          threshold: 0,
-        },
-      );
+      const observer = new IntersectionObserver(([entry]) => setIsVisible(!entry.isIntersecting), {
+        threshold: 0,
+      });
       observer.observe(hero);
       return () => observer.disconnect();
     }
@@ -54,40 +50,35 @@ export default function Header({
   }, [basePath]);
 
   const base = basePath.replace(/\/$/, "");
-  const prefix = lang === "en" ? `${base}/en` : base;
+  const prefix = lang === "en" ? `${base}/en` : lang === "ko" ? `${base}/ko` : base;
 
   const navLinks = [
-    { name: "About", path: "about" },
-    { name: "Works", path: "works" },
-    { name: "Talks", path: "talks" },
-    { name: "Blogs", path: "blogs" },
+    { name: t("nav.about"), path: "about" },
+    { name: t("nav.works"), path: "works" },
+    { name: t("nav.talks"), path: "talks" },
+    { name: t("nav.blogs"), path: "blogs" },
   ];
 
-  const langLabel = lang === "ja" ? "EN" : "JA";
-  const langAriaLabel =
-    lang === "ja" ? "Switch to English" : "日本語に切り替える";
+  const langLabel = t("nav.langToggle");
+  const langAriaLabel = t("nav.toggleAriaLabel");
 
   return (
     <header
       className={`fixed top-0 left-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm z-50 transition-transform duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
-      aria-label="サイトヘッダー"
+      aria-label={t("nav.siteHeaderAria")}
     >
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         <a
-          href={lang === "en" ? `${base}/en` : base || "/"}
+          href={lang === "en" ? `${base}/en` : lang === "ko" ? `${base}/ko` : base || "/"}
           className="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition-colors"
-          aria-label="ホームへ戻る"
+          aria-label={t("nav.homeAria")}
         >
-          <img
-            src={Home.src}
-            alt=""
-            className="w-8 h-8 rounded-full object-cover"
-          />
+          <img src={Home.src} alt="" className="w-8 h-8 rounded-full object-cover" />
         </a>
         <div className="flex items-center gap-4">
-          <nav aria-label="メインナビゲーション" className="flex gap-4">
+          <nav aria-label={t("nav.mainNavAria")} className="flex gap-4">
             {navLinks.map((link) => (
               <a
                 key={link.path}

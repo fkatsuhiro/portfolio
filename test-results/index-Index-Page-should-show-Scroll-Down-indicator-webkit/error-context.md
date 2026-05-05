@@ -6,13 +6,13 @@
 
 # Test info
 
-- Name: works.spec.ts >> Works Page >> should drill into a repo and show sub-tabs
-- Location: tests/works.spec.ts:42:3
+- Name: index.spec.ts >> Index Page >> should show "Scroll Down" indicator
+- Location: tests/index.spec.ts:37:3
 
 # Error details
 
 ```
-Error: browserType.launch: Executable doesn't exist at /Users/katsu/Library/Caches/ms-playwright/chromium_headless_shell-1217/chrome-headless-shell-mac-arm64/chrome-headless-shell
+Error: browserType.launch: Executable doesn't exist at /Users/katsu/Library/Caches/ms-playwright/webkit-2272/pw_run.sh
 ╔════════════════════════════════════════════════════════════╗
 ║ Looks like Playwright was just installed or updated.       ║
 ║ Please run the following command to download new browsers: ║

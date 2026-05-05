@@ -6,8 +6,8 @@
 
 # Test info
 
-- Name: works.spec.ts >> Works Page >> should display the main heading and description
-- Location: tests/works.spec.ts:8:3
+- Name: index.spec.ts >> Index Page >> should show "Scroll Down" indicator
+- Location: tests/index.spec.ts:37:3
 
 # Error details
 

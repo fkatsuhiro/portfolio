@@ -6,8 +6,8 @@
 
 # Test info
 
-- Name: works.spec.ts >> Works Page >> should display product cards by default
-- Location: tests/works.spec.ts:24:3
+- Name: index.spec.ts >> Index Page >> should display the main visual and portrait
+- Location: tests/index.spec.ts:8:3
 
 # Error details
 
