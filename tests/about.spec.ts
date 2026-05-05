@@ -11,10 +11,14 @@ test.describe("About Page", () => {
     const techStack = page.locator("text=React, Astro, Qwik, TypeScript");
     await expect(techStack).toBeVisible();
 
-    await expect(page.getByText("趣味：コーヒー、テニス、寝ること")).toBeVisible();
+    await expect(
+      page.getByText("趣味：コーヒー、テニス、寝ること"),
+    ).toBeVisible();
   });
 
-  test("should render all education history items in the timeline", async ({ page }) => {
+  test("should render all education history items in the timeline", async ({
+    page,
+  }) => {
     await page.goto("/portfolio/about");
 
     const historyItemsTitle = [
@@ -40,7 +44,9 @@ test.describe("About Page", () => {
     }
   });
 
-  test("should have a chronological order in the timeline dates", async ({ page }) => {
+  test("should have a chronological order in the timeline dates", async ({
+    page,
+  }) => {
     const dates = await page.locator("time, .timeline-date").allTextContents();
 
     if (dates.length >= 2) {

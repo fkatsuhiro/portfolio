@@ -60,7 +60,12 @@ export default function BlogList({ items }: BlogListProps) {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {sortedItems.map((slide) => (
-              <BlogCard key={slide.id} id={slide.id} link={slide.link} image={slide.image} />
+              <BlogCard
+                key={slide.id}
+                id={slide.id}
+                link={slide.link}
+                image={slide.image}
+              />
             ))}
           </div>
         </div>

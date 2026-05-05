@@ -8,7 +8,10 @@ interface HeaderProps {
   altLangHref?: string;
 }
 
-export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) {
+export default function Header({
+  lang = "ja",
+  altLangHref = "/",
+}: HeaderProps) {
   const [isVisible, setIsVisible] = useState(false);
   const basePath = import.meta.env.BASE_URL;
   const ticking = useRef(false);
@@ -16,7 +19,10 @@ export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) 
   useEffect(() => {
     const baseClean = basePath.replace(/\/$/, "");
     const pathClean = window.location.pathname.replace(/\/$/, "");
-    const isHome = pathClean === baseClean || pathClean === "" || pathClean === `${baseClean}/en`;
+    const isHome =
+      pathClean === baseClean ||
+      pathClean === "" ||
+      pathClean === `${baseClean}/en`;
 
     if (!isHome) {
       setIsVisible(true);
@@ -25,9 +31,12 @@ export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) 
 
     const hero = document.querySelector("[data-hero]");
     if (hero) {
-      const observer = new IntersectionObserver(([entry]) => setIsVisible(!entry.isIntersecting), {
-        threshold: 0,
-      });
+      const observer = new IntersectionObserver(
+        ([entry]) => setIsVisible(!entry.isIntersecting),
+        {
+          threshold: 0,
+        },
+      );
       observer.observe(hero);
       return () => observer.disconnect();
     }
@@ -55,7 +64,8 @@ export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) 
   ];
 
   const langLabel = lang === "ja" ? "EN" : "JA";
-  const langAriaLabel = lang === "ja" ? "Switch to English" : "日本語に切り替える";
+  const langAriaLabel =
+    lang === "ja" ? "Switch to English" : "日本語に切り替える";
 
   return (
     <header
@@ -70,7 +80,11 @@ export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) 
           className="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition-colors"
           aria-label="ホームへ戻る"
         >
-          <img src={Home.src} alt="" className="w-8 h-8 rounded-full object-cover" />
+          <img
+            src={Home.src}
+            alt=""
+            className="w-8 h-8 rounded-full object-cover"
+          />
         </a>
         <div className="flex items-center gap-4">
           <nav aria-label="メインナビゲーション" className="flex gap-4">
