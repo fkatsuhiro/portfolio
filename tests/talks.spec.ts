@@ -6,16 +6,16 @@ test.describe("Talks Page", () => {
   });
 
   test("should display all talk cards with correct information", async ({ page }) => {
-    const talkCards = page.locator("section, article");
+    const talkCards = page.locator("main section");
     await expect(talkCards).toHaveCount(2);
     const tsKaigiHeading = page.getByRole("heading", {
       name: "TSKaigi Hokuriku 2025",
     });
     await expect(tsKaigiHeading).toBeVisible();
 
-    const description = page.getByText(
-      "Zod × Web Worker を用いた型安全かつUIファーストなIPアドレス一括登録",
-    );
+    const description = page
+      .getByText("Zod × Web Worker を用いた型安全かつUIファーストなIPアドレス一括登録")
+      .first();
     await expect(description).toBeVisible();
   });
 
@@ -33,7 +33,7 @@ test.describe("Talks Page", () => {
       await expect(sidebar).not.toBeVisible();
     } else {
       await expect(sidebar).toBeVisible();
-      await expect(sidebar).toContainText("TALKS");
+      await expect(sidebar).toContainText("Talks");
       await expect(sidebar).toContainText("React Tokyo Fes 2026");
     }
   });

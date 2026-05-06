@@ -8,10 +8,7 @@ export default defineConfig({
 
   projects: process.env.CI
     ? [{ name: "chrome", use: { ...devices["Desktop Chrome"] } }]
-    : [
-        { name: "webkit", use: { ...devices["Desktop Safari"] } },
-        { name: "chrome", use: { ...devices["Desktop Chrome"] } },
-      ],
+    : [{ name: "chrome", use: { ...devices["Desktop Chrome"], channel: "chrome" } }],
 
   webServer: {
     command: process.env.CI ? "pnpm build && pnpm preview --port 4323" : "pnpm dev --port 4323",

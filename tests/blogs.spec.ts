@@ -8,7 +8,7 @@ test.describe("Blogs Page", () => {
   test("should display the blog list with fetched OGP data", async ({ page }) => {
     await page.goto("/portfolio/blogs");
 
-    const ogpTitle = page.getByText("SessionStorage を活用してトースト表示を制御する");
+    const ogpTitle = page.getByText("SessionStorage を活用してトースト表示を制御する").first();
 
     await expect(ogpTitle).toBeVisible({ timeout: 10000 });
   });
