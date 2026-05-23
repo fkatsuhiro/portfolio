@@ -1,6 +1,8 @@
 import React from "react";
+import { useFeatureFlags } from "../lib/remoteConfig";
 
 export interface TimelineItem {
+  id?: string;
   date: string;
   title: string;
   description: string;
@@ -11,13 +13,20 @@ interface TimelineProps {
 }
 
 export const Timeline: React.FC<TimelineProps> = ({ items }) => {
+  const { flags } = useFeatureFlags();
+
+  const visibleItems = items.filter((item) => {
+    if (item.id === "fast-retailing" && !flags.showFastRetailing) return false;
+    return true;
+  });
+
   return (
     <div className="py-10 px-4 max-w-5xl mx-auto min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-100 transition-colors duration-300">
       <div className="relative">
         <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 top-0 h-full w-0.5 bg-gray-300 dark:bg-gray-700" />
 
         <div className="space-y-12">
-          {items.map((item, index) => {
+          {visibleItems.map((item, index) => {
             const isEven = index % 2 === 0;
 
             return (

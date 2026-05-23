@@ -4,6 +4,7 @@ import qwikLogo from "../assets/qwik.png";
 import yamadaLogo from "../assets/yamada ui.png";
 import dioxusLogo from "../assets/dioxus.png";
 import { useTranslations, type Lang } from "../i18n/ui";
+import { useFeatureFlags } from "../lib/remoteConfig";
 
 const REPO_LOGOS: Record<string, { src: string }> = {
   astro: astroLogo,
@@ -268,8 +269,9 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
   contributions,
   techStack,
 }) => {
+  const { flags } = useFeatureFlags();
   const [activeTab, setActiveTab] = useState<"product" | "contribution">(
-    "product",
+    "contribution",
   );
   const [selectedRepo, setSelectedRepo] = useState<{
     name: string;
@@ -279,9 +281,11 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
   const t = useTranslations(lang);
 
   const tabs = [
-    { id: "product", label: t("works.tabs.product") },
-    { id: "contribution", label: t("works.tabs.contribution") },
-  ] as const;
+    ...(flags.showWorksProduct
+      ? [{ id: "product" as const, label: t("works.tabs.product") }]
+      : []),
+    { id: "contribution" as const, label: t("works.tabs.contribution") },
+  ];
 
   const handleRepoSelect = (tech: { name: string; repo: string }) => {
     setSelectedRepo(tech);
@@ -335,7 +339,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
       </div>
 
       {/* --- Product セクション --- */}
-      {activeTab === "product" && (
+      {activeTab === "product" && flags.showWorksProduct && (
         <div className="animate-in fade-in duration-500 grid grid-cols-1 md:grid-cols-2 gap-6">
           {products.map((product, index) => (
             <div

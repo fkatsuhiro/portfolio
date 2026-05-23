@@ -31,6 +31,7 @@ const historyData: TimelineItem[] = (
             "Attended the Department of Bioengineering, Graduate School of Engineering, The University of Tokyo.",
         },
         {
+          id: "fast-retailing",
           date: "2026/3 ~",
           title: "Fast Retailing Co., Ltd.",
           description:
@@ -56,6 +57,7 @@ const historyData: TimelineItem[] = (
               "도쿄 대학 대학원 공학계 연구과 바이오 엔지니어링 전공에 재학했습니다.",
           },
           {
+            id: "fast-retailing",
             date: "2026/3 ~",
             title: "주식회사 패스트 리테일링",
             description:
@@ -80,6 +82,7 @@ const historyData: TimelineItem[] = (
               "東京大学大学院 工学系研究科 バイオエンジニアリング専攻に在籍していました。",
           },
           {
+            id: "fast-retailing",
             date: "2026/3 ~",
             title: "株式会社ファーストリテイリング",
             description:
@@ -87,6 +90,7 @@ const historyData: TimelineItem[] = (
           },
         ]
 ).map((item) => ({
+  id: item.id,
   date: item.date,
   title: item.title,
   description: item.description,
@@ -178,6 +182,6 @@ try {
         </div>
       </div>
     </section>
-    <Timeline items={historyData} />
+    <Timeline items={historyData} client:only="react" />
   </main>
 </Layout>

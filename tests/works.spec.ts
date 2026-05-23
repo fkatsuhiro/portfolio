@@ -14,15 +14,23 @@ test.describe("Works Page", () => {
     ).toBeVisible();
   });
 
-  test("should show Product and OSS Contribution tabs", async ({ page }) => {
-    await expect(page.getByRole("button", { name: "Product" })).toBeVisible();
+  test("should show OSS Contribution tab and hide Product tab by default", async ({
+    page,
+  }) => {
+    // Product tab is hidden by default via Remote Config (showWorksProduct: false)
     await expect(
       page.getByRole("button", { name: "OSS Contribution" }),
     ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Product" }),
+    ).not.toBeAttached();
   });
 
-  test("should display product cards by default", async ({ page }) => {
-    await expect(page.getByText("View Project →").first()).toBeVisible();
+  test("should show OSS Contribution content by default", async ({ page }) => {
+    // Product section is hidden by default, so contribution repo grid is the default view
+    await expect(
+      page.locator('[data-testid="contrib-repo-grid"]'),
+    ).toBeAttached();
   });
 
   test("should show repo selection screen on OSS Contribution tab", async ({
