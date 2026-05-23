@@ -42,6 +42,7 @@ jobs:
         uses: withastro/action@v2
         with:
           package-manager: pnpm
+          node-version: "22"
         env:
           GITHUB_TOKEN: ${{ secrets.githubtoken }}
 
