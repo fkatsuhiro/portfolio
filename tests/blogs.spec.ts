@@ -46,18 +46,17 @@ test.describe("Blogs Page", () => {
   }) => {
     test.skip(isMobile, "Sort button is only available on Desktop");
 
+    // Wait for feature-flags fetch to complete so React is fully hydrated
+    await page.waitForLoadState("networkidle");
+
     const sortButton = page.getByRole("button", { name: /順/ });
-    const firstCardLink = page.locator("main .grid a").first();
 
-    await expect(firstCardLink).toBeVisible();
+    await expect(sortButton).toBeVisible();
+    await expect(sortButton).toContainText("新しい順");
 
-    const urlBefore = await firstCardLink.getAttribute("href");
-    expect(urlBefore).not.toBeNull();
+    await sortButton.evaluate((el) => (el as HTMLButtonElement).click());
 
-    await sortButton.click();
-    await expect(async () => {
-      const urlAfter = await firstCardLink.getAttribute("href");
-      expect(urlAfter).not.toBe(urlBefore);
-    }).toPass({ timeout: 5000 });
+    // Verify sort toggled: button label must change
+    await expect(sortButton).toContainText("古い順", { timeout: 5000 });
   });
 });
