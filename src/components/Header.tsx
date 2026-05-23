@@ -8,7 +8,10 @@ interface HeaderProps {
   altLangHref?: string;
 }
 
-export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) {
+export default function Header({
+  lang = "ja",
+  altLangHref = "/",
+}: HeaderProps) {
   const [isVisible, setIsVisible] = useState(false);
   const basePath = import.meta.env.BASE_URL;
   const ticking = useRef(false);
@@ -30,9 +33,12 @@ export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) 
 
     const hero = document.querySelector("[data-hero]");
     if (hero) {
-      const observer = new IntersectionObserver(([entry]) => setIsVisible(!entry.isIntersecting), {
-        threshold: 0,
-      });
+      const observer = new IntersectionObserver(
+        ([entry]) => setIsVisible(!entry.isIntersecting),
+        {
+          threshold: 0,
+        },
+      );
       observer.observe(hero);
       return () => observer.disconnect();
     }
@@ -50,7 +56,8 @@ export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) 
   }, [basePath]);
 
   const base = basePath.replace(/\/$/, "");
-  const prefix = lang === "en" ? `${base}/en` : lang === "ko" ? `${base}/ko` : base;
+  const prefix =
+    lang === "en" ? `${base}/en` : lang === "ko" ? `${base}/ko` : base;
 
   const navLinks = [
     { name: t("nav.about"), path: "about" },
@@ -71,11 +78,21 @@ export default function Header({ lang = "ja", altLangHref = "/" }: HeaderProps) 
     >
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         <a
-          href={lang === "en" ? `${base}/en` : lang === "ko" ? `${base}/ko` : base || "/"}
+          href={
+            lang === "en"
+              ? `${base}/en`
+              : lang === "ko"
+                ? `${base}/ko`
+                : base || "/"
+          }
           className="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition-colors"
           aria-label={t("nav.homeAria")}
         >
-          <img src={Home.src} alt="" className="w-8 h-8 rounded-full object-cover" />
+          <img
+            src={Home.src}
+            alt=""
+            className="w-8 h-8 rounded-full object-cover"
+          />
         </a>
         <div className="flex items-center gap-4">
           <nav aria-label={t("nav.mainNavAria")} className="flex gap-4">

@@ -45,7 +45,8 @@ export default function ContributionGraph({
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    const check = () => setIsDark(document.documentElement.classList.contains("dark"));
+    const check = () =>
+      setIsDark(document.documentElement.classList.contains("dark"));
     check();
     const observer = new MutationObserver(check);
     observer.observe(document.documentElement, {
@@ -62,10 +63,14 @@ export default function ContributionGraph({
 
   return (
     <section aria-label={heading} className="mt-10">
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">{heading}</h2>
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        {heading}
+      </h2>
 
       {!calendar ? (
-        <p className="text-sm text-gray-500 dark:text-gray-400">{noDataLabel}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          {noDataLabel}
+        </p>
       ) : (
         <div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">

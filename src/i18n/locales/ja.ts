@@ -38,7 +38,8 @@ export const ja = {
   "about.skills.tools": "ツール",
   "about.contributions.heading": "GitHub Contributions",
   "about.contributions.totalLabel": "過去1年間の貢献",
-  "about.contributions.noData": "コントリビューションデータを取得できませんでした。",
+  "about.contributions.noData":
+    "コントリビューションデータを取得できませんでした。",
   "works.heading": "Works",
   "works.subheading": "My products and contributions.",
   "talks.heading": "Talks",

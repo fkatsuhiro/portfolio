@@ -8,10 +8,17 @@ export default defineConfig({
 
   projects: process.env.CI
     ? [{ name: "chrome", use: { ...devices["Desktop Chrome"] } }]
-    : [{ name: "chrome", use: { ...devices["Desktop Chrome"], channel: "chrome" } }],
+    : [
+        {
+          name: "chrome",
+          use: { ...devices["Desktop Chrome"], channel: "chrome" },
+        },
+      ],
 
   webServer: {
-    command: process.env.CI ? "pnpm build && pnpm preview --port 4323" : "pnpm dev --port 4323",
+    command: process.env.CI
+      ? "pnpm build && pnpm preview --port 4323"
+      : "pnpm dev --port 4323",
     url: "http://localhost:4323/portfolio",
     reuseExistingServer: !process.env.CI,
     timeout: 180 * 1000,

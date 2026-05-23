@@ -40,7 +40,8 @@ export default function BlogList({ items, lang = "ja" }: BlogListProps) {
     label: item.sidebarLabel,
   }));
 
-  const sortLabel = sortOrder === "desc" ? t("blogs.sortNewest") : t("blogs.sortOldest");
+  const sortLabel =
+    sortOrder === "desc" ? t("blogs.sortNewest") : t("blogs.sortOldest");
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-50 dark:bg-gray-950">
@@ -65,7 +66,12 @@ export default function BlogList({ items, lang = "ja" }: BlogListProps) {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {sortedItems.map((slide) => (
-              <BlogCard key={slide.id} id={slide.id} link={slide.link} image={slide.image} />
+              <BlogCard
+                key={slide.id}
+                id={slide.id}
+                link={slide.link}
+                image={slide.image}
+              />
             ))}
           </div>
         </div>
