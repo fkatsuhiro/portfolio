@@ -57,6 +57,7 @@ test.describe("About Page", () => {
 
   test("should maintain text visibility in dark mode", async ({ page }) => {
     await page.emulateMedia({ colorScheme: "dark" });
+    await page.goto("/portfolio/about");
 
     const profileHeading = page.getByText("Furuichi Katsuhiro");
     await expect(profileHeading).toBeVisible();

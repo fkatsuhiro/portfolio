@@ -9,8 +9,10 @@ export default defineConfig({
   projects: process.env.CI
     ? [{ name: "chrome", use: { ...devices["Desktop Chrome"] } }]
     : [
-        { name: "webkit", use: { ...devices["Desktop Safari"] } },
-        { name: "chrome", use: { ...devices["Desktop Chrome"] } },
+        {
+          name: "chrome",
+          use: { ...devices["Desktop Chrome"], channel: "chrome" },
+        },
       ],
 
   webServer: {

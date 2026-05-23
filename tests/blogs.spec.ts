@@ -10,9 +10,9 @@ test.describe("Blogs Page", () => {
   }) => {
     await page.goto("/portfolio/blogs");
 
-    const ogpTitle = page.getByText(
-      "SessionStorage を活用してトースト表示を制御する",
-    );
+    const ogpTitle = page
+      .getByText("SessionStorage を活用してトースト表示を制御する")
+      .first();
 
     await expect(ogpTitle).toBeVisible({ timeout: 10000 });
   });

@@ -2,6 +2,10 @@
 import Layout from "../layouts/Layout.astro";
 import Sidebar from "../components/Sidebar";
 import SlideCard from "../components/SlideCard";
+import { useTranslations, type Lang } from "../i18n/ui";
+
+const lang = (Astro.currentLocale ?? "ja") as Lang;
+const t = useTranslations(lang);
 
 const slideSources = [
     {
@@ -33,14 +37,14 @@ const sidebarItems = slideSources.map((s) => ({
 }));
 ---
 
-<Layout title="Talks" description="Talks and presentations by Furuichi Katsuhiro at tech conferences including TSKaigi and React Tokyo Fes.">
+<Layout title={t("meta.talks.title")} description={t("meta.talks.description")}>
     <div
         class="min-h-screen pt-20 md:pt-20 flex flex-col md:flex-row bg-gray-50 dark:bg-gray-950"
     >
         <div
             class="hidden md:block w-full md:w-1/3 lg:w-1/4 p-6 transform md:translate-x-8 md:translate-y-12"
         >
-            <Sidebar title="TALKS" items={sidebarItems} client:load />
+            <Sidebar title={t("talks.heading")} items={sidebarItems} client:load />
         </div>
 
         <main class="w-full md:w-2/3 lg:w-3/4 py-8 px-6 md:px-16">
