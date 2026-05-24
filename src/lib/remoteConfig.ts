@@ -47,6 +47,10 @@ function loadFlags(): Promise<FeatureFlags> {
     } catch {
       _cached = { ...DEFAULT_FLAGS };
     }
+    if (typeof window !== "undefined") {
+      (window as unknown as Record<string, unknown>).__REMOTE_CONFIG__ =
+        _cached;
+    }
     return _cached!;
   })();
 
