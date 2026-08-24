@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { drillIntoFirstRepo } from "./helpers";
 
 test.describe("Works Page", () => {
   test.beforeEach(async ({ page }) => {
@@ -45,20 +46,7 @@ test.describe("Works Page", () => {
   });
 
   test("should drill into a repo and show sub-tabs", async ({ page }) => {
-    await page.getByRole("button", { name: "OSS Contribution" }).click();
-
-    const firstCard = page
-      .locator('[data-testid="contrib-repo-grid"]')
-      .locator("button")
-      .first();
-
-    // GitHub API may be unavailable in this environment — skip gracefully
-    if (!(await firstCard.isVisible())) {
-      test.skip(true, "no GitHub contribution data");
-      return;
-    }
-
-    await firstCard.click();
+    await drillIntoFirstRepo(page);
 
     const subTabs = page.locator('[data-testid="contrib-subtabs"]');
     await expect(subTabs).toBeVisible();
@@ -75,41 +63,36 @@ test.describe("Works Page", () => {
   test("should show repo activity graph in drill-down view", async ({
     page,
   }) => {
-    await page.getByRole("button", { name: "OSS Contribution" }).click();
-
-    const firstCard = page
-      .locator('[data-testid="contrib-repo-grid"]')
-      .locator("button")
-      .first();
-
-    // GitHub API may be unavailable in this environment — skip gracefully
-    if (!(await firstCard.isVisible())) {
-      test.skip(true, "no GitHub contribution data");
-      return;
-    }
-
-    await firstCard.click();
+    await drillIntoFirstRepo(page);
 
     await expect(
       page.locator('[data-testid="repo-activity-graph"]'),
     ).toBeVisible();
   });
 
-  test("should go back to repo list from detail view", async ({ page }) => {
-    await page.getByRole("button", { name: "OSS Contribution" }).click();
+  test("should display a PR status badge (Open/Draft/Merged/Closed) in the PRs tab", async ({
+    page,
+  }) => {
+    await drillIntoFirstRepo(page);
 
-    const firstCard = page
-      .locator('[data-testid="contrib-repo-grid"]')
-      .locator("button")
-      .first();
+    // PRs sub-tab is selected by default after drilling in.
+    const prCards = page.locator('[data-testid="contrib-subtabs"]')
+      .locator("..")
+      .getByRole("link");
 
-    // GitHub API may be unavailable in this environment — skip gracefully
-    if (!(await firstCard.isVisible())) {
-      test.skip(true, "no GitHub contribution data");
+    if ((await prCards.count()) === 0) {
+      test.skip(true, "repo has no PRs to show a status badge on");
       return;
     }
 
-    await firstCard.click();
+    const statusBadge = page
+      .getByText(/^(Open|Draft|Merged|Closed)$/)
+      .first();
+    await expect(statusBadge).toBeVisible();
+  });
+
+  test("should go back to repo list from detail view", async ({ page }) => {
+    await drillIntoFirstRepo(page);
     await page.getByRole("button", { name: "← Repositories" }).click();
 
     // sub-tab bar gone, repo grid visible again

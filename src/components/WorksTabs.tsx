@@ -3,6 +3,7 @@ import astroLogo from "../assets/astro-icon-light-gradient.png";
 import qwikLogo from "../assets/qwik.png";
 import yamadaLogo from "../assets/yamada ui.png";
 import dioxusLogo from "../assets/dioxus.png";
+import wxtLogo from "../assets/wxt.png";
 import { useTranslations, type Lang } from "../i18n/ui";
 import { useFeatureFlags } from "../lib/remoteConfig";
 
@@ -13,6 +14,7 @@ const REPO_LOGOS: Record<string, { src: string }> = {
   "yamada-ui": yamadaLogo,
   dioxus: dioxusLogo,
   docsite: dioxusLogo,
+  wxt: wxtLogo,
 };
 
 const LIGHT_COLORS = ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"];
@@ -33,9 +35,30 @@ interface GitHubItem {
   title: string;
   url: string;
   createdAt: string;
+  state?: "OPEN" | "CLOSED" | "MERGED";
+  isDraft?: boolean;
   repository: {
     name: string;
   };
+}
+
+type PrStatusKey = "draft" | "open" | "merged" | "closed";
+
+const PR_STATUS_STYLES: Record<PrStatusKey, string> = {
+  draft:
+    "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400",
+  open: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400",
+  merged:
+    "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-400",
+  closed: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400",
+};
+
+function getPrStatusKey(item: GitHubItem): PrStatusKey | null {
+  if (!item.state) return null;
+  if (item.isDraft) return "draft";
+  if (item.state === "MERGED") return "merged";
+  if (item.state === "CLOSED") return "closed";
+  return "open";
 }
 
 interface Product {
@@ -68,11 +91,15 @@ const ContributionCard = ({
   url,
   repoName,
   date,
+  statusKey,
+  statusLabel,
 }: {
   title: string;
   url: string;
   repoName: string;
   date: string;
+  statusKey?: PrStatusKey | null;
+  statusLabel?: string;
 }) => (
   <a
     href={url}
@@ -80,7 +107,16 @@ const ContributionCard = ({
     rel="noopener noreferrer"
     className="block p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
   >
-    <div className="text-xs text-blue-500 mb-1 font-mono">{repoName}</div>
+    <div className="flex items-center justify-between gap-2 mb-1">
+      <div className="text-xs text-blue-500 font-mono">{repoName}</div>
+      {statusKey && statusLabel && (
+        <span
+          className={`shrink-0 text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full ${PR_STATUS_STYLES[statusKey]}`}
+        >
+          {statusLabel}
+        </span>
+      )}
+    </div>
     <h4 className="font-bold text-slate-800 dark:text-white leading-snug">
       {title}
     </h4>
@@ -482,15 +518,24 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
                 }
                 return (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {items.map((item) => (
-                      <ContributionCard
-                        key={item.url}
-                        title={item.title}
-                        url={item.url}
-                        repoName={item.repository.name}
-                        date={item.createdAt}
-                      />
-                    ))}
+                    {items.map((item) => {
+                      const statusKey = getPrStatusKey(item);
+                      return (
+                        <ContributionCard
+                          key={item.url}
+                          title={item.title}
+                          url={item.url}
+                          repoName={item.repository.name}
+                          date={item.createdAt}
+                          statusKey={statusKey}
+                          statusLabel={
+                            statusKey
+                              ? t(`works.status.${statusKey}` as const)
+                              : undefined
+                          }
+                        />
+                      );
+                    })}
                   </div>
                 );
               })()}

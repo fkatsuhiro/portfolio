@@ -14,21 +14,14 @@ const CATEGORIES: {
     labelKey: "about.skills.frameworks",
     badgeClass:
       "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800",
-    skills: ["React", "Astro", "Qwik"],
+    skills: ["React", "Astro"],
   },
   {
     labelKey: "about.skills.languages",
     badgeClass:
       "bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800",
-    skills: ["TypeScript", "JavaScript", "Python", "Rust"],
-  },
-  {
-    labelKey: "about.skills.tools",
-    badgeKey: "about.skills.tools",
-    badgeClass:
-      "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800",
-    skills: ["TailwindCSS", "Vite", "GitHub Actions", "Playwright", "pnpm"],
-  },
+    skills: ["TypeScript", "JavaScript"],
+  }
 ] as any; // Temporary cast to avoid type errors with labelKey if not perfect
 
 export default function SkillBadges({
@@ -38,7 +31,7 @@ export default function SkillBadges({
   const t = useTranslations(lang);
 
   return (
-    <section aria-label={heading} className="mt-8">
+    <section aria-label={heading}>
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
         {heading}
       </h2>

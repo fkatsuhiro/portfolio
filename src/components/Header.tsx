@@ -1,21 +1,41 @@
 import { useState, useEffect, useRef } from "react";
 import ThemeToggle from "./ThemeToggle";
 import Home from "./../assets/icon.png";
-import { useTranslations, type Lang } from "../i18n/ui";
+import { useTranslations, languages, type Lang } from "../i18n/ui";
 
 interface HeaderProps {
   lang?: Lang;
-  altLangHref?: string;
+  langHrefs?: Record<Lang, string>;
 }
 
 export default function Header({
   lang = "ja",
-  altLangHref = "/",
+  langHrefs = { ja: "/", en: "/en", ko: "/ko" },
 }: HeaderProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const basePath = import.meta.env.BASE_URL;
   const ticking = useRef(false);
+  const langMenuRef = useRef<HTMLDivElement>(null);
   const t = useTranslations(lang);
+
+  useEffect(() => {
+    if (!isLangMenuOpen) return;
+    const handleOutside = (e: MouseEvent) => {
+      if (!langMenuRef.current?.contains(e.target as Node)) {
+        setIsLangMenuOpen(false);
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsLangMenuOpen(false);
+    };
+    document.addEventListener("mousedown", handleOutside);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleOutside);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [isLangMenuOpen]);
 
   useEffect(() => {
     const baseClean = basePath.replace(/\/$/, "");
@@ -63,11 +83,10 @@ export default function Header({
     { name: t("nav.about"), path: "about" },
     { name: t("nav.works"), path: "works" },
     { name: t("nav.talks"), path: "talks" },
-    { name: t("nav.blogs"), path: "blogs" },
   ];
 
-  const langLabel = t("nav.langToggle");
-  const langAriaLabel = t("nav.toggleAriaLabel");
+  const langSelectAria = t("nav.langSelectAria");
+  const langOrder: Lang[] = ["ja", "en", "ko"];
 
   return (
     <header
@@ -106,13 +125,56 @@ export default function Header({
               </a>
             ))}
           </nav>
-          <a
-            href={altLangHref}
-            className="text-xs font-semibold px-2 py-1 rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-            aria-label={langAriaLabel}
-          >
-            {langLabel}
-          </a>
+          <div className="relative" ref={langMenuRef}>
+            <button
+              type="button"
+              onClick={() => setIsLangMenuOpen((prev) => !prev)}
+              className="flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+              aria-label={langSelectAria}
+              aria-haspopup="listbox"
+              aria-expanded={isLangMenuOpen}
+            >
+              {languages[lang]}
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                fill="none"
+                className={`transition-transform ${isLangMenuOpen ? "rotate-180" : ""}`}
+                aria-hidden="true"
+              >
+                <path
+                  d="M1 3l4 4 4-4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            {isLangMenuOpen && (
+              <ul
+                role="listbox"
+                aria-label={langSelectAria}
+                className="absolute right-0 mt-2 min-w-[8rem] py-1 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-lg overflow-hidden"
+              >
+                {langOrder.map((code) => (
+                  <li key={code} role="option" aria-selected={code === lang}>
+                    <a
+                      href={langHrefs[code]}
+                      className={`block px-3 py-1.5 text-sm transition-colors ${
+                        code === lang
+                          ? "font-semibold text-blue-500"
+                          : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                      }`}
+                    >
+                      {languages[code]}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           <ThemeToggle />
         </div>
       </div>

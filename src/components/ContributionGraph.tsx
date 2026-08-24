@@ -62,7 +62,7 @@ export default function ContributionGraph({
   const svgHeight = 7 * CELL_STEP;
 
   return (
-    <section aria-label={heading} className="mt-10">
+    <section aria-label={heading}>
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
         {heading}
       </h2>
