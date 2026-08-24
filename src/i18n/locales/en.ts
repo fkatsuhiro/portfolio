@@ -1,4 +1,6 @@
-export const en = {
+import type { UIContent } from "../types";
+
+export const en: UIContent = {
   "meta.home.title": "Portfolio",
   "meta.home.description":
     "Furuichi Katsuhiro — Frontend Developer. OSS contributor to Astro, Qwik, Yamada UI and more.",
@@ -11,9 +13,6 @@ export const en = {
   "meta.talks.title": "Talks",
   "meta.talks.description":
     "Talks and presentations by Furuichi Katsuhiro at tech conferences including TSKaigi and React Tokyo Fes.",
-  "meta.blogs.title": "Blogs",
-  "meta.blogs.description":
-    "Technical articles and notes by Furuichi Katsuhiro about frontend development, TypeScript, and web technologies.",
   "home.role": "Frontend Developer",
   "home.scrollDown": "Scroll Down",
   "home.menu.about.title": "About",
@@ -25,13 +24,11 @@ export const en = {
   "home.menu.talks.title": "Talks",
   "home.menu.talks.desc1": "Talks",
   "home.menu.talks.desc2": "Sharing slides at tech conference and events.",
-  "home.menu.blogs.title": "Blogs",
-  "home.menu.blogs.desc1": "Writing.",
-  "home.menu.blogs.desc2": "Articles, notes, and technical dives.",
   "about.bio": "I'm interested in web frontend development.",
-  "about.techSentence":
-    "I mainly develop with React, Astro, Qwik, and TypeScript. Especially love Qwik.",
+  "about.techSentence": "I mainly develop with React, Astro, and TypeScript. Astro is my favorite.",
   "about.hobbies": "Hobbies: Coffee, Tennis, Sleeping",
+  "about.roles.maintainer": "Maintainer",
+  "about.roles.contributor": "Contributor",
   "about.skills.heading": "Tech Stack",
   "about.skills.frameworks": "Frameworks",
   "about.skills.languages": "Languages",
@@ -41,18 +38,10 @@ export const en = {
   "about.contributions.noData": "Could not load contribution data.",
   "works.heading": "Works",
   "works.subheading": "My products and contributions.",
-  "talks.heading": "Talks",
-  "blogs.sortNewest": "Newest",
-  "blogs.sortOldest": "Oldest",
-  "blogs.filterAll": "All",
-  "blogs.filterZenn": "Zenn",
-  "blogs.filterPersonal": "Personal Blog",
-  "nav.langToggle": "KO",
-  "nav.toggleAriaLabel": "한국어로 전환",
+  "nav.langSelectAria": "Select language",
   "nav.about": "About",
   "nav.works": "Works",
   "nav.talks": "Talks",
-  "nav.blogs": "Blogs",
   "nav.homeAria": "Back to Home",
   "nav.siteHeaderAria": "Site Header",
   "nav.mainNavAria": "Main Navigation",
@@ -63,4 +52,8 @@ export const en = {
   "works.repositories": "Repositories",
   "works.total": "total",
   "works.noFound": "No {tab} found for {name}.",
+  "works.status.draft": "Draft",
+  "works.status.open": "Open",
+  "works.status.merged": "Merged",
+  "works.status.closed": "Closed",
 } as const;

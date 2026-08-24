@@ -53,9 +53,9 @@ To ensure high quality and reliability, I have integrated [Playwright](https://p
 
 ### Test Coverage
 
-- **Page Integrity**: Verifies that all core pages (Index, About, Blogs, Talks) render correctly without errors.
-- **Dynamic Logic**: Validates the accuracy of the blog list sorting functionality (Newest/Oldest).
-- **External Data Integration**: Ensures OGP data for Zenn articles is successfully fetched and displayed.
+- **Page Integrity**: Verifies that all core pages (Index, About, Works, Talks) render correctly without errors.
+- **Dynamic Logic**: Validates the OSS Contribution repo drill-down (PRs/Issues/Reviews sub-tabs) on the Works page.
+- **External Data Integration**: Ensures GitHub contribution data is successfully fetched and displayed.
 - **Visual Quality**: Confirms text visibility in **Dark Mode** and validates responsiveness across Mobile and Desktop viewports.
 
 ### Commands

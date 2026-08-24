@@ -30,12 +30,6 @@ const menuLinks = [
         desc1: t("home.menu.talks.desc1"),
         desc2: t("home.menu.talks.desc2"),
     },
-    {
-        title: t("home.menu.blogs.title"),
-        href: `${basePath}/blogs`,
-        desc1: t("home.menu.blogs.desc1"),
-        desc2: t("home.menu.blogs.desc2"),
-    },
 ];
 ---
 
@@ -92,8 +86,8 @@ const menuLinks = [
             </div>
         </section>
 
-        <section class="min-h-screen py-20 px-4 max-w-4xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 pt-20">
+        <section class="min-h-screen py-20 px-4 max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pt-20">
                 {
                     menuLinks.map((link) => (
                         <PageLinkBlock

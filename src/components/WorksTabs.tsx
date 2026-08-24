@@ -3,6 +3,7 @@ import astroLogo from "../assets/astro-icon-light-gradient.png";
 import qwikLogo from "../assets/qwik.png";
 import yamadaLogo from "../assets/yamada ui.png";
 import dioxusLogo from "../assets/dioxus.png";
+import wxtLogo from "../assets/wxt.png";
 import { useTranslations, type Lang } from "../i18n/ui";
 import { useFeatureFlags } from "../lib/remoteConfig";
 
@@ -13,6 +14,7 @@ const REPO_LOGOS: Record<string, { src: string }> = {
   "yamada-ui": yamadaLogo,
   dioxus: dioxusLogo,
   docsite: dioxusLogo,
+  wxt: wxtLogo,
 };
 
 const LIGHT_COLORS = ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"];
@@ -33,9 +35,28 @@ interface GitHubItem {
   title: string;
   url: string;
   createdAt: string;
+  state?: "OPEN" | "CLOSED" | "MERGED";
+  isDraft?: boolean;
   repository: {
     name: string;
   };
+}
+
+type PrStatusKey = "draft" | "open" | "merged" | "closed";
+
+const PR_STATUS_STYLES: Record<PrStatusKey, string> = {
+  draft: "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400",
+  open: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400",
+  merged: "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-400",
+  closed: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400",
+};
+
+function getPrStatusKey(item: GitHubItem): PrStatusKey | null {
+  if (!item.state) return null;
+  if (item.isDraft) return "draft";
+  if (item.state === "MERGED") return "merged";
+  if (item.state === "CLOSED") return "closed";
+  return "open";
 }
 
 interface Product {
@@ -59,20 +80,22 @@ interface WorksTabsProps {
 type SubTabId = "prs" | "issues" | "reviews";
 
 const filterByRepo = (items: GitHubItem[], repo: string) =>
-  items.filter((item) =>
-    item.repository.name.toLowerCase().includes(repo.toLowerCase()),
-  );
+  items.filter((item) => item.repository.name.toLowerCase().includes(repo.toLowerCase()));
 
 const ContributionCard = ({
   title,
   url,
   repoName,
   date,
+  statusKey,
+  statusLabel,
 }: {
   title: string;
   url: string;
   repoName: string;
   date: string;
+  statusKey?: PrStatusKey | null;
+  statusLabel?: string;
 }) => (
   <a
     href={url}
@@ -80,13 +103,18 @@ const ContributionCard = ({
     rel="noopener noreferrer"
     className="block p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
   >
-    <div className="text-xs text-blue-500 mb-1 font-mono">{repoName}</div>
-    <h4 className="font-bold text-slate-800 dark:text-white leading-snug">
-      {title}
-    </h4>
-    <div className="text-[10px] text-slate-400 mt-2">
-      {new Date(date).toLocaleDateString()}
+    <div className="flex items-center justify-between gap-2 mb-1">
+      <div className="text-xs text-blue-500 font-mono">{repoName}</div>
+      {statusKey && statusLabel && (
+        <span
+          className={`shrink-0 text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full ${PR_STATUS_STYLES[statusKey]}`}
+        >
+          {statusLabel}
+        </span>
+      )}
     </div>
+    <h4 className="font-bold text-slate-800 dark:text-white leading-snug">{title}</h4>
+    <div className="text-[10px] text-slate-400 mt-2">{new Date(date).toLocaleDateString()}</div>
   </a>
 );
 
@@ -94,13 +122,7 @@ const RepoLogo = ({ repo, size = 24 }: { repo: string; size?: number }) => {
   const logo = REPO_LOGOS[repo];
   if (!logo) return null;
   return (
-    <img
-      src={logo.src}
-      alt=""
-      width={size}
-      height={size}
-      className="object-contain shrink-0"
-    />
+    <img src={logo.src} alt="" width={size} height={size} className="object-contain shrink-0" />
   );
 };
 
@@ -118,8 +140,7 @@ const RepoActivityGraph = ({
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    const check = () =>
-      setIsDark(document.documentElement.classList.contains("dark"));
+    const check = () => setIsDark(document.documentElement.classList.contains("dark"));
     check();
     const observer = new MutationObserver(check);
     observer.observe(document.documentElement, {
@@ -247,12 +268,8 @@ const RepoCard = ({
           { label: "Reviews", count: reviewCount },
         ].map(({ label, count }) => (
           <div key={label} className="flex flex-col items-center">
-            <span className="text-xl font-black text-slate-700 dark:text-slate-200">
-              {count}
-            </span>
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider">
-              {label}
-            </span>
+            <span className="text-xl font-black text-slate-700 dark:text-slate-200">{count}</span>
+            <span className="text-[10px] text-slate-400 uppercase tracking-wider">{label}</span>
           </div>
         ))}
       </div>
@@ -270,9 +287,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
   techStack,
 }) => {
   const { flags } = useFeatureFlags();
-  const [activeTab, setActiveTab] = useState<"product" | "contribution">(
-    "contribution",
-  );
+  const [activeTab, setActiveTab] = useState<"product" | "contribution">("contribution");
   const [selectedRepo, setSelectedRepo] = useState<{
     name: string;
     repo: string;
@@ -281,9 +296,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
   const t = useTranslations(lang);
 
   const tabs = [
-    ...(flags.showWorksProduct
-      ? [{ id: "product" as const, label: t("works.tabs.product") }]
-      : []),
+    ...(flags.showWorksProduct ? [{ id: "product" as const, label: t("works.tabs.product") }] : []),
     { id: "contribution" as const, label: t("works.tabs.contribution") },
   ];
 
@@ -385,18 +398,9 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
             >
               {techStack.map((tech) => {
-                const prCount = filterByRepo(
-                  contributions.prs,
-                  tech.repo,
-                ).length;
-                const issueCount = filterByRepo(
-                  contributions.issues,
-                  tech.repo,
-                ).length;
-                const reviewCount = filterByRepo(
-                  contributions.reviews,
-                  tech.repo,
-                ).length;
+                const prCount = filterByRepo(contributions.prs, tech.repo).length;
+                const issueCount = filterByRepo(contributions.issues, tech.repo).length;
+                const reviewCount = filterByRepo(contributions.reviews, tech.repo).length;
                 if (prCount + issueCount + reviewCount === 0) return null;
                 return (
                   <RepoCard
@@ -435,10 +439,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
               </div>
 
               {/* リポジトリ別コントリビューション活動グラフ */}
-              <RepoActivityGraph
-                contributions={contributions}
-                repo={selectedRepo.repo}
-              />
+              <RepoActivityGraph contributions={contributions} repo={selectedRepo.repo} />
 
               {/* サブタブ (PRs / Issues / Reviews) */}
               <div
@@ -456,9 +457,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
                     }`}
                   >
                     {tab.label}
-                    <span className="ml-2 text-xs opacity-50 font-mono">
-                      {tab.count}
-                    </span>
+                    <span className="ml-2 text-xs opacity-50 font-mono">{tab.count}</span>
                     {subTab === tab.id && (
                       <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500" />
                     )}
@@ -467,10 +466,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
               </div>
 
               {(() => {
-                const items = filterByRepo(
-                  contributions[subTab],
-                  selectedRepo.repo,
-                );
+                const items = filterByRepo(contributions[subTab], selectedRepo.repo);
                 if (items.length === 0) {
                   return (
                     <div className="py-20 text-center text-slate-400">
@@ -482,15 +478,22 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
                 }
                 return (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {items.map((item) => (
-                      <ContributionCard
-                        key={item.url}
-                        title={item.title}
-                        url={item.url}
-                        repoName={item.repository.name}
-                        date={item.createdAt}
-                      />
-                    ))}
+                    {items.map((item) => {
+                      const statusKey = getPrStatusKey(item);
+                      return (
+                        <ContributionCard
+                          key={item.url}
+                          title={item.title}
+                          url={item.url}
+                          repoName={item.repository.name}
+                          date={item.createdAt}
+                          statusKey={statusKey}
+                          statusLabel={
+                            statusKey ? t(`works.status.${statusKey}` as const) : undefined
+                          }
+                        />
+                      );
+                    })}
                   </div>
                 );
               })()}

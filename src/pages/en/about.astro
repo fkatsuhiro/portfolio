@@ -3,10 +3,15 @@ import Layout from "../../layouts/Layout.astro";
 import { Timeline, type TimelineItem } from "../../components/TimeLine";
 import SkillBadges from "../../components/SkillBadges";
 import ContributionGraph, { type ContributionCalendar } from "../../components/ContributionGraph";
-import { useTranslations } from "../../i18n/ui";
+import { useTranslations, type UIKey } from "../../i18n/ui";
 
 const lang = "en";
 const t = useTranslations(lang);
+
+const roles: { labelKey: UIKey; value: string }[] = [
+  { labelKey: "about.roles.maintainer", value: "Yamada UI" },
+  { labelKey: "about.roles.contributor", value: "WXT, Astro" },
+];
 
 const historyData: TimelineItem[] = [
   {
@@ -81,40 +86,51 @@ try {
 
 <Layout title={t("meta.about.title")} description={t("meta.about.description")}>
   <main class="min-h-screen pt-20">
-    <section class="px-4 pt-10 md:px-10 max-w-7xl mx-auto">
+    <section class="px-4 pt-12 md:px-10 max-w-4xl mx-auto">
       <div
-        class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-12 shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-center md:items-start gap-8"
+        class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[1.5rem] md:rounded-[2.5rem] p-8 md:p-14 shadow-sm hover:shadow-md transition-shadow"
       >
-        <div class="w-full flex-1">
-          <div class="w-full flex flex-col items-center md:items-start">
-            <h4
-              class="text-xl md:text-2xl font-bold text-center md:text-left text-gray-900 dark:text-white"
-            >
-              Furuichi Katsuhiro
-            </h4>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+          Furuichi Katsuhiro
+        </h1>
+
+        <div
+          class="mt-6 max-w-2xl space-y-4 text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed md:leading-loose"
+        >
+          <p>{t("about.bio")}</p>
+          <p>
+            <Fragment set:html={t("about.techSentence").replace(
+              "React, Astro, TypeScript",
+              '<span class="font-semibold text-blue-600 dark:text-blue-400">React, Astro, TypeScript</span>'
+            )} />
+          </p>
+
+          <div class="flex flex-wrap gap-2">
+            {
+              roles.map((role) => (
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                  {t(role.labelKey)}
+                  <span class="opacity-60">·</span>
+                  {role.value}
+                </span>
+              ))
+            }
           </div>
 
-          <div
-            class="mt-4 text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed"
-          >
-            <p>{t("about.bio")}</p>
-            <p class="mt-2">
-              <Fragment set:html={t("about.techSentence").replace(
-                "React, Astro, Qwik, TypeScript",
-                '<span class="font-semibold text-blue-600 dark:text-blue-400">React, Astro, Qwik, TypeScript</span>'
-              )} />
-            </p>
-            <p class="mt-4 text-sm md:text-base opacity-80">
-              {t("about.hobbies")}
-            </p>
-          </div>
+          <p class="text-sm md:text-base opacity-80">
+            {t("about.hobbies")}
+          </p>
+        </div>
 
+        <div class="mt-14 pt-10 border-t border-gray-100 dark:border-gray-800">
           <SkillBadges
             lang="en"
             heading={t("about.skills.heading")}
             client:load
           />
+        </div>
 
+        <div class="mt-14 pt-10 border-t border-gray-100 dark:border-gray-800">
           <ContributionGraph
             calendar={calendar}
             heading={t("about.contributions.heading")}

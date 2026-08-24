@@ -8,9 +8,7 @@ test.describe("Index Page", () => {
   test("should display the main visual and portrait", async ({ page }) => {
     const portraitImg = page.getByAltText("Portrait");
     await expect(portraitImg).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "Furuichi Katsuhiro" }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Furuichi Katsuhiro" })).toBeVisible();
   });
 
   test("should display main navigation blocks correctly", async ({ page }) => {
@@ -18,19 +16,14 @@ test.describe("Index Page", () => {
       { name: "About", href: "/portfolio/about" },
       { name: "Works", href: "/portfolio/works" },
       { name: "Talks", href: "/portfolio/talks" },
-      { name: "Blogs", href: "/portfolio/blogs" },
     ];
 
     for (const link of navLinks) {
-      const navItem = page
-        .locator("main")
-        .getByRole("heading", { name: link.name, level: 3 });
+      const navItem = page.locator("main").getByRole("heading", { name: link.name, level: 3 });
 
       await expect(navItem).toBeVisible();
 
-      const linkContainer = page
-        .locator("main")
-        .getByRole("link", { name: link.name });
+      const linkContainer = page.locator("main").getByRole("link", { name: link.name });
       await expect(linkContainer).toHaveAttribute("href", link.href);
     }
   });
