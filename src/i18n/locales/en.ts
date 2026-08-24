@@ -25,8 +25,7 @@ export const en: UIContent = {
   "home.menu.talks.desc1": "Talks",
   "home.menu.talks.desc2": "Sharing slides at tech conference and events.",
   "about.bio": "I'm interested in web frontend development.",
-  "about.techSentence":
-    "I mainly develop with React, Astro, and TypeScript. Astro is my favorite.",
+  "about.techSentence": "I mainly develop with React, Astro, and TypeScript. Astro is my favorite.",
   "about.hobbies": "Hobbies: Coffee, Tennis, Sleeping",
   "about.roles.maintainer": "Maintainer",
   "about.roles.contributor": "Contributor",

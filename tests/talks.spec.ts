@@ -5,9 +5,7 @@ test.describe("Talks Page", () => {
     await page.goto("/portfolio/talks");
   });
 
-  test("should display all talk cards with correct information", async ({
-    page,
-  }) => {
+  test("should display all talk cards with correct information", async ({ page }) => {
     const talkCards = page.locator("main section");
     await expect(talkCards).toHaveCount(2);
     const tsKaigiHeading = page.getByRole("heading", {
@@ -16,9 +14,7 @@ test.describe("Talks Page", () => {
     await expect(tsKaigiHeading).toBeVisible();
 
     const description = page
-      .getByText(
-        "Zod × Web Worker を用いた型安全かつUIファーストなIPアドレス一括登録",
-      )
+      .getByText("Zod × Web Worker を用いた型安全かつUIファーストなIPアドレス一括登録")
       .first();
     await expect(description).toBeVisible();
   });
@@ -27,16 +23,10 @@ test.describe("Talks Page", () => {
     const iframes = page.locator("iframe");
     await expect(iframes).toHaveCount(2);
     const firstIframe = iframes.first();
-    await expect(firstIframe).toHaveAttribute(
-      "src",
-      /docs\.google\.com\/presentation/,
-    );
+    await expect(firstIframe).toHaveAttribute("src", /docs\.google\.com\/presentation/);
   });
 
-  test("should lay out talk cards in a two-column grid on desktop", async ({
-    page,
-    isMobile,
-  }) => {
+  test("should lay out talk cards in a two-column grid on desktop", async ({ page, isMobile }) => {
     test.skip(isMobile, "Grid column count only applies on Desktop");
 
     const grid = page.locator("main div.grid");
@@ -47,10 +37,7 @@ test.describe("Talks Page", () => {
     const card = page.locator("#tskaigi-hokuriku-2025");
     const externalLink = card.locator('a[target="_blank"]').first();
 
-    await expect(externalLink).toHaveAttribute(
-      "href",
-      "https://hokuriku.tskaigi.org/talks/27",
-    );
+    await expect(externalLink).toHaveAttribute("href", "https://hokuriku.tskaigi.org/talks/27");
   });
 
   test("should open slide modal on expand button click", async ({ page }) => {
@@ -77,21 +64,14 @@ test.describe("Talks Page", () => {
     await expect(page.locator('[data-testid="slide-modal"]')).not.toBeVisible();
   });
 
-  test("should show modal iframe for full-screen slide view", async ({
-    page,
-  }) => {
+  test("should show modal iframe for full-screen slide view", async ({ page }) => {
     await page.locator('[data-testid="slide-expand-btn"]').first().click();
     await page.locator('[data-testid="slide-modal"]').waitFor({
       state: "visible",
     });
     // modal iframe is rendered inside the portal
-    const modalIframe = page
-      .locator('[data-testid="slide-modal"]')
-      .locator("iframe");
+    const modalIframe = page.locator('[data-testid="slide-modal"]').locator("iframe");
     await expect(modalIframe).toBeVisible();
-    await expect(modalIframe).toHaveAttribute(
-      "src",
-      /docs\.google\.com\/presentation/,
-    );
+    await expect(modalIframe).toHaveAttribute("src", /docs\.google\.com\/presentation/);
   });
 });

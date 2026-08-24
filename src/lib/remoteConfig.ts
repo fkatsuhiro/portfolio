@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  getRemoteConfig,
-  fetchAndActivate,
-  getValue,
-} from "firebase/remote-config";
+import { getRemoteConfig, fetchAndActivate, getValue } from "firebase/remote-config";
 import { _app } from "./firebase";
 
 export interface FeatureFlags {
@@ -28,14 +24,9 @@ function loadFlags(): Promise<FeatureFlags> {
   _promise = (async () => {
     try {
       const rc = getRemoteConfig(_app);
-      rc.defaultConfig = DEFAULT_FLAGS as unknown as Record<
-        string,
-        string | number | boolean
-      >;
+      rc.defaultConfig = DEFAULT_FLAGS as unknown as Record<string, string | number | boolean>;
       // 開発中は毎回 fetch、本番は 1 時間キャッシュ
-      rc.settings.minimumFetchIntervalMillis = import.meta.env.DEV
-        ? 0
-        : 3_600_000;
+      rc.settings.minimumFetchIntervalMillis = import.meta.env.DEV ? 0 : 3_600_000;
 
       await fetchAndActivate(rc);
 
@@ -48,8 +39,7 @@ function loadFlags(): Promise<FeatureFlags> {
       _cached = { ...DEFAULT_FLAGS };
     }
     if (typeof window !== "undefined") {
-      (window as unknown as Record<string, unknown>).__REMOTE_CONFIG__ =
-        _cached;
+      (window as unknown as Record<string, unknown>).__REMOTE_CONFIG__ = _cached;
     }
     return _cached!;
   })();

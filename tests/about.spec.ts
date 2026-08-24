@@ -11,21 +11,15 @@ test.describe("About Page", () => {
     const techStack = page.locator("text=React, Astro, TypeScript");
     await expect(techStack).toBeVisible();
 
-    await expect(
-      page.getByText("趣味：コーヒー、テニス、寝ること"),
-    ).toBeVisible();
+    await expect(page.getByText("趣味：コーヒー、テニス、寝ること")).toBeVisible();
   });
 
-  test("should display maintainer and contributor role badges", async ({
-    page,
-  }) => {
+  test("should display maintainer and contributor role badges", async ({ page }) => {
     await expect(page.getByText("Yamada UI")).toBeVisible();
     await expect(page.getByText("WXT, Astro")).toBeVisible();
   });
 
-  test("should render all education history items in the timeline", async ({
-    page,
-  }) => {
+  test("should render all education history items in the timeline", async ({ page }) => {
     await page.goto("/portfolio/about");
 
     const historyItemsTitle = [
@@ -51,9 +45,7 @@ test.describe("About Page", () => {
     }
   });
 
-  test("should have a chronological order in the timeline dates", async ({
-    page,
-  }) => {
+  test("should have a chronological order in the timeline dates", async ({ page }) => {
     const dateItems = page.getByText(/^\d{4}\/\d{1,2} ~ \d{4}\/\d{1,2}$/);
     // Timeline is client:only="react", so wait for hydration before reading.
     await expect(dateItems.first()).toBeVisible();

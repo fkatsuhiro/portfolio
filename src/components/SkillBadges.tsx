@@ -21,20 +21,15 @@ const CATEGORIES: {
     badgeClass:
       "bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800",
     skills: ["TypeScript", "JavaScript"],
-  }
+  },
 ] as any; // Temporary cast to avoid type errors with labelKey if not perfect
 
-export default function SkillBadges({
-  lang = "ja",
-  heading = "Tech Stack",
-}: SkillBadgesProps) {
+export default function SkillBadges({ lang = "ja", heading = "Tech Stack" }: SkillBadgesProps) {
   const t = useTranslations(lang);
 
   return (
     <section aria-label={heading}>
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
-        {heading}
-      </h2>
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">{heading}</h2>
       <div className="flex flex-col gap-6">
         {CATEGORIES.map((cat) => {
           const label = t(cat.labelKey);
@@ -43,11 +38,7 @@ export default function SkillBadges({
               <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
                 {label}
               </h3>
-              <div
-                className="flex flex-wrap gap-2"
-                role="list"
-                aria-label={label}
-              >
+              <div className="flex flex-wrap gap-2" role="list" aria-label={label}>
                 {cat.skills.map((skill) => (
                   <span
                     key={skill}

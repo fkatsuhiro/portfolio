@@ -11,8 +11,7 @@ export const ko: UIContent = {
   "meta.works.description":
     "후루이치 카츠히로의 제품 및 OSS 기여. Astro, Qwik, Yamada UI, Dioxus, Valibot 기여자.",
   "meta.talks.title": "강연",
-  "meta.talks.description":
-    "TSKaigi 및 React Tokyo Fes를 포함한 기술 컨퍼런스에서의 강연 및 발표.",
+  "meta.talks.description": "TSKaigi 및 React Tokyo Fes를 포함한 기술 컨퍼런스에서의 강연 및 발표.",
   "home.role": "프론트엔드 개발자",
   "home.scrollDown": "아래로 스크롤",
   "home.menu.about.title": "정보",

@@ -8,10 +8,7 @@ import { type Page, test } from "@playwright/test";
 export async function drillIntoFirstRepo(page: Page) {
   await page.getByRole("button", { name: "OSS Contribution" }).click();
 
-  const firstCard = page
-    .locator('[data-testid="contrib-repo-grid"]')
-    .locator("button")
-    .first();
+  const firstCard = page.locator('[data-testid="contrib-repo-grid"]').locator("button").first();
 
   if (!(await firstCard.isVisible())) {
     test.skip(true, "no GitHub contribution data");

@@ -45,11 +45,9 @@ interface GitHubItem {
 type PrStatusKey = "draft" | "open" | "merged" | "closed";
 
 const PR_STATUS_STYLES: Record<PrStatusKey, string> = {
-  draft:
-    "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400",
+  draft: "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400",
   open: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400",
-  merged:
-    "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-400",
+  merged: "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-400",
   closed: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400",
 };
 
@@ -82,9 +80,7 @@ interface WorksTabsProps {
 type SubTabId = "prs" | "issues" | "reviews";
 
 const filterByRepo = (items: GitHubItem[], repo: string) =>
-  items.filter((item) =>
-    item.repository.name.toLowerCase().includes(repo.toLowerCase()),
-  );
+  items.filter((item) => item.repository.name.toLowerCase().includes(repo.toLowerCase()));
 
 const ContributionCard = ({
   title,
@@ -117,12 +113,8 @@ const ContributionCard = ({
         </span>
       )}
     </div>
-    <h4 className="font-bold text-slate-800 dark:text-white leading-snug">
-      {title}
-    </h4>
-    <div className="text-[10px] text-slate-400 mt-2">
-      {new Date(date).toLocaleDateString()}
-    </div>
+    <h4 className="font-bold text-slate-800 dark:text-white leading-snug">{title}</h4>
+    <div className="text-[10px] text-slate-400 mt-2">{new Date(date).toLocaleDateString()}</div>
   </a>
 );
 
@@ -130,13 +122,7 @@ const RepoLogo = ({ repo, size = 24 }: { repo: string; size?: number }) => {
   const logo = REPO_LOGOS[repo];
   if (!logo) return null;
   return (
-    <img
-      src={logo.src}
-      alt=""
-      width={size}
-      height={size}
-      className="object-contain shrink-0"
-    />
+    <img src={logo.src} alt="" width={size} height={size} className="object-contain shrink-0" />
   );
 };
 
@@ -154,8 +140,7 @@ const RepoActivityGraph = ({
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    const check = () =>
-      setIsDark(document.documentElement.classList.contains("dark"));
+    const check = () => setIsDark(document.documentElement.classList.contains("dark"));
     check();
     const observer = new MutationObserver(check);
     observer.observe(document.documentElement, {
@@ -283,12 +268,8 @@ const RepoCard = ({
           { label: "Reviews", count: reviewCount },
         ].map(({ label, count }) => (
           <div key={label} className="flex flex-col items-center">
-            <span className="text-xl font-black text-slate-700 dark:text-slate-200">
-              {count}
-            </span>
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider">
-              {label}
-            </span>
+            <span className="text-xl font-black text-slate-700 dark:text-slate-200">{count}</span>
+            <span className="text-[10px] text-slate-400 uppercase tracking-wider">{label}</span>
           </div>
         ))}
       </div>
@@ -306,9 +287,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
   techStack,
 }) => {
   const { flags } = useFeatureFlags();
-  const [activeTab, setActiveTab] = useState<"product" | "contribution">(
-    "contribution",
-  );
+  const [activeTab, setActiveTab] = useState<"product" | "contribution">("contribution");
   const [selectedRepo, setSelectedRepo] = useState<{
     name: string;
     repo: string;
@@ -317,9 +296,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
   const t = useTranslations(lang);
 
   const tabs = [
-    ...(flags.showWorksProduct
-      ? [{ id: "product" as const, label: t("works.tabs.product") }]
-      : []),
+    ...(flags.showWorksProduct ? [{ id: "product" as const, label: t("works.tabs.product") }] : []),
     { id: "contribution" as const, label: t("works.tabs.contribution") },
   ];
 
@@ -421,18 +398,9 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
             >
               {techStack.map((tech) => {
-                const prCount = filterByRepo(
-                  contributions.prs,
-                  tech.repo,
-                ).length;
-                const issueCount = filterByRepo(
-                  contributions.issues,
-                  tech.repo,
-                ).length;
-                const reviewCount = filterByRepo(
-                  contributions.reviews,
-                  tech.repo,
-                ).length;
+                const prCount = filterByRepo(contributions.prs, tech.repo).length;
+                const issueCount = filterByRepo(contributions.issues, tech.repo).length;
+                const reviewCount = filterByRepo(contributions.reviews, tech.repo).length;
                 if (prCount + issueCount + reviewCount === 0) return null;
                 return (
                   <RepoCard
@@ -471,10 +439,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
               </div>
 
               {/* リポジトリ別コントリビューション活動グラフ */}
-              <RepoActivityGraph
-                contributions={contributions}
-                repo={selectedRepo.repo}
-              />
+              <RepoActivityGraph contributions={contributions} repo={selectedRepo.repo} />
 
               {/* サブタブ (PRs / Issues / Reviews) */}
               <div
@@ -492,9 +457,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
                     }`}
                   >
                     {tab.label}
-                    <span className="ml-2 text-xs opacity-50 font-mono">
-                      {tab.count}
-                    </span>
+                    <span className="ml-2 text-xs opacity-50 font-mono">{tab.count}</span>
                     {subTab === tab.id && (
                       <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500" />
                     )}
@@ -503,10 +466,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
               </div>
 
               {(() => {
-                const items = filterByRepo(
-                  contributions[subTab],
-                  selectedRepo.repo,
-                );
+                const items = filterByRepo(contributions[subTab], selectedRepo.repo);
                 if (items.length === 0) {
                   return (
                     <div className="py-20 text-center text-slate-400">
@@ -529,9 +489,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
                           date={item.createdAt}
                           statusKey={statusKey}
                           statusLabel={
-                            statusKey
-                              ? t(`works.status.${statusKey}` as const)
-                              : undefined
+                            statusKey ? t(`works.status.${statusKey}` as const) : undefined
                           }
                         />
                       );

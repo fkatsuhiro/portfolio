@@ -7,9 +7,7 @@ test.describe("Header Language Selector", () => {
     await page.goto("/portfolio/about");
   });
 
-  test("should open the language menu and list all three languages", async ({
-    page,
-  }) => {
+  test("should open the language menu and list all three languages", async ({ page }) => {
     const trigger = page.getByRole("button", { name: "言語を選択" });
     await trigger.click();
 
@@ -23,23 +21,20 @@ test.describe("Header Language Selector", () => {
     await expect(listbox.getByText("한국어")).toBeVisible();
 
     // Current language (Japanese) is marked selected.
-    await expect(
-      listbox.getByRole("option", { name: "日本語" }),
-    ).toHaveAttribute("aria-selected", "true");
+    await expect(listbox.getByRole("option", { name: "日本語" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
   });
 
-  test("should navigate to the English site when English is selected", async ({
-    page,
-  }) => {
+  test("should navigate to the English site when English is selected", async ({ page }) => {
     await page.getByRole("button", { name: "言語を選択" }).click();
     await page.getByRole("option", { name: "English" }).click();
 
     await expect(page).toHaveURL(/\/portfolio\/en\/about\/?$/);
   });
 
-  test("should close the language menu when Escape is pressed", async ({
-    page,
-  }) => {
+  test("should close the language menu when Escape is pressed", async ({ page }) => {
     const trigger = page.getByRole("button", { name: "言語を選択" });
     await trigger.click();
     await expect(page.getByRole("listbox")).toBeVisible();
@@ -48,9 +43,7 @@ test.describe("Header Language Selector", () => {
     await expect(page.getByRole("listbox")).not.toBeVisible();
   });
 
-  test("should close the language menu when clicking outside", async ({
-    page,
-  }) => {
+  test("should close the language menu when clicking outside", async ({ page }) => {
     const trigger = page.getByRole("button", { name: "言語を選択" });
     await trigger.click();
     await expect(page.getByRole("listbox")).toBeVisible();
