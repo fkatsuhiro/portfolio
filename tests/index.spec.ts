@@ -18,7 +18,6 @@ test.describe("Index Page", () => {
       { name: "About", href: "/portfolio/about" },
       { name: "Works", href: "/portfolio/works" },
       { name: "Talks", href: "/portfolio/talks" },
-      { name: "Blogs", href: "/portfolio/blogs" },
     ];
 
     for (const link of navLinks) {

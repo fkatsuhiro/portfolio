@@ -8,12 +8,19 @@ test.describe("About Page", () => {
   test("should display personal profile correctly", async ({ page }) => {
     await expect(page.getByText("Furuichi Katsuhiro")).toBeVisible();
 
-    const techStack = page.locator("text=React, Astro, Qwik, TypeScript");
+    const techStack = page.locator("text=React, Astro, TypeScript");
     await expect(techStack).toBeVisible();
 
     await expect(
       page.getByText("趣味：コーヒー、テニス、寝ること"),
     ).toBeVisible();
+  });
+
+  test("should display maintainer and contributor role badges", async ({
+    page,
+  }) => {
+    await expect(page.getByText("Yamada UI")).toBeVisible();
+    await expect(page.getByText("WXT, Astro")).toBeVisible();
   });
 
   test("should render all education history items in the timeline", async ({
@@ -28,7 +35,7 @@ test.describe("About Page", () => {
     ];
 
     for (const title of historyItemsTitle) {
-      const heading = page.getByRole("heading", { name: title, level: 6 });
+      const heading = page.getByRole("heading", { name: title, level: 3 });
       await expect(heading.first()).toBeVisible();
     }
 
@@ -47,12 +54,15 @@ test.describe("About Page", () => {
   test("should have a chronological order in the timeline dates", async ({
     page,
   }) => {
-    const dates = await page.locator("time, .timeline-date").allTextContents();
+    const dateItems = page.getByText(/^\d{4}\/\d{1,2} ~ \d{4}\/\d{1,2}$/);
+    // Timeline is client:only="react", so wait for hydration before reading.
+    await expect(dateItems.first()).toBeVisible();
 
-    if (dates.length >= 2) {
-      expect(dates[0]).toContain("2017");
-      expect(dates[dates.length - 1]).toContain("2024");
-    }
+    const dates = await dateItems.allTextContents();
+
+    expect(dates.length).toBeGreaterThanOrEqual(2);
+    expect(dates[0]).toContain("2017");
+    expect(dates[dates.length - 1]).toContain("2024");
   });
 
   test("should maintain text visibility in dark mode", async ({ page }) => {

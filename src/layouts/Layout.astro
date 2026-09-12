@@ -24,15 +24,15 @@ const ogImageURL = ogImage ? new URL(ogImage, siteUrl).href : `${siteUrl}/topico
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const pathname = Astro.url.pathname.replace(/\/$/, '');
 
-// 簡略化された言語切り替えロジック
-const getAltLangHref = (currentLang: Lang) => {
-  const purePath = pathname.replace(new RegExp(`^${base}(/en|/ko)?`), '') || '/';
-  if (currentLang === 'ja') return `${base}/en${purePath}`;
-  if (currentLang === 'en') return `${base}/ko${purePath}`;
-  return `${base}${purePath}`; // ko -> ja
-};
+const purePath = pathname.replace(new RegExp(`^${base}(/en|/ko)?`), '') || '/';
+const getLangHref = (targetLang: Lang) =>
+  targetLang === 'ja' ? `${base}${purePath}` : `${base}/${targetLang}${purePath}`;
 
-const altLangHref = getAltLangHref(lang);
+const langHrefs: Record<Lang, string> = {
+  ja: getLangHref('ja'),
+  en: getLangHref('en'),
+  ko: getLangHref('ko'),
+};
 
 const jsonLd = {
 	'@context': 'https://schema.org',
@@ -96,7 +96,7 @@ const jsonLd = {
 		</script>
 	</head>
 	<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-		<Header lang={lang} altLangHref={altLangHref} client:load />
+		<Header lang={lang} langHrefs={langHrefs} client:load />
 		<slot />
 	</body>
 </html>

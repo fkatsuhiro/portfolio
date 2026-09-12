@@ -17,6 +17,8 @@ export interface GitHubResponse {
           title: string;
           url: string;
           createdAt: string;
+          state: "OPEN" | "CLOSED" | "MERGED";
+          isDraft: boolean;
           repository: {
             name: string;
           };
@@ -38,6 +40,8 @@ export interface GitHubResponse {
             pullRequest: {
               title: string;
               url: string;
+              state: "OPEN" | "CLOSED" | "MERGED";
+              isDraft: boolean;
               repository: {
                 name: string;
               };
@@ -58,11 +62,13 @@ const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
 const query = `
 {
   viewer {
-    pullRequests(first: 50, states: MERGED, orderBy: {field: CREATED_AT, direction: DESC}) {
+    pullRequests(first: 50, orderBy: {field: CREATED_AT, direction: DESC}) {
       nodes {
         title
         url
         createdAt
+        state
+        isDraft
         repository {
           name
         }
@@ -84,6 +90,8 @@ const query = `
           pullRequest {
             title
             url
+            state
+            isDraft
             repository {
               name
             }
@@ -131,6 +139,8 @@ try {
           title: node.pullRequest.title,
           url: node.pullRequest.url,
           createdAt: node.occurredAt,
+          state: node.pullRequest.state,
+          isDraft: node.pullRequest.isDraft,
           repository: node.pullRequest.repository
         })) || []
       };
@@ -149,7 +159,8 @@ const techStack = [
   { name: "Yamada UI", repo: "yamada-ui" },
   { name: "Dioxus", repo: "dioxus" },
   { name: "Dioxus-Docs", repo: "docsite" },
-  { name: "Valibot", repo: "valibot" }
+  { name: "Valibot", repo: "valibot" },
+  { name: "WXT", repo: "wxt" }
 ];
 
 const products = [
@@ -175,13 +186,12 @@ const products = [
       <p class="text-slate-500 dark:text-slate-400 font-medium">{t("works.subheading")}</p>
     </div>
 
-    <WorksTabs 
+    <WorksTabs
       client:load 
       lang={lang}
       products={products} 
       contributions={contributions} 
       techStack={techStack} 
     />
-
   </main>
 </Layout>

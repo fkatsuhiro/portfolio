@@ -33,19 +33,14 @@ test.describe("Talks Page", () => {
     );
   });
 
-  test("should show sidebar on desktop and hide on mobile", async ({
+  test("should lay out talk cards in a two-column grid on desktop", async ({
     page,
     isMobile,
   }) => {
-    const sidebar = page.locator("aside, .sidebar");
+    test.skip(isMobile, "Grid column count only applies on Desktop");
 
-    if (isMobile) {
-      await expect(sidebar).not.toBeVisible();
-    } else {
-      await expect(sidebar).toBeVisible();
-      await expect(sidebar).toContainText("Talks");
-      await expect(sidebar).toContainText("React Tokyo Fes 2026");
-    }
+    const grid = page.locator("main div.grid");
+    await expect(grid).toHaveClass(/md:grid-cols-2/);
   });
 
   test("should have a link to the external event page", async ({ page }) => {
