@@ -23,7 +23,7 @@ test.describe("Index Page", () => {
     for (const link of navLinks) {
       const navItem = page
         .locator("main")
-        .getByRole("heading", { name: link.name, level: 3 });
+        .getByRole("heading", { name: link.name, level: 2 });
 
       await expect(navItem).toBeVisible();
 

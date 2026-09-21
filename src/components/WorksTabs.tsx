@@ -80,7 +80,9 @@ const ContributionCard = ({
     className="block p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
   >
     <div className="flex items-center justify-between gap-2 mb-1">
-      <div className="text-xs text-blue-500 font-mono">{repoName}</div>
+      <div className="text-xs text-blue-600 dark:text-blue-400 font-mono">
+        {repoName}
+      </div>
       {statusKey && statusLabel && (
         <span
           className={`shrink-0 text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full ${PR_STATUS_STYLES[statusKey]}`}
@@ -177,7 +179,12 @@ const RepoActivityGraph = ({
       <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider">
         Contribution Activity
       </h3>
-      <div className="overflow-x-auto pb-1">
+      <div
+        className="overflow-x-auto pb-1"
+        tabIndex={0}
+        role="region"
+        aria-label={`Contribution activity for ${repo}`}
+      >
         <svg
           role="img"
           aria-label={`Contribution activity for ${repo}`}
@@ -240,11 +247,11 @@ const RepoCard = ({
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-2">
           <RepoLogo repo={repo} size={24} />
-          <h3 className="text-lg font-bold text-slate-800 dark:text-white group-hover:text-blue-500 transition-colors">
+          <h2 className="text-lg font-bold text-slate-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
             {name}
-          </h3>
+          </h2>
         </div>
-        <span className="text-xs font-mono bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-1 rounded-full">
+        <span className="text-xs font-mono bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-1 rounded-full">
           {total} {totalLabel}
         </span>
       </div>
@@ -258,13 +265,13 @@ const RepoCard = ({
             <span className="text-xl font-black text-slate-700 dark:text-slate-200">
               {count}
             </span>
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider">
+            <span className="text-[10px] text-slate-600 dark:text-slate-400 uppercase tracking-wider">
               {label}
             </span>
           </div>
         ))}
       </div>
-      <div className="mt-4 text-xs text-blue-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="mt-4 text-xs text-blue-600 dark:text-blue-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
         {viewContributionsLabel}
       </div>
     </button>
@@ -354,9 +361,9 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
               key={index}
               className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950"
             >
-              <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">
+              <h2 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">
                 {product.title}
-              </h3>
+              </h2>
               <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">
                 {product.description}
               </p>
@@ -374,7 +381,7 @@ export const WorksTabs: React.FC<WorksTabsProps> = ({
                 href={product.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-500 text-sm font-medium hover:underline"
+                className="text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline"
               >
                 {t("works.viewProject")}
               </a>

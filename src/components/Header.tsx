@@ -119,7 +119,7 @@ export default function Header({
               <a
                 key={link.path}
                 href={`${prefix}/${link.path}`}
-                className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 {link.name}
               </a>
@@ -129,7 +129,7 @@ export default function Header({
             <button
               type="button"
               onClick={() => setIsLangMenuOpen((prev) => !prev)}
-              className="flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+              className="flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               aria-label={langSelectAria}
               aria-haspopup="listbox"
               aria-expanded={isLangMenuOpen}
@@ -164,7 +164,7 @@ export default function Header({
                       href={langHrefs[code]}
                       className={`block px-3 py-1.5 text-sm transition-colors ${
                         code === lang
-                          ? "font-semibold text-blue-500"
+                          ? "font-semibold text-blue-600 dark:text-blue-400"
                           : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                       }`}
                     >

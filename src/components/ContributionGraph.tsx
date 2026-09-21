@@ -80,7 +80,12 @@ export default function ContributionGraph({
             {totalLabel}
           </p>
 
-          <div className="overflow-x-auto pb-2">
+          <div
+            className="overflow-x-auto pb-2"
+            tabIndex={0}
+            role="region"
+            aria-label={`GitHub contribution graph: ${calendar.totalContributions} contributions`}
+          >
             <svg
               role="img"
               aria-label={`GitHub contribution graph: ${calendar.totalContributions} contributions`}
@@ -112,7 +117,7 @@ export default function ContributionGraph({
             </svg>
           </div>
 
-          <div className="flex items-center gap-1 mt-2 justify-end text-xs text-gray-400 dark:text-gray-500">
+          <div className="flex items-center gap-1 mt-2 justify-end text-xs text-gray-600 dark:text-gray-400">
             <span>Less</span>
             {colors.map((c, i) => (
               <svg

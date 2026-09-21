@@ -15,5 +15,11 @@ export default defineConfig({
     },
   },
 
-  integrations: [tailwind(), react(), sitemap()],
+  integrations: [
+    tailwind(),
+    react(),
+    sitemap({
+      filter: (page) => !page.includes("/a11y"),
+    }),
+  ],
 });
