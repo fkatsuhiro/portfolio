@@ -15,11 +15,11 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.9",
-    "@astrojs/react": "^4.4.2",
-    "@astrojs/sitemap": "^3.7.2",
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/react": "^6.0.6",
+    "@astrojs/sitemap": "^3.7.4",
     "@astrojs/tailwind": "^6.0.2",
-    "astro": "^5.16.4",
+    "astro": "^7.3.3",
     "axe-core": "^4.13.0",
     "firebase": "^12.13.0",
     "lucide-react": "^0.556.0",
