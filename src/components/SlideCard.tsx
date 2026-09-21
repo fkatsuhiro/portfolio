@@ -35,9 +35,9 @@ export default function SlideCard({
     <section id={id} className="scroll-mt-32 w-full">
       <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all h-full flex flex-col">
         <div className="flex items-start justify-between mb-2 gap-2">
-          <h3 className="text-sm md:text-base font-bold text-gray-900 dark:text-white leading-snug line-clamp-2">
+          <h2 className="text-sm md:text-base font-bold text-gray-900 dark:text-white leading-snug line-clamp-2">
             {title}
-          </h3>
+          </h2>
           <div className="flex items-center gap-1 flex-shrink-0">
             <button
               onClick={() => setIsModalOpen(true)}
@@ -60,7 +60,7 @@ export default function SlideCard({
         </div>
 
         {time && (
-          <div className="text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-2">
+          <div className="text-[10px] uppercase tracking-wider font-semibold text-gray-600 dark:text-gray-400 mb-2">
             {time}
           </div>
         )}

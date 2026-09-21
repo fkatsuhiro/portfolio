@@ -1,73 +1,59 @@
-# Astro Starter Kit: Basics
+# Furuichi Katsuhiro — Portfolio
+
+Personal portfolio site, built with [Astro](https://astro.build/) and deployed to GitHub Pages. Live at **https://fkatsuhiro.github.io/portfolio**.
+
+## Tech Stack
+
+Astro 5 + React 19 islands, TypeScript, Tailwind CSS, Firebase Remote Config (feature flags). Testing: Vitest (unit), Playwright + axe-core (e2e / a11y). Lint/format: oxlint, oxfmt, Prettier. CI: GitHub Actions + Dependabot + CodeQL.
+
+## Features
+
+- **i18n** — ja (default, `/`), en (`/en`), ko (`/ko`), via Astro's built-in i18n routing. Each locale has its own page files under `src/pages/`; strings live in `src/i18n/locales/*.ts`.
+- **Dark mode**, persisted in `localStorage`.
+- **Home / About / Works / Talks** — About has a GitHub contribution heatmap and a history timeline; Works pulls PR/issue/review activity live from the GitHub GraphQL API; Talks embeds Google Slides decks.
+- **Remote feature flags** (`src/lib/remoteConfig.ts`) via Firebase Remote Config, with hard-coded fallback defaults.
+- **`/a11y` dashboard** — hidden (unlinked, `noindex`, excluded from sitemap) internal tool that runs axe-core live against every page/locale.
+
+## Getting Started
 
 ```sh
-pnpm create astro@latest -- --template basics
+pnpm install
+pnpm dev   # http://localhost:4323/portfolio
 ```
 
-## 🛠 Tech Stack
-
-- **Framework**: [Astro](https://astro.build/) (v5.x)
-- **UI Library**: [React](https://react.dev/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Testing**: [Playwright](https://playwright.dev/)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── layouts/
-│   └── pages/
-├── tests/
-├── public/
-├── playwright.config.ts
-└── astro.config.mjs
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `pnpm install`         | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4323`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## 🧪 E2E Testing (Playwright)
-
-To ensure high quality and reliability, I have integrated [Playwright](https://playwright.dev/) to automate regression testing for major user flows.
-
-### Test Coverage
-
-- **Page Integrity**: Verifies that all core pages (Index, About, Works, Talks) render correctly without errors.
-- **Dynamic Logic**: Validates the OSS Contribution repo drill-down (PRs/Issues/Reviews sub-tabs) on the Works page.
-- **External Data Integration**: Ensures GitHub contribution data is successfully fetched and displayed.
-- **Visual Quality**: Confirms text visibility in **Dark Mode** and validates responsiveness across Mobile and Desktop viewports.
-
-### Commands
-
-**Run all tests in headless mode:**
+Optional `.env`:
 
 ```sh
-pnpm playwright test
+GITHUB_TOKEN=                        # for Works/About GitHub data; pages work without it
+PUBLIC_FIREBASE_API_KEY=
+PUBLIC_FIREBASE_AUTH_DOMAIN=
+PUBLIC_FIREBASE_PROJECT_ID=
+PUBLIC_FIREBASE_STORAGE_BUCKET=
+PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+PUBLIC_FIREBASE_APP_ID=              # for Remote Config; falls back to defaults without it
 ```
 
-**Run tests in UI mode:**
+## Commands
 
-```
-pnpm playwringht test --ui
-```
+| Command          | Action                         |
+| :--------------- | :----------------------------- |
+| `pnpm dev`       | Dev server at `localhost:4323` |
+| `pnpm build`     | Build to `./dist/`             |
+| `pnpm preview`   | Preview the production build   |
+| `pnpm lint`      | `oxlint` + `astro check`       |
+| `pnpm fmt`       | Format with `oxfmt`            |
+| `pnpm test`      | Playwright e2e + a11y suite    |
+| `pnpm test:unit` | Vitest unit suite              |
+
+## Testing
+
+- **Unit** (`src/**/*.test.ts`) — pure logic in `src/lib/` and `src/i18n/`.
+- **E2E** (`tests/*.spec.ts`) — every page, language switcher, dark mode, Works drill-down (skips gracefully without `GITHUB_TOKEN`).
+- **Accessibility** (`tests/a11y.spec.ts`) — axe-core against all 12 pages, fails on any violation.
+
+## Known limitations
+
+- `open-graph-scraper` dependency is unused — candidate for removal.
+- Works page's "Product" tab (flagged off) still has placeholder data.
+- `showPersonalBlog` flag exists with no blog UI behind it.
+- `SkillBadges.tsx` has an `as any` cast working around a type mismatch.

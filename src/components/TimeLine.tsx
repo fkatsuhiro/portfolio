@@ -38,7 +38,7 @@ export const Timeline: React.FC<TimelineProps> = ({ items }) => {
               />
 
               <div className="group rounded-2xl border border-gray-200/70 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-300">
-                <span className="inline-block text-xs font-mono uppercase tracking-wider text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-full mb-3">
+                <span className="inline-block text-xs font-mono uppercase tracking-wider text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-full mb-3">
                   {item.date}
                 </span>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">

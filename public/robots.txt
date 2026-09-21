@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /a11y
 
 Sitemap: https://fkatsuhiro.github.io/portfolio/sitemap-index.xml

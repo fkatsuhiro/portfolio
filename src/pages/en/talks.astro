@@ -32,6 +32,14 @@ const slideSources = [
 <Layout title={t("meta.talks.title")} description={t("meta.talks.description")}>
   <div class="min-h-screen pt-20 bg-gray-50 dark:bg-gray-950">
     <main class="max-w-5xl mx-auto py-8 px-6 md:px-16">
+      <div class="mb-12">
+        <h1 class="text-4xl font-black text-slate-900 dark:text-white mb-2">
+          {t("nav.talks")}
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400 font-medium">
+          {t("meta.talks.description")}
+        </p>
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
         {
           slideSources.map((slide) => (
