@@ -73,3 +73,57 @@ test.describe("About Page", () => {
     await expect(profileHeading).toBeVisible();
   });
 });
+
+test.describe("About Page — locale consistency", () => {
+  const locales = [
+    {
+      path: "/portfolio/en/about",
+      ariaLabel: "Select language",
+      label: "English",
+    },
+    { path: "/portfolio/ko/about", ariaLabel: "언어 선택", label: "한국어" },
+  ];
+
+  for (const { path, ariaLabel, label } of locales) {
+    test(`language selector reflects the active locale on ${path}`, async ({
+      page,
+    }) => {
+      await page.goto(path);
+
+      // Regression test for the bug where the language selector stayed on
+      // 日本語 even though the page content was rendered in another locale
+      // (Astro.currentLocale didn't recognize "ko" as a registered locale).
+      await expect(page.getByRole("button", { name: ariaLabel })).toHaveText(
+        label,
+      );
+    });
+  }
+
+  test("the Fast Retailing timeline entry is either shown or hidden the same way across all locales", async ({
+    page,
+  }) => {
+    // Regression test for the bug where the Fast Retailing entry always
+    // rendered on the English/Korean pages regardless of the remote feature
+    // flag, because those pages dropped the `id` field that the flag filter
+    // keys on. Rather than assert a specific boolean (the live remote flag
+    // value isn't controlled by this test), assert the three locales agree.
+    const checks: boolean[] = [];
+    for (const path of [
+      "/portfolio/about",
+      "/portfolio/en/about",
+      "/portfolio/ko/about",
+    ]) {
+      await page.goto(path);
+      await page.waitForLoadState("networkidle").catch(() => {});
+      const entry = page.getByText(/2026\/3/);
+      checks.push(
+        await entry
+          .first()
+          .isVisible()
+          .catch(() => false),
+      );
+    }
+
+    expect(new Set(checks).size).toBe(1);
+  });
+});
