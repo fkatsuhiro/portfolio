@@ -1,5 +1,6 @@
 import React from "react";
 import { useFeatureFlags } from "../lib/remoteConfig";
+import { filterVisibleTimelineItems } from "../lib/timeline";
 
 export interface TimelineItem {
   id?: string;
@@ -22,10 +23,7 @@ const DOT_GRADIENTS = [
 export const Timeline: React.FC<TimelineProps> = ({ items }) => {
   const { flags } = useFeatureFlags();
 
-  const visibleItems = items.filter((item) => {
-    if (item.id === "fast-retailing" && !flags.showFastRetailing) return false;
-    return true;
-  });
+  const visibleItems = filterVisibleTimelineItems(items, flags);
 
   return (
     <div className="py-20 px-4 max-w-2xl mx-auto min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-100 transition-colors duration-300">

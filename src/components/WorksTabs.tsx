@@ -6,6 +6,13 @@ import dioxusLogo from "../assets/dioxus.png";
 import wxtLogo from "../assets/wxt.png";
 import { useTranslations, type Lang } from "../i18n/ui";
 import { useFeatureFlags } from "../lib/remoteConfig";
+import {
+  filterByRepo,
+  getActivityLevel,
+  getPrStatusKey,
+  type GitHubItem,
+  type PrStatusKey,
+} from "../lib/works";
 
 const REPO_LOGOS: Record<string, { src: string }> = {
   astro: astroLogo,
@@ -23,27 +30,6 @@ const ACTIVITY_CELL = 10;
 const ACTIVITY_GAP = 2;
 const ACTIVITY_STEP = ACTIVITY_CELL + ACTIVITY_GAP;
 
-function getActivityLevel(count: number): 0 | 1 | 2 | 3 | 4 {
-  if (count === 0) return 0;
-  if (count === 1) return 1;
-  if (count === 2) return 2;
-  if (count === 3) return 3;
-  return 4;
-}
-
-interface GitHubItem {
-  title: string;
-  url: string;
-  createdAt: string;
-  state?: "OPEN" | "CLOSED" | "MERGED";
-  isDraft?: boolean;
-  repository: {
-    name: string;
-  };
-}
-
-type PrStatusKey = "draft" | "open" | "merged" | "closed";
-
 const PR_STATUS_STYLES: Record<PrStatusKey, string> = {
   draft: "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400",
   open: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400",
@@ -51,14 +37,6 @@ const PR_STATUS_STYLES: Record<PrStatusKey, string> = {
     "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-400",
   closed: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400",
 };
-
-function getPrStatusKey(item: GitHubItem): PrStatusKey | null {
-  if (!item.state) return null;
-  if (item.isDraft) return "draft";
-  if (item.state === "MERGED") return "merged";
-  if (item.state === "CLOSED") return "closed";
-  return "open";
-}
 
 interface Product {
   title: string;
@@ -79,11 +57,6 @@ interface WorksTabsProps {
 }
 
 type SubTabId = "prs" | "issues" | "reviews";
-
-const filterByRepo = (items: GitHubItem[], repo: string) =>
-  items.filter((item) =>
-    item.repository.name.toLowerCase().includes(repo.toLowerCase()),
-  );
 
 const ContributionCard = ({
   title,

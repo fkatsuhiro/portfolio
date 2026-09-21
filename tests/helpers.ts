@@ -17,5 +17,11 @@ export async function drillIntoFirstRepo(page: Page) {
     test.skip(true, "no GitHub contribution data");
   }
 
+  // The card is server-rendered and visible before the island (which pulls
+  // in the Firebase remote-config bundle) finishes hydrating. Wait for the
+  // network to settle so the click handler is actually attached before
+  // interacting, otherwise the click can be lost to the hydration race.
+  await page.waitForLoadState("networkidle");
   await firstCard.click();
+  await page.locator('[data-testid="contrib-subtabs"]').waitFor();
 }

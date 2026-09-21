@@ -4,6 +4,7 @@ import { Timeline, type TimelineItem } from "../../components/TimeLine";
 import SkillBadges from "../../components/SkillBadges";
 import ContributionGraph, { type ContributionCalendar } from "../../components/ContributionGraph";
 import { useTranslations, type UIKey } from "../../i18n/ui";
+import { historyByLang } from "../../i18n/history";
 
 const lang = "ko";
 const t = useTranslations(lang);
@@ -13,36 +14,7 @@ const roles: { labelKey: UIKey; value: string }[] = [
   { labelKey: "about.roles.contributor", value: "WXT, Astro" },
 ];
 
-const historyData: TimelineItem[] = [
-  {
-    date: "2017/4 ~ 2020/3",
-    title: "미에 현립 요카이치 고등학교 보통과",
-    description:
-      "미에 현립 요카이치 고등학교 보통과에 재학했습니다.",
-  },
-  {
-    date: "2020/4 ~ 2024/3",
-    title: "치바 대학 이학부 물리학과",
-    description:
-      "치바 대학 이학부 물리학과에 재학했습니다.",
-  },
-  {
-    date: "2024/4 ~ 2026/3",
-    title:
-      "도쿄 대학 대학원 공학계 연구과 바이오 엔지니어링 전공",
-    description:
-      "도쿄 대학 대학원 공학계 연구과 바이오 엔지니어링 전공에 재학했습니다.",
-  },
-  {
-    date: "2026/3 ~",
-    title: "주식회사 패스트 리테일링",
-    description: "프론트엔드 엔지니어로서 개발 업무에 종사하고 있습니다.",
-  },
-].map((item) => ({
-  date: item.date,
-  title: item.title,
-  description: item.description,
-}));
+const historyData: TimelineItem[] = historyByLang[lang];
 
 const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
 
@@ -141,6 +113,6 @@ try {
         </div>
       </div>
     </section>
-    <Timeline items={historyData} />
+    <Timeline items={historyData} client:only="react" />
   </main>
 </Layout>
