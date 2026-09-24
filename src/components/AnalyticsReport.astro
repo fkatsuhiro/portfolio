@@ -1,0 +1,124 @@
+---
+import { useTranslations, type Lang } from "../i18n/ui";
+import type { GaReportData } from "../lib/gaReport";
+
+interface Props {
+  lang: Lang;
+  report: GaReportData | null;
+}
+
+const { lang, report } = Astro.props;
+const t = useTranslations(lang);
+
+const maxTopPageViews = report
+  ? Math.max(1, ...report.topPages.map((p) => p.views))
+  : 1;
+const maxDailySessions = report
+  ? Math.max(1, ...report.dailySessions.map((d) => d.sessions))
+  : 1;
+
+function formatDate(yyyymmdd: string): string {
+  if (yyyymmdd.length !== 8) return yyyymmdd;
+  return `${yyyymmdd.slice(4, 6)}/${yyyymmdd.slice(6, 8)}`;
+}
+---
+
+<div class="max-w-3xl mx-auto">
+  {
+    !report ? (
+      <div class="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-10 text-center">
+        <p class="text-gray-600 dark:text-gray-400">
+          {t("analytics.notConfigured")}
+        </p>
+      </div>
+    ) : (
+      <>
+        <p class="text-center text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-6">
+          {t("analytics.period")}
+        </p>
+
+        <div class="grid grid-cols-3 gap-4 mb-10">
+          <div class="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 text-center">
+            <div class="text-3xl font-black text-gray-900 dark:text-white">
+              {report.activeUsers.toLocaleString()}
+            </div>
+            <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              {t("analytics.activeUsers")}
+            </div>
+          </div>
+          <div class="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 text-center">
+            <div class="text-3xl font-black text-gray-900 dark:text-white">
+              {report.sessions.toLocaleString()}
+            </div>
+            <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              {t("analytics.sessions")}
+            </div>
+          </div>
+          <div class="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 text-center">
+            <div class="text-3xl font-black text-gray-900 dark:text-white">
+              {report.pageViews.toLocaleString()}
+            </div>
+            <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              {t("analytics.pageViews")}
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-10">
+          <h2 class="text-sm font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-4">
+            {t("analytics.dailySessions")}
+          </h2>
+          {report.dailySessions.length === 0 ? (
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              {t("analytics.noTopPages")}
+            </p>
+          ) : (
+            <div
+              role="img"
+              aria-label={t("analytics.dailySessions")}
+              class="flex items-end gap-0.5 h-24"
+            >
+              {report.dailySessions.map((day) => (
+                <div
+                  class="flex-1 bg-blue-500 dark:bg-blue-400 rounded-t-sm min-w-[2px]"
+                  style={`height: ${Math.max(4, (day.sessions / maxDailySessions) * 100)}%`}
+                  title={`${formatDate(day.date)}: ${day.sessions}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <h2 class="text-sm font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-4">
+            {t("analytics.topPages")}
+          </h2>
+          {report.topPages.length === 0 ? (
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              {t("analytics.noTopPages")}
+            </p>
+          ) : (
+            <ul class="space-y-2">
+              {report.topPages.map((page) => (
+                <li class="flex items-center gap-3">
+                  <span class="text-sm font-mono text-gray-600 dark:text-gray-300 w-32 truncate">
+                    {page.path}
+                  </span>
+                  <div class="flex-1 h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                    <div
+                      class="h-full bg-blue-500 dark:bg-blue-400 rounded-full"
+                      style={`width: ${(page.views / maxTopPageViews) * 100}%`}
+                    />
+                  </div>
+                  <span class="text-sm font-bold text-gray-800 dark:text-gray-100 w-10 text-right">
+                    {page.views}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </>
+    )
+  }
+</div>

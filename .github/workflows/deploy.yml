@@ -38,6 +38,9 @@ jobs:
           PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ vars.PUBLIC_FIREBASE_STORAGE_BUCKET }}
           PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ vars.PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
           PUBLIC_FIREBASE_APP_ID: ${{ vars.PUBLIC_FIREBASE_APP_ID }}
+          GA_PROPERTY_ID: ${{ vars.GA_PROPERTY_ID }}
+          GA_CLIENT_EMAIL: ${{ secrets.GA_CLIENT_EMAIL }}
+          GA_PRIVATE_KEY: ${{ secrets.GA_PRIVATE_KEY }}
 
   deploy:
     needs: build
