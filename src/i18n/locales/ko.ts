@@ -91,4 +91,19 @@ export const ko: UIContent = {
   "analytics.noTopPages": "데이터가 없습니다.",
   "analytics.notConfigured":
     "아직 Google Analytics와 연동되지 않았습니다. 연동이 완료되면 이곳에 방문자 리포트가 표시됩니다.",
+  "chat.widgetLabel": "채팅 열기",
+  "chat.closeLabel": "채팅 닫기",
+  "chat.title": "물어보기",
+  "chat.greeting":
+    "안녕하세요! 아래 태그에서 선택하거나 프로필에 대해 궁금한 점을 직접 입력해보세요.",
+  "chat.inputPlaceholder": "메시지를 입력…",
+  "chat.inputAria": "메시지 입력",
+  "chat.send": "전송",
+  "chat.fallback": "적절한 답변을 찾지 못했어요. 아래 태그를 선택해보세요.",
+  "chat.tag.about": "소개",
+  "chat.tag.skills": "기술",
+  "chat.tag.works": "작품",
+  "chat.tag.talks": "강연",
+  "chat.tag.hobbies": "취미",
+  "chat.tag.contact": "연락처",
 } as const;

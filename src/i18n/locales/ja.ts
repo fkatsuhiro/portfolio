@@ -90,4 +90,20 @@ export const ja = {
   "analytics.noTopPages": "データがありません。",
   "analytics.notConfigured":
     "Google Analyticsとまだ連携していません。連携が完了すると、ここにアクセスレポートが表示されます。",
+  "chat.widgetLabel": "チャットを開く",
+  "chat.closeLabel": "チャットを閉じる",
+  "chat.title": "質問してみる",
+  "chat.greeting":
+    "こんにちは！プロフィールについて気になることをタグから選ぶか、下に入力してみてください。",
+  "chat.inputPlaceholder": "メッセージを入力…",
+  "chat.inputAria": "メッセージを入力",
+  "chat.send": "送信",
+  "chat.fallback":
+    "うまく答えを見つけられませんでした。下のタグから選んでみてください。",
+  "chat.tag.about": "自己紹介",
+  "chat.tag.skills": "スキル",
+  "chat.tag.works": "作品",
+  "chat.tag.talks": "登壇",
+  "chat.tag.hobbies": "趣味",
+  "chat.tag.contact": "連絡先",
 } as const;

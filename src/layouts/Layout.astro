@@ -1,102 +1,144 @@
 ---
-import Header from '../components/Header';
-import '../styles/global.css';
-import { type Lang } from '../i18n/ui';
+import Header from "../components/Header";
+import ChatWidget from "../components/ChatWidget";
+import "../styles/global.css";
+import { type Lang } from "../i18n/ui";
 
 interface Props {
-	title: string;
-	description?: string;
-	ogImage?: string;
+  title: string;
+  description?: string;
+  ogImage?: string;
 }
 
 const {
-	title,
-	description = 'Furuichi Katsuhiro — Frontend Developer. OSS contributor to Astro, Qwik, Yamada UI and more.',
-	ogImage,
+  title,
+  description = "Furuichi Katsuhiro — Frontend Developer. OSS contributor to Astro, Qwik, Yamada UI and more.",
+  ogImage,
 } = Astro.props;
 
-const lang = (Astro.currentLocale ?? 'ja') as Lang;
-const siteUrl = 'https://fkatsuhiro.github.io/portfolio';
+const lang = (Astro.currentLocale ?? "ja") as Lang;
+const siteUrl = "https://fkatsuhiro.github.io/portfolio";
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
-const fullTitle = title === 'Portfolio' ? 'Furuichi Katsuhiro | Frontend Developer' : `${title} | Furuichi Katsuhiro`;
-const ogImageURL = ogImage ? new URL(ogImage, siteUrl).href : `${siteUrl}/topicon.png`;
+const fullTitle =
+  title === "Portfolio"
+    ? "Furuichi Katsuhiro | Frontend Developer"
+    : `${title} | Furuichi Katsuhiro`;
+const ogImageURL = ogImage
+  ? new URL(ogImage, siteUrl).href
+  : `${siteUrl}/topicon.png`;
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const pathname = Astro.url.pathname.replace(/\/$/, '');
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const pathname = Astro.url.pathname.replace(/\/$/, "");
 
-const purePath = pathname.replace(new RegExp(`^${base}(/en|/ko)?`), '') || '/';
+const purePath = pathname.replace(new RegExp(`^${base}(/en|/ko)?`), "") || "/";
 const getLangHref = (targetLang: Lang) =>
-  targetLang === 'ja' ? `${base}${purePath}` : `${base}/${targetLang}${purePath}`;
+  targetLang === "ja"
+    ? `${base}${purePath}`
+    : `${base}/${targetLang}${purePath}`;
 
 const langHrefs: Record<Lang, string> = {
-  ja: getLangHref('ja'),
-  en: getLangHref('en'),
-  ko: getLangHref('ko'),
+  ja: getLangHref("ja"),
+  en: getLangHref("en"),
+  ko: getLangHref("ko"),
 };
 
 const jsonLd = {
-	'@context': 'https://schema.org',
-	'@type': 'Person',
-	name: 'Furuichi Katsuhiro',
-	url: siteUrl,
-	jobTitle: 'Frontend Developer',
-	worksFor: { '@type': 'Organization', name: 'Fast Retailing' },
-	alumniOf: [
-		{ '@type': 'CollegeOrUniversity', name: '千葉大学' },
-		{ '@type': 'CollegeOrUniversity', name: '東京大学大学院' },
-	],
-	knowsAbout: ['React', 'Astro', 'Qwik', 'TypeScript', 'Frontend Development'],
-	sameAs: ['https://github.com/fkatsuhiro', 'https://zenn.dev/kattu'],
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Furuichi Katsuhiro",
+  url: siteUrl,
+  jobTitle: "Frontend Developer",
+  worksFor: { "@type": "Organization", name: "Fast Retailing" },
+  alumniOf: [
+    { "@type": "CollegeOrUniversity", name: "千葉大学" },
+    { "@type": "CollegeOrUniversity", name: "東京大学大学院" },
+  ],
+  knowsAbout: ["React", "Astro", "Qwik", "TypeScript", "Frontend Development"],
+  sameAs: ["https://github.com/fkatsuhiro", "https://zenn.dev/kattu"],
 };
 ---
 
 <!doctype html>
 <html lang={lang}>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="generator" content={Astro.generator} />
-		<meta name="author" content="Furuichi Katsuhiro" />
-		<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-		<meta name="theme-color" content="#030712" media="(prefers-color-scheme: dark)" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="author" content="Furuichi Katsuhiro" />
+    <meta
+      name="theme-color"
+      content="#ffffff"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#030712"
+      media="(prefers-color-scheme: dark)"
+    />
 
-		<title>{fullTitle}</title>
-		<meta name="description" content={description} />
-		<link rel="canonical" href={canonicalURL} />
-		<link rel="alternate" hreflang="ja" href={`${base}${pathname.replace(new RegExp(`^${base}(/en|/ko)?`), '') || '/'}`} />
-		<link rel="alternate" hreflang="en" href={`${base}/en${pathname.replace(new RegExp(`^${base}(/en|/ko)?`), '') || '/'}`} />
-		<link rel="alternate" hreflang="ko" href={`${base}/ko${pathname.replace(new RegExp(`^${base}(/en|/ko)?`), '') || '/'}`} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <link
+      rel="alternate"
+      hreflang="ja"
+      href={`${base}${pathname.replace(new RegExp(`^${base}(/en|/ko)?`), "") || "/"}`}
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href={`${base}/en${pathname.replace(new RegExp(`^${base}(/en|/ko)?`), "") || "/"}`}
+    />
+    <link
+      rel="alternate"
+      hreflang="ko"
+      href={`${base}/ko${pathname.replace(new RegExp(`^${base}(/en|/ko)?`), "") || "/"}`}
+    />
 
-		<!-- OGP -->
-		<meta property="og:type" content="website" />
-		<meta property="og:site_name" content="Furuichi Katsuhiro | Portfolio" />
-		<meta property="og:url" content={canonicalURL} />
-		<meta property="og:title" content={fullTitle} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={ogImageURL} />
-		<meta property="og:image:width" content="400" />
-		<meta property="og:image:height" content="400" />
-		<meta property="og:locale" content={lang === 'ja' ? 'ja_JP' : lang === 'ko' ? 'ko_KR' : 'en_US'} />
+    <!-- OGP -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Furuichi Katsuhiro | Portfolio" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="400" />
+    <meta property="og:image:height" content="400" />
+    <meta
+      property="og:locale"
+      content={lang === "ja" ? "ja_JP" : lang === "ko" ? "ko_KR" : "en_US"}
+    />
 
-		<!-- Twitter Card -->
-		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:title" content={fullTitle} />
-		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={ogImageURL} />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
 
-		<!-- JSON-LD Structured Data -->
-		<script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+    <!-- JSON-LD Structured Data -->
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(jsonLd)}
+    />
 
-		<script is:inline>
-			if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-				document.documentElement.classList.add('dark');
-			} else {
-				document.documentElement.classList.remove('dark');
-			}
-		</script>
-	</head>
-	<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-		<Header lang={lang} langHrefs={langHrefs} client:load />
-		<slot />
-	</body>
+    <script is:inline>
+      if (
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300"
+  >
+    <Header lang={lang} langHrefs={langHrefs} client:load />
+    <slot />
+    <ChatWidget lang={lang} client:idle />
+  </body>
 </html>

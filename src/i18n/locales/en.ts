@@ -91,4 +91,20 @@ export const en: UIContent = {
   "analytics.noTopPages": "No data yet.",
   "analytics.notConfigured":
     "This site isn't connected to Google Analytics yet. Once it is, a traffic report will show up here.",
+  "chat.widgetLabel": "Open chat",
+  "chat.closeLabel": "Close chat",
+  "chat.title": "Ask me something",
+  "chat.greeting":
+    "Hi! Pick a topic below, or type your own question about my profile.",
+  "chat.inputPlaceholder": "Type a message…",
+  "chat.inputAria": "Type a message",
+  "chat.send": "Send",
+  "chat.fallback":
+    "I couldn't find a good answer for that. Try one of the topics below.",
+  "chat.tag.about": "About me",
+  "chat.tag.skills": "Skills",
+  "chat.tag.works": "Works",
+  "chat.tag.talks": "Talks",
+  "chat.tag.hobbies": "Hobbies",
+  "chat.tag.contact": "Contact",
 } as const;
