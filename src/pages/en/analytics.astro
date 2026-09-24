@@ -1,0 +1,27 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AnalyticsReport from "../../components/AnalyticsReport.astro";
+import { fetchGaReport } from "../../lib/gaReport";
+import { useTranslations } from "../../i18n/ui";
+
+const lang = "en";
+const t = useTranslations(lang);
+const report = await fetchGaReport();
+---
+
+<Layout
+  title={t("meta.analytics.title")}
+  description={t("meta.analytics.description")}
+>
+  <main class="min-h-screen pt-32 pb-20 px-6">
+    <div class="mb-10 text-center">
+      <h1 class="text-4xl font-black text-slate-900 dark:text-white mb-2">
+        {t("analytics.heading")}
+      </h1>
+      <p class="text-slate-500 dark:text-slate-400 font-medium">
+        {t("analytics.subheading")}
+      </p>
+    </div>
+    <AnalyticsReport lang={lang} report={report} />
+  </main>
+</Layout>
