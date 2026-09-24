@@ -28,18 +28,18 @@ const menuLinks = [
     desc1: t("home.menu.talks.desc1"),
     desc2: t("home.menu.talks.desc2"),
   },
+  {
+    title: t("home.menu.game.title"),
+    href: `${basePath}/en/game`,
+    desc1: t("home.menu.game.desc1"),
+    desc2: t("home.menu.game.desc2"),
+  },
 ];
 ---
 
-<Layout
-  title={t("meta.home.title")}
-  description={t("meta.home.description")}
->
+<Layout title={t("meta.home.title")} description={t("meta.home.description")}>
   <main>
-    <section
-      data-hero
-      class="relative h-screen w-full flex overflow-hidden"
-    >
+    <section data-hero class="relative h-screen w-full flex overflow-hidden">
       <div class="absolute top-4 right-4 z-20">
         <ThemeToggle client:load />
       </div>
@@ -76,7 +76,8 @@ const menuLinks = [
       <div
         class="absolute bottom-8 left-0 w-full flex flex-col items-center gap-1 z-10 pointer-events-none"
       >
-        <span class="text-xs text-gray-400 dark:text-gray-500 tracking-widest uppercase"
+        <span
+          class="text-xs text-gray-400 dark:text-gray-500 tracking-widest uppercase"
           >{t("home.scrollDown")}</span
         >
         <span class="block w-px h-8 bg-gray-300 dark:bg-gray-600 animate-pulse"
@@ -85,7 +86,7 @@ const menuLinks = [
     </section>
 
     <section class="min-h-screen py-20 px-4 max-w-5xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pt-20">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 pt-20">
         {
           menuLinks.map((link) => (
             <PageLinkBlock

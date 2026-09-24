@@ -1,0 +1,22 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Sudoku from "../../components/Sudoku";
+import { useTranslations } from "../../i18n/ui";
+
+const lang = "en";
+const t = useTranslations(lang);
+---
+
+<Layout title={t("meta.game.title")} description={t("meta.game.description")}>
+  <main class="min-h-screen pt-32 pb-20 px-6">
+    <div class="mb-10 text-center">
+      <h1 class="text-4xl font-black text-slate-900 dark:text-white mb-2">
+        {t("game.heading")}
+      </h1>
+      <p class="text-slate-500 dark:text-slate-400 font-medium">
+        {t("game.subheading")}
+      </p>
+    </div>
+    <Sudoku lang={lang} client:load />
+  </main>
+</Layout>
