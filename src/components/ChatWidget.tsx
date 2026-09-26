@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { MessageCircle, Send, X } from "lucide-react";
+import { Send, X } from "lucide-react";
 import { useTranslations, type Lang } from "../i18n/ui";
 import { chatFaqByLang, type ChatFaqEntry } from "../i18n/chatFaq";
 import { findFaqMatch } from "../lib/chat";
@@ -107,7 +107,7 @@ export default function ChatWidget({ lang = "ja" }: ChatWidgetProps) {
         <div
           role="dialog"
           aria-label={t("chat.title")}
-          className="absolute bottom-16 right-0 w-80 max-w-[calc(100vw-3rem)] h-[28rem] max-h-[70vh] flex flex-col rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-xl overflow-hidden"
+          className="absolute bottom-20 right-0 w-80 max-w-[calc(100vw-3rem)] h-[28rem] max-h-[70vh] flex flex-col rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-xl overflow-hidden"
         >
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800">
             <span className="font-bold text-gray-900 dark:text-white">
@@ -207,12 +207,12 @@ export default function ChatWidget({ lang = "ja" }: ChatWidgetProps) {
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label={isOpen ? t("chat.closeLabel") : t("chat.widgetLabel")}
         aria-expanded={isOpen}
-        className="w-14 h-14 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 flex items-center justify-center transition-colors"
+        className="w-16 h-16 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 flex items-center justify-center transition-colors text-3xl leading-none"
       >
         {isOpen ? (
-          <X className="w-6 h-6" />
+          <X className="w-7 h-7" />
         ) : (
-          <MessageCircle className="w-6 h-6" />
+          <span aria-hidden="true">👋</span>
         )}
       </button>
     </div>
