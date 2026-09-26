@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { selectGameFromHub } from "./helpers";
 
 // The solution to the "easy" puzzle in src/lib/sudoku.ts, duplicated here
 // (rather than exported from the app bundle) so playing the game in a real
@@ -23,9 +24,39 @@ test.describe("Home page — Game entry point", () => {
   });
 });
 
+test.describe("Game hub", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/portfolio/game");
+  });
+
+  test("shows 3 game options", async ({ page }) => {
+    await expect(
+      page.getByRole("heading", { name: "ゲームを選ぶ" }),
+    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "数独" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "シカク" })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "タイピング" }),
+    ).toBeVisible();
+  });
+
+  test("can select a game and navigate back to the selector", async ({
+    page,
+  }) => {
+    await selectGameFromHub(page, "シカク");
+
+    await page.getByRole("button", { name: "ゲーム一覧に戻る" }).click();
+    await expect(
+      page.getByRole("heading", { name: "ゲームを選ぶ" }),
+    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "数独" })).toBeVisible();
+  });
+});
+
 test.describe("Sudoku game", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/portfolio/game");
+    await selectGameFromHub(page, "数独");
 
     // The board is a client:load island; under parallel test load its click
     // handler can attach slightly after the SSR'd DOM becomes clickable.
@@ -135,5 +166,102 @@ test.describe("Sudoku game", () => {
       }
     }
     await expect(page.locator("[role='status']")).toHaveText("クリア！🎉");
+  });
+});
+
+test.describe("Shikaku game", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/portfolio/game");
+    await selectGameFromHub(page, "シカク");
+
+    // Same client:load warm-up strategy as the Sudoku suite above.
+    const probe = page.locator("[aria-label='1行 1列']");
+    await expect(async () => {
+      await probe.click();
+      await expect(probe).toHaveAttribute("aria-pressed", "true");
+    }).toPass({ timeout: 10000 });
+    // Deselect the anchor cell we just clicked as a probe so it doesn't
+    // interfere with the actual test steps below.
+    await probe.click();
+    await expect(probe).toHaveAttribute("aria-pressed", "false");
+  });
+
+  test("renders a grid and a difficulty selector", async ({ page }) => {
+    await expect(page.getByRole("heading", { name: "シカク" })).toBeVisible();
+    await expect(page.locator("button[aria-label*='行']")).toHaveCount(25);
+    for (const name of ["かんたん", "ふつう", "むずかしい"]) {
+      await expect(page.getByRole("button", { name })).toBeVisible();
+    }
+  });
+
+  test("placing a correct rectangle covers all of its cells", async ({
+    page,
+  }) => {
+    // The easy puzzle's clue at (row 2, col 1 in 1-indexed terms) = 4 is
+    // solved by the 2x2 rectangle from (1,1) to (2,2).
+    await page.locator("[aria-label='1行 1列']").click();
+    await page.locator("[aria-label='2行 2列']").click();
+
+    // Every cell in that rectangle should now offer a "remove" affordance,
+    // proving the whole 2x2 area was covered, not just the two clicks.
+    await expect(
+      page.locator("[aria-label='1行 2列の長方形を削除']"),
+    ).toBeVisible();
+    await expect(
+      page.locator("[aria-label='2行 1列の長方形を削除']"),
+    ).toBeVisible();
+  });
+
+  test("switching difficulty resets placed rectangles", async ({ page }) => {
+    await page.locator("[aria-label='1行 1列']").click();
+    await page.locator("[aria-label='2行 2列']").click();
+    await expect(
+      page.locator("[aria-label='1行 2列の長方形を削除']"),
+    ).toBeVisible();
+
+    await page.getByRole("button", { name: "ふつう" }).click();
+    await expect(page.locator("button[aria-label*='行']")).toHaveCount(36);
+    await expect(page.locator("[aria-label='1行 1列']")).toBeVisible();
+  });
+});
+
+test.describe("Typing game", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/portfolio/game");
+    await selectGameFromHub(page, "タイピング");
+    await expect(page.getByLabel("入力欄")).toBeVisible();
+  });
+
+  test("renders the prompt passage and the difficulty selector", async ({
+    page,
+  }) => {
+    await expect(
+      page.getByRole("heading", { name: "タイピング" }),
+    ).toBeVisible();
+    await expect(
+      page.locator("p[aria-hidden='true']", {
+        hasText: "The quick brown fox jumps over the lazy dog.",
+      }),
+    ).toBeVisible();
+    for (const name of ["かんたん", "ふつう", "むずかしい"]) {
+      await expect(page.getByRole("button", { name })).toBeVisible();
+    }
+  });
+
+  test("typing updates per-character highlighting", async ({ page }) => {
+    const input = page.getByLabel("入力欄");
+    await input.pressSequentially("The q", { delay: 20 });
+
+    const chars = page.locator("p[aria-hidden='true'] span");
+    await expect(chars.nth(0)).toHaveClass(/text-emerald-600/);
+    await expect(chars.nth(10)).toHaveClass(/text-gray-400/);
+  });
+
+  test("completing the passage shows a WPM/accuracy result", async ({
+    page,
+  }) => {
+    const input = page.getByLabel("入力欄");
+    await input.fill("The quick brown fox jumps over the lazy dog.");
+    await expect(page.locator("[role='status']")).toContainText("WPM");
   });
 });
