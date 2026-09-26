@@ -23,7 +23,9 @@ describe("shapeBlogPost", () => {
   });
 
   it("returns null when there is no title (nothing meaningful to render)", () => {
-    expect(shapeBlogPost("https://zenn.dev/x", { ogDescription: "desc" })).toBeNull();
+    expect(
+      shapeBlogPost("https://zenn.dev/x", { ogDescription: "desc" }),
+    ).toBeNull();
     expect(shapeBlogPost("https://zenn.dev/x", undefined)).toBeNull();
     expect(shapeBlogPost("https://zenn.dev/x", null)).toBeNull();
   });
@@ -38,7 +40,9 @@ describe("shapeBlogPost", () => {
       ogTitle: "Title",
       requestUrl: "https://zenn.dev/kattu/articles/from-request",
     });
-    expect(withRequestUrl?.url).toBe("https://zenn.dev/kattu/articles/from-request");
+    expect(withRequestUrl?.url).toBe(
+      "https://zenn.dev/kattu/articles/from-request",
+    );
 
     const withNeither = shapeBlogPost("https://fallback.example/x", {
       ogTitle: "Title",
@@ -47,7 +51,9 @@ describe("shapeBlogPost", () => {
   });
 
   it("returns a null image when ogImage is missing or empty", () => {
-    expect(shapeBlogPost("https://zenn.dev/x", { ogTitle: "T" })?.image).toBeNull();
+    expect(
+      shapeBlogPost("https://zenn.dev/x", { ogTitle: "T" })?.image,
+    ).toBeNull();
     expect(
       shapeBlogPost("https://zenn.dev/x", { ogTitle: "T", ogImage: [] })?.image,
     ).toBeNull();
@@ -62,7 +68,10 @@ describe("fetchBlogPosts", () => {
     ogs
       .mockResolvedValueOnce({
         error: false,
-        result: { ogTitle: "First Post", ogImage: [{ url: "https://a/img.png" }] },
+        result: {
+          ogTitle: "First Post",
+          ogImage: [{ url: "https://a/img.png" }],
+        },
       })
       .mockRejectedValueOnce(new Error("network error"))
       .mockResolvedValueOnce({
