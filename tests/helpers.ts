@@ -1,4 +1,20 @@
-import { type Page, test } from "@playwright/test";
+import { type Page, expect, test } from "@playwright/test";
+
+/**
+ * Selects a game from the /game hub's selection screen by its accessible
+ * name (e.g. "数独", "シカク", "タイピング"). The hub is itself a
+ * client:load island, so on a fresh page load the very first click can
+ * land before React finishes hydrating and attaching the click handler.
+ * Retry the click until the resulting game's heading actually shows up.
+ */
+export async function selectGameFromHub(page: Page, name: string) {
+  await expect(async () => {
+    await page.getByRole("button", { name }).click();
+    await expect(page.getByRole("heading", { name })).toBeVisible({
+      timeout: 1000,
+    });
+  }).toPass({ timeout: 10000 });
+}
 
 /**
  * Opens the OSS Contribution tab and drills into the first repo card.
