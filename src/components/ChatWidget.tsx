@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Send, X } from "lucide-react";
+import { MessageSquare, Send, X } from "lucide-react";
 import { useTranslations, type Lang } from "../i18n/ui";
 import { chatFaqByLang, type ChatFaqEntry } from "../i18n/chatFaq";
 import { findFaqMatch } from "../lib/chat";
@@ -207,12 +207,12 @@ export default function ChatWidget({ lang = "ja" }: ChatWidgetProps) {
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label={isOpen ? t("chat.closeLabel") : t("chat.widgetLabel")}
         aria-expanded={isOpen}
-        className="w-16 h-16 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 flex items-center justify-center transition-colors text-3xl leading-none"
+        className="w-16 h-16 rounded-full bg-sky-500 text-white shadow-lg hover:bg-sky-600 flex items-center justify-center transition-colors"
       >
         {isOpen ? (
           <X className="w-7 h-7" />
         ) : (
-          <span aria-hidden="true">👋</span>
+          <MessageSquare className="w-7 h-7" />
         )}
       </button>
     </div>
