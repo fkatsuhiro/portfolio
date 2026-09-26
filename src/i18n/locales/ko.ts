@@ -14,7 +14,8 @@ export const ko: UIContent = {
   "meta.talks.description":
     "TSKaigi 및 React Tokyo Fes를 포함한 기술 컨퍼런스에서의 강연 및 발표.",
   "meta.game.title": "게임",
-  "meta.game.description": "스도쿠, 시카쿠, 타자 연습을 즐길 수 있는 미니 게임 모음.",
+  "meta.game.description":
+    "스도쿠, 시카쿠, 타자 연습을 즐길 수 있는 미니 게임 모음.",
   "meta.analytics.title": "분석",
   "meta.analytics.description": "이 사이트의 방문자 리포트입니다.",
   "home.role": "프론트엔드 개발자",

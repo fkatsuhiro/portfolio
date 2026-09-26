@@ -109,9 +109,7 @@ export function rectContainsCell(
   row: number,
   col: number,
 ): boolean {
-  return (
-    row >= rect.r1 && row <= rect.r2 && col >= rect.c1 && col <= rect.c2
-  );
+  return row >= rect.r1 && row <= rect.r2 && col >= rect.c1 && col <= rect.c2;
 }
 
 export function isRectInBounds(

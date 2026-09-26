@@ -121,7 +121,10 @@ export default function TypingGame({ lang = "ja" }: TypingGameProps) {
         aria-hidden="true"
         className="mb-3 text-center text-sm font-semibold text-gray-500 dark:text-gray-400"
       >
-        {t("game.typing.elapsed").replace("{sec}", (elapsedMs / 1000).toFixed(1))}
+        {t("game.typing.elapsed").replace(
+          "{sec}",
+          (elapsedMs / 1000).toFixed(1),
+        )}
       </p>
 
       <p

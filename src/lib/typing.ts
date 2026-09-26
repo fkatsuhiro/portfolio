@@ -77,7 +77,8 @@ export function computeStats(
     if (typed[i] === target[i]) correct++;
   }
   const totalTyped = typed.length;
-  const accuracy = totalTyped === 0 ? 0 : Math.round((correct / totalTyped) * 100);
+  const accuracy =
+    totalTyped === 0 ? 0 : Math.round((correct / totalTyped) * 100);
   const minutes = elapsedMs / 60000;
   const wpm = minutes > 0 ? Math.round(correct / 5 / minutes) : 0;
   return { correctChars: correct, totalTyped, accuracy, wpm };

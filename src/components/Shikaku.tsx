@@ -44,7 +44,10 @@ export default function Shikaku({ lang = "ja" }: ShikakuProps) {
   const [anchor, setAnchor] = useState<[number, number] | null>(null);
 
   const puzzle = useMemo(() => getPuzzle(difficulty), [difficulty]);
-  const statuses = useMemo(() => getRectStatuses(puzzle, rects), [puzzle, rects]);
+  const statuses = useMemo(
+    () => getRectStatuses(puzzle, rects),
+    [puzzle, rects],
+  );
   const solved = useMemo(() => isSolved(puzzle, rects), [puzzle, rects]);
 
   const clueGrid = useMemo(() => {

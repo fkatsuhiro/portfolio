@@ -26,7 +26,9 @@ describe("TYPING_PROMPTS", () => {
   it("the medium and hard passages use more punctuation than easy", () => {
     const punctuationCount = (id: (typeof TYPING_PROMPTS)[number]["id"]) =>
       (getPrompt(id).text.match(/[,;:]/g) ?? []).length;
-    expect(punctuationCount("medium")).toBeGreaterThan(punctuationCount("easy"));
+    expect(punctuationCount("medium")).toBeGreaterThan(
+      punctuationCount("easy"),
+    );
     expect(punctuationCount("hard")).toBeGreaterThan(punctuationCount("easy"));
   });
 
@@ -38,11 +40,19 @@ describe("TYPING_PROMPTS", () => {
 
 describe("getCharStatuses", () => {
   it("marks untouched characters as pending", () => {
-    expect(getCharStatuses("abc", "")).toEqual(["pending", "pending", "pending"]);
+    expect(getCharStatuses("abc", "")).toEqual([
+      "pending",
+      "pending",
+      "pending",
+    ]);
   });
 
   it("marks matching typed characters as correct", () => {
-    expect(getCharStatuses("abc", "ab")).toEqual(["correct", "correct", "pending"]);
+    expect(getCharStatuses("abc", "ab")).toEqual([
+      "correct",
+      "correct",
+      "pending",
+    ]);
   });
 
   it("marks mismatched typed characters as incorrect", () => {

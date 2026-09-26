@@ -70,7 +70,9 @@ function countSolutions(
 
         const rect: ShikakuRect = { r1: r, c1: c, r2, c2 };
         const area = h * w;
-        const inside = clues.filter((cl) => rectContainsCell(rect, cl.row, cl.col));
+        const inside = clues.filter((cl) =>
+          rectContainsCell(rect, cl.row, cl.col),
+        );
         if (inside.length !== 1 || inside[0].value !== area) continue;
 
         for (let rr = r; rr <= r2; rr++)
