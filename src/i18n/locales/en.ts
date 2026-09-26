@@ -17,6 +17,9 @@ export const en: UIContent = {
   "meta.game.description": "A little Sudoku mini-game.",
   "meta.analytics.title": "Analytics",
   "meta.analytics.description": "A traffic report for this site.",
+  "meta.blogs.title": "Blogs",
+  "meta.blogs.description":
+    "A selection of Furuichi Katsuhiro's articles on Zenn about frontend engineering.",
   "home.role": "Frontend Developer",
   "home.scrollDown": "Scroll Down",
   "home.menu.about.title": "About",
@@ -34,6 +37,9 @@ export const en: UIContent = {
   "home.menu.analytics.title": "Analytics",
   "home.menu.analytics.desc1": "Traffic report.",
   "home.menu.analytics.desc2": "See how this site is being visited.",
+  "home.menu.blogs.title": "Blogs",
+  "home.menu.blogs.desc1": "Writing.",
+  "home.menu.blogs.desc2": "Selected articles from my Zenn blog.",
   "about.bio": "I'm interested in web frontend development.",
   "about.techSentence":
     "I mainly develop with React, Astro, and TypeScript. Astro is my favorite.",
@@ -68,6 +74,7 @@ export const en: UIContent = {
   "works.status.merged": "Merged",
   "works.status.closed": "Closed",
   "nav.game": "Game",
+  "nav.blogs": "Blogs",
   "game.heading": "Sudoku",
   "game.subheading": "Select a cell, then pick a number from the cards below.",
   "game.selectPuzzle": "Select a puzzle",
@@ -91,6 +98,9 @@ export const en: UIContent = {
   "analytics.noTopPages": "No data yet.",
   "analytics.notConfigured":
     "This site isn't connected to Google Analytics yet. Once it is, a traffic report will show up here.",
+  "blogs.heading": "Blogs",
+  "blogs.subheading": "Selected articles from my Zenn blog.",
+  "blogs.readAria": "Read {title} on Zenn",
   "chat.widgetLabel": "Open chat",
   "chat.closeLabel": "Close chat",
   "chat.title": "Ask me something",
