@@ -76,6 +76,7 @@ export const ko: UIContent = {
   "works.status.closed": "닫힘",
   "nav.game": "게임",
   "nav.blogs": "블로그",
+  "nav.analytics": "분석",
   "game.heading": "스도쿠",
   "game.subheading": "칸을 선택한 뒤 아래 카드에서 숫자를 선택하세요.",
   "game.selectPuzzle": "퍼즐 선택",

@@ -83,6 +83,9 @@ export default function Header({
     { name: t("nav.about"), path: "about" },
     { name: t("nav.works"), path: "works" },
     { name: t("nav.talks"), path: "talks" },
+    { name: t("nav.blogs"), path: "blogs" },
+    { name: t("nav.analytics"), path: "analytics" },
+    { name: t("nav.game"), path: "game" },
   ];
 
   const langSelectAria = t("nav.langSelectAria");

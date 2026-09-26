@@ -74,6 +74,7 @@ export const ja = {
   "works.status.closed": "Closed",
   "nav.game": "Game",
   "nav.blogs": "Blogs",
+  "nav.analytics": "Analytics",
   "game.heading": "数独",
   "game.subheading": "セルを選んで、下のカードから数字を選んでください。",
   "game.selectPuzzle": "パズルを選択",

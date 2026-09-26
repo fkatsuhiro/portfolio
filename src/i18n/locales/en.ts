@@ -76,6 +76,7 @@ export const en: UIContent = {
   "works.status.closed": "Closed",
   "nav.game": "Game",
   "nav.blogs": "Blogs",
+  "nav.analytics": "Analytics",
   "game.heading": "Sudoku",
   "game.subheading": "Select a cell, then pick a number from the cards below.",
   "game.selectPuzzle": "Select a puzzle",
