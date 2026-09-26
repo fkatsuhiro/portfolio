@@ -223,45 +223,118 @@ test.describe("Shikaku game", () => {
     await expect(page.locator("button[aria-label*='行']")).toHaveCount(36);
     await expect(page.locator("[aria-label='1行 1列']")).toBeVisible();
   });
+
+  test("filling in the full correct solution shows the solved message and locks the board", async ({
+    page,
+  }) => {
+    // The unique solution to the "easy" puzzle in src/lib/shikaku.ts,
+    // expressed as (anchor, opposite corner) 1-indexed cell clicks.
+    const rects: [string, string][] = [
+      ["1行 1列", "2行 2列"],
+      ["1行 3列", "5行 3列"],
+      ["1行 4列", "5行 4列"],
+      ["1行 5列", "5行 5列"],
+      ["3行 1列", "4行 2列"],
+      ["5行 1列", "5行 2列"],
+    ];
+    for (const [a, b] of rects) {
+      await page.locator(`[aria-label='${a}']`).click();
+      await page.locator(`[aria-label='${b}']`).click();
+    }
+
+    await expect(page.locator("[role='status']")).toHaveText("クリア！🎉");
+
+    // The board should no longer be editable once solved: every cell is a
+    // disabled button now, so even a forced click can't fire its handler.
+    await expect(
+      page.locator("[aria-label='1行 1列の長方形を削除']"),
+    ).toBeDisabled();
+    await page
+      .locator("[aria-label='1行 1列の長方形を削除']")
+      .click({ force: true });
+    await expect(page.locator("[role='status']")).toHaveText("クリア！🎉");
+  });
 });
 
 test.describe("Typing game", () => {
+  // The "easy" round's 10 prompts, in order, duplicated from
+  // src/lib/typing.ts. These are the on-screen prompts the player is
+  // meant to type (not a hidden solution), so hardcoding them here is
+  // just a fixture, unlike the Sudoku/Shikaku solutions above.
+  const EASY_PROMPTS = [
+    "cat",
+    "sun",
+    "tree",
+    "book",
+    "chair",
+    "green",
+    "happy",
+    "river",
+    "cloud",
+    "smile",
+  ];
+
   test.beforeEach(async ({ page }) => {
     await page.goto("/portfolio/game");
     await selectGameFromHub(page, "タイピング");
     await expect(page.getByLabel("入力欄")).toBeVisible();
   });
 
-  test("renders the prompt passage and the difficulty selector", async ({
+  test("renders the progress, countdown, and difficulty selector before starting", async ({
     page,
   }) => {
     await expect(
       page.getByRole("heading", { name: "タイピング" }),
     ).toBeVisible();
-    await expect(
-      page.locator("p[aria-hidden='true']", {
-        hasText: "The quick brown fox jumps over the lazy dog.",
-      }),
-    ).toBeVisible();
+    await expect(page.getByText("1 / 10")).toBeVisible();
     for (const name of ["かんたん", "ふつう", "むずかしい"]) {
       await expect(page.getByRole("button", { name })).toBeVisible();
     }
+    await expect(page.getByRole("button", { name: "スタート" })).toBeVisible();
+    await expect(page.getByLabel("入力欄")).toBeDisabled();
   });
 
-  test("typing updates per-character highlighting", async ({ page }) => {
-    const input = page.getByLabel("入力欄");
-    await input.pressSequentially("The q", { delay: 20 });
-
-    const chars = page.locator("p[aria-hidden='true'] span");
-    await expect(chars.nth(0)).toHaveClass(/text-emerald-600/);
-    await expect(chars.nth(10)).toHaveClass(/text-gray-400/);
-  });
-
-  test("completing the passage shows a WPM/accuracy result", async ({
+  test("starting enables typing, highlights characters, and advances on an exact match", async ({
     page,
   }) => {
+    await page.getByRole("button", { name: "スタート" }).click();
     const input = page.getByLabel("入力欄");
-    await input.fill("The quick brown fox jumps over the lazy dog.");
+    await expect(input).toBeEnabled();
+
+    // First prompt is "cat"; typing "ca" leaves the 3rd char pending.
+    await input.pressSequentially("ca", { delay: 20 });
+    const chars = page.locator("p[aria-hidden='true'] span");
+    await expect(chars.nth(0)).toHaveClass(/text-emerald-600/);
+    await expect(chars.nth(2)).toHaveClass(/text-gray-400/);
+
+    // Completing the exact match auto-advances to prompt 2/10 ("sun").
+    await input.pressSequentially("t");
+    await expect(page.getByText("2 / 10")).toBeVisible();
+    await expect(input).toHaveValue("");
+  });
+
+  test("clearing all 10 prompts before time runs out shows a win result", async ({
+    page,
+  }) => {
+    await page.getByRole("button", { name: "スタート" }).click();
+    const input = page.getByLabel("入力欄");
+    for (const word of EASY_PROMPTS) {
+      await input.fill(word);
+    }
     await expect(page.locator("[role='status']")).toContainText("WPM");
+    await expect(input).toBeDisabled();
+  });
+
+  test("switching difficulty mid-round resets to the not-started state", async ({
+    page,
+  }) => {
+    await page.getByRole("button", { name: "スタート" }).click();
+    const input = page.getByLabel("入力欄");
+    await input.pressSequentially("c");
+
+    await page.getByRole("button", { name: "ふつう" }).click();
+    await expect(page.getByText("1 / 10")).toBeVisible();
+    await expect(page.getByRole("button", { name: "スタート" })).toBeVisible();
+    await expect(input).toBeDisabled();
   });
 });
