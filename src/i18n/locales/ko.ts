@@ -17,6 +17,9 @@ export const ko: UIContent = {
   "meta.game.description": "스도쿠 미니 게임.",
   "meta.analytics.title": "분석",
   "meta.analytics.description": "이 사이트의 방문자 리포트입니다.",
+  "meta.blogs.title": "블로그",
+  "meta.blogs.description":
+    "후루이치 카츠히로가 Zenn에 작성한 프론트엔드 개발 관련 아티클 모음.",
   "home.role": "프론트엔드 개발자",
   "home.scrollDown": "아래로 스크롤",
   "home.menu.about.title": "정보",
@@ -34,6 +37,9 @@ export const ko: UIContent = {
   "home.menu.analytics.title": "분석",
   "home.menu.analytics.desc1": "방문자 리포트.",
   "home.menu.analytics.desc2": "사이트 방문 현황을 확인해보세요.",
+  "home.menu.blogs.title": "블로그",
+  "home.menu.blogs.desc1": "작성한 글.",
+  "home.menu.blogs.desc2": "Zenn에 작성한 아티클을 모아봤습니다.",
   "about.bio": "웹 프론트엔드에 관심이 있습니다.",
   "about.techSentence":
     "주로 React, Astro, TypeScript를 사용하여 개발하고 있습니다. 특히 Astro를 좋아합니다.",
@@ -68,6 +74,7 @@ export const ko: UIContent = {
   "works.status.merged": "병합됨",
   "works.status.closed": "닫힘",
   "nav.game": "게임",
+  "nav.blogs": "블로그",
   "game.heading": "스도쿠",
   "game.subheading": "칸을 선택한 뒤 아래 카드에서 숫자를 선택하세요.",
   "game.selectPuzzle": "퍼즐 선택",
@@ -91,6 +98,9 @@ export const ko: UIContent = {
   "analytics.noTopPages": "데이터가 없습니다.",
   "analytics.notConfigured":
     "아직 Google Analytics와 연동되지 않았습니다. 연동이 완료되면 이곳에 방문자 리포트가 표시됩니다.",
+  "blogs.heading": "블로그",
+  "blogs.subheading": "Zenn에 작성한 아티클을 모아봤습니다.",
+  "blogs.readAria": "{title} Zenn에서 읽기",
   "chat.widgetLabel": "채팅 열기",
   "chat.closeLabel": "채팅 닫기",
   "chat.title": "물어보기",

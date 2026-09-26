@@ -15,6 +15,9 @@ export const ja = {
   "meta.game.description": "数独で遊べるミニゲーム。",
   "meta.analytics.title": "Analytics",
   "meta.analytics.description": "このサイトのアクセス状況レポート。",
+  "meta.blogs.title": "Blogs",
+  "meta.blogs.description":
+    "古市克宏がZennに投稿した、フロントエンド開発に関する記事の一覧。",
   "home.role": "Frontend Developer",
   "home.scrollDown": "Scroll Down",
   "home.menu.about.title": "About",
@@ -32,6 +35,9 @@ export const ja = {
   "home.menu.analytics.title": "Analytics",
   "home.menu.analytics.desc1": "アクセス解析。",
   "home.menu.analytics.desc2": "サイトのアクセス状況をレポートで確認できます。",
+  "home.menu.blogs.title": "Blogs",
+  "home.menu.blogs.desc1": "執筆記事。",
+  "home.menu.blogs.desc2": "Zennで書いた記事をピックアップしています。",
   "about.bio": "Webフロントエンドに興味があります。",
   "about.techSentence":
     "普段は React, Astro, TypeScript を用いた開発を行なっています。特にAstroが好きです。",
@@ -67,6 +73,7 @@ export const ja = {
   "works.status.merged": "Merged",
   "works.status.closed": "Closed",
   "nav.game": "Game",
+  "nav.blogs": "Blogs",
   "game.heading": "数独",
   "game.subheading": "セルを選んで、下のカードから数字を選んでください。",
   "game.selectPuzzle": "パズルを選択",
@@ -90,6 +97,9 @@ export const ja = {
   "analytics.noTopPages": "データがありません。",
   "analytics.notConfigured":
     "Google Analyticsとまだ連携していません。連携が完了すると、ここにアクセスレポートが表示されます。",
+  "blogs.heading": "Blogs",
+  "blogs.subheading": "Zennで書いた記事をピックアップしています。",
+  "blogs.readAria": "{title} をZennで読む",
   "chat.widgetLabel": "チャットを開く",
   "chat.closeLabel": "チャットを閉じる",
   "chat.title": "質問してみる",

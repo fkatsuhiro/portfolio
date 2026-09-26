@@ -4,10 +4,9 @@ import { Image } from "astro:assets";
 import ThemeToggle from "../components/ThemeToggle";
 import HomeImage from "../assets/homeImg.png";
 import PageLinkBlock from "../components/PageLinkBlock";
-import { useTranslations, type Lang } from "../i18n/ui";
+import { useTranslations } from "../i18n/ui";
 
-const lang = (Astro.currentLocale ?? "ja") as Lang;
-const t = useTranslations(lang);
+const t = useTranslations("en");
 
 const basePath = import.meta.env.BASE_URL;
 
@@ -31,16 +30,22 @@ const menuLinks = [
     desc2: t("home.menu.talks.desc2"),
   },
   {
-    title: t("home.menu.game.title"),
-    href: `${basePath}/game`,
-    desc1: t("home.menu.game.desc1"),
-    desc2: t("home.menu.game.desc2"),
+    title: t("home.menu.blogs.title"),
+    href: `${basePath}/blogs`,
+    desc1: t("home.menu.blogs.desc1"),
+    desc2: t("home.menu.blogs.desc2"),
   },
   {
     title: t("home.menu.analytics.title"),
     href: `${basePath}/analytics`,
     desc1: t("home.menu.analytics.desc1"),
     desc2: t("home.menu.analytics.desc2"),
+  },
+  {
+    title: t("home.menu.game.title"),
+    href: `${basePath}/game`,
+    desc1: t("home.menu.game.desc1"),
+    desc2: t("home.menu.game.desc2"),
   },
 ];
 ---
