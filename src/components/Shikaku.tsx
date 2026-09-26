@@ -82,6 +82,7 @@ export default function Shikaku({ lang = "ja" }: ShikakuProps) {
   }
 
   function handleCellClick(row: number, col: number) {
+    if (solved) return;
     const existingIndex = rects.findIndex((rect) =>
       rectContainsCell(rect, row, col),
     );
@@ -136,10 +137,26 @@ export default function Shikaku({ lang = "ja" }: ShikakuProps) {
         </button>
       </div>
 
+      {/* Kept right under the controls (not just below the grid) so a win
+          on a tall/hard puzzle is never scrolled out of view. */}
+      <p
+        role="status"
+        aria-live="polite"
+        className={`mb-4 text-center text-lg font-bold h-7 transition-colors ${
+          solved ? "text-emerald-600 dark:text-emerald-400" : "text-transparent"
+        }`}
+      >
+        {solved ? t("game.solved") : ""}
+      </p>
+
       <div
         role="group"
         aria-label={t("game.shikaku.heading")}
-        className="mx-auto w-fit border-2 border-gray-800 dark:border-gray-200 rounded-md overflow-hidden"
+        className={`mx-auto w-fit border-2 rounded-md overflow-hidden transition-colors ${
+          solved
+            ? "border-emerald-500 dark:border-emerald-400"
+            : "border-gray-800 dark:border-gray-200"
+        }`}
         style={{
           display: "grid",
           gridTemplateColumns: `repeat(${puzzle.cols}, minmax(0, 1fr))`,
@@ -166,23 +183,27 @@ export default function Shikaku({ lang = "ja" }: ShikakuProps) {
                 key={`${r}-${c}`}
                 type="button"
                 onClick={() => handleCellClick(r, c)}
+                disabled={solved}
                 aria-label={ariaLabel}
                 aria-pressed={isAnchor}
                 className={[
-                  "w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-sm sm:text-base font-mono border border-gray-200 dark:border-gray-700 cursor-pointer",
+                  "w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-sm sm:text-base font-mono border border-gray-200 dark:border-gray-700",
+                  solved ? "cursor-default" : "cursor-pointer",
                   clueValue !== null
                     ? "font-bold text-gray-900 dark:text-white"
                     : "text-gray-400 dark:text-gray-600",
-                  rectIndex !== -1
-                    ? RECT_STYLES[rectIndex % RECT_STYLES.length]
-                    : "bg-white dark:bg-gray-900",
+                  solved
+                    ? "!bg-emerald-100 dark:!bg-emerald-900/40 !border-emerald-400 dark:!border-emerald-500 border-2"
+                    : rectIndex !== -1
+                      ? RECT_STYLES[rectIndex % RECT_STYLES.length]
+                      : "bg-white dark:bg-gray-900",
                   isAnchor
                     ? "outline outline-2 outline-blue-500 -outline-offset-2 z-10 relative"
                     : "",
-                  isInvalidRect
+                  !solved && isInvalidRect
                     ? "!bg-red-50 dark:!bg-red-950/40 !border-red-500 dark:!border-red-400 !text-red-600 dark:!text-red-400"
                     : "",
-                  isValidRect ? "border-2" : "",
+                  !solved && isValidRect ? "border-2" : "",
                 ]
                   .filter(Boolean)
                   .join(" ")}
@@ -193,14 +214,6 @@ export default function Shikaku({ lang = "ja" }: ShikakuProps) {
           }),
         )}
       </div>
-
-      <p
-        role="status"
-        aria-live="polite"
-        className="mt-6 text-center text-lg font-bold text-emerald-600 dark:text-emerald-400 h-7"
-      >
-        {solved ? t("game.solved") : ""}
-      </p>
     </div>
   );
 }
