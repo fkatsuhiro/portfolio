@@ -63,6 +63,7 @@ export const en: UIContent = {
   "nav.homeAria": "Back to Home",
   "nav.siteHeaderAria": "Site Header",
   "nav.mainNavAria": "Main Navigation",
+  "nav.menuAria": "Menu",
   "works.tabs.product": "Product",
   "works.tabs.contribution": "OSS Contribution",
   "works.viewProject": "View Project →",

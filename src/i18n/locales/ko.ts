@@ -63,6 +63,7 @@ export const ko: UIContent = {
   "nav.homeAria": "홈으로 돌아가기",
   "nav.siteHeaderAria": "사이트 헤더",
   "nav.mainNavAria": "메인 네비게이션",
+  "nav.menuAria": "메뉴",
   "works.tabs.product": "제품",
   "works.tabs.contribution": "OSS 기여",
   "works.viewProject": "프로젝트 보기 →",

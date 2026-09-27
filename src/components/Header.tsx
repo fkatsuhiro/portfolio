@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import Home from "./../assets/icon.png";
 import { useTranslations, languages, type Lang } from "../i18n/ui";
@@ -14,6 +15,7 @@ export default function Header({
 }: HeaderProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const basePath = import.meta.env.BASE_URL;
   const ticking = useRef(false);
   const langMenuRef = useRef<HTMLDivElement>(null);
@@ -36,6 +38,18 @@ export default function Header({
       document.removeEventListener("keydown", handleKey);
     };
   }, [isLangMenuOpen]);
+
+  // Closing the mobile nav panel on Escape mirrors the language menu above;
+  // outside-click isn't needed since the panel is a full-width block under
+  // the header rather than a floating popover, so there's no "outside".
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsMobileMenuOpen(false);
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     const baseClean = basePath.replace(/\/$/, "");
@@ -116,8 +130,11 @@ export default function Header({
             className="w-8 h-8 rounded-full object-cover"
           />
         </a>
-        <div className="flex items-center gap-4">
-          <nav aria-label={t("nav.mainNavAria")} className="flex gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
+          <nav
+            aria-label={t("nav.mainNavAria")}
+            className="hidden md:flex gap-4"
+          >
             {navLinks.map((link) => (
               <a
                 key={link.path}
@@ -179,8 +196,41 @@ export default function Header({
             )}
           </div>
           <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            className="p-2 -mr-2 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors md:hidden"
+            aria-label={t("nav.menuAria")}
+            aria-haspopup="true"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-nav"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-5 h-5" aria-hidden="true" />
+            ) : (
+              <Menu className="w-5 h-5" aria-hidden="true" />
+            )}
+          </button>
         </div>
       </div>
+      {isMobileMenuOpen && (
+        <nav
+          id="mobile-nav"
+          aria-label={t("nav.mainNavAria")}
+          className="md:hidden border-t border-gray-200 dark:border-gray-800 px-4 py-2 flex flex-col"
+        >
+          {navLinks.map((link) => (
+            <a
+              key={link.path}
+              href={`${prefix}/${link.path}`}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              {link.name}
+            </a>
+          ))}
+        </nav>
+      )}
     </header>
   );
 }
