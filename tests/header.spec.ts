@@ -59,3 +59,62 @@ test.describe("Header Language Selector", () => {
     await expect(page.getByRole("listbox")).not.toBeVisible();
   });
 });
+
+test.describe("Header — mobile nav", () => {
+  test.use({ viewport: { width: 375, height: 812 } });
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/portfolio/about");
+  });
+
+  test("does not cause horizontal overflow at phone width", async ({
+    page,
+  }) => {
+    const scrollWidth = await page.evaluate(
+      () => document.documentElement.scrollWidth,
+    );
+    const clientWidth = await page.evaluate(
+      () => document.documentElement.clientWidth,
+    );
+    expect(scrollWidth).toBeLessThanOrEqual(clientWidth);
+  });
+
+  test("hides the inline nav links and shows a menu toggle instead", async ({
+    page,
+  }) => {
+    await expect(page.getByRole("link", { name: "Works" })).not.toBeVisible();
+    await expect(page.getByRole("button", { name: "メニュー" })).toBeVisible();
+  });
+
+  test("opening the menu toggle reveals every nav link, and it closes again on selection", async ({
+    page,
+  }) => {
+    const toggle = page.getByRole("button", { name: "メニュー" });
+    await toggle.click();
+    await expect(toggle).toHaveAttribute("aria-expanded", "true");
+
+    const mobileNav = page.locator("#mobile-nav");
+    for (const name of [
+      "About",
+      "Works",
+      "Talks",
+      "Blogs",
+      "Analytics",
+      "Game",
+    ]) {
+      await expect(mobileNav.getByRole("link", { name })).toBeVisible();
+    }
+
+    await mobileNav.getByRole("link", { name: "Works" }).click();
+    await expect(page).toHaveURL(/\/portfolio\/works\/?$/);
+  });
+
+  test("closes the menu when Escape is pressed", async ({ page }) => {
+    const toggle = page.getByRole("button", { name: "メニュー" });
+    await toggle.click();
+    await expect(page.locator("#mobile-nav")).toBeVisible();
+
+    await page.keyboard.press("Escape");
+    await expect(page.locator("#mobile-nav")).not.toBeVisible();
+  });
+});
