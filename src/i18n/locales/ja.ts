@@ -61,6 +61,7 @@ export const ja = {
   "nav.homeAria": "ホームへ戻る",
   "nav.siteHeaderAria": "サイトヘッダー",
   "nav.mainNavAria": "メインナビゲーション",
+  "nav.menuAria": "メニュー",
   "works.tabs.product": "Product",
   "works.tabs.contribution": "OSS Contribution",
   "works.viewProject": "View Project →",
