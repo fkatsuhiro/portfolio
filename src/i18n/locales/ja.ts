@@ -136,6 +136,7 @@ export const ja = {
   "chat.tag.skills": "スキル",
   "chat.tag.works": "作品",
   "chat.tag.talks": "登壇",
+  "chat.tag.blogs": "ブログ",
   "chat.tag.hobbies": "趣味",
   "chat.tag.contact": "連絡先",
 } as const;

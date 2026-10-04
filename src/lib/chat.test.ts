@@ -61,6 +61,7 @@ describe("chatFaqByLang", () => {
         "skills",
         "works",
         "talks",
+        "blogs",
         "hobbies",
         "contact",
       ];
