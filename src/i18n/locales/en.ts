@@ -124,6 +124,7 @@ export const en: UIContent = {
   "blogs.heading": "Blogs",
   "blogs.subheading": "Selected articles from my Zenn blog.",
   "blogs.readAria": "Read {title} on Zenn",
+  "blogs.rss": "RSS Feed",
   "chat.widgetLabel": "Open chat",
   "chat.closeLabel": "Close chat",
   "chat.title": "Ask me something",

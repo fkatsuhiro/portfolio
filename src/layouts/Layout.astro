@@ -81,6 +81,12 @@ const jsonLd = {
     <link rel="canonical" href={canonicalURL} />
     <link
       rel="alternate"
+      type="application/rss+xml"
+      title="Furuichi Katsuhiro | Blogs"
+      href={`${base}/feed.xml`}
+    />
+    <link
+      rel="alternate"
       hreflang="ja"
       href={`${base}${pathname.replace(new RegExp(`^${base}(/en|/ko)?`), "") || "/"}`}
     />
