@@ -122,6 +122,7 @@ export const ja = {
   "blogs.heading": "Blogs",
   "blogs.subheading": "Zennで書いた記事をピックアップしています。",
   "blogs.readAria": "{title} をZennで読む",
+  "blogs.rss": "RSSフィード",
   "chat.widgetLabel": "チャットを開く",
   "chat.closeLabel": "チャットを閉じる",
   "chat.title": "質問してみる",

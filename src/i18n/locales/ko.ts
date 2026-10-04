@@ -124,6 +124,7 @@ export const ko: UIContent = {
   "blogs.heading": "블로그",
   "blogs.subheading": "Zenn에 작성한 아티클을 모아봤습니다.",
   "blogs.readAria": "{title} Zenn에서 읽기",
+  "blogs.rss": "RSS 피드",
   "chat.widgetLabel": "채팅 열기",
   "chat.closeLabel": "채팅 닫기",
   "chat.title": "물어보기",
