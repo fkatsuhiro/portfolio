@@ -4,10 +4,9 @@ import { a11yRoutes } from "../src/lib/a11yRoutes";
 
 test.describe("Accessibility (axe)", () => {
   for (const { path, label } of a11yRoutes) {
-    test(`${label} has no accessibility violations`, async (
-      { page },
-      testInfo,
-    ) => {
+    test(`${label} has no accessibility violations`, async ({
+      page,
+    }, testInfo) => {
       await page.goto(`/portfolio${path}`);
 
       const results = await new AxeBuilder({ page })
