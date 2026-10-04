@@ -12,7 +12,10 @@ export type HighScoreGameId = "sudoku" | "shikaku" | "typing";
 export type HighScoreDifficulty = "easy" | "medium" | "hard";
 
 /** Returns true when `candidate` is a better score than `current`. */
-export type HighScoreComparator = (candidate: number, current: number) => boolean;
+export type HighScoreComparator = (
+  candidate: number,
+  current: number,
+) => boolean;
 
 /** For metrics where a smaller number is better (e.g. solve time in ms). */
 export const lowerIsBetter: HighScoreComparator = (candidate, current) =>

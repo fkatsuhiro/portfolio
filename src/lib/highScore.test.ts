@@ -74,21 +74,36 @@ describe("getBestScore", () => {
 
 describe("setBestScoreIfBetter", () => {
   it("persists the first score ever recorded for a game/difficulty", () => {
-    const result = setBestScoreIfBetter("sudoku", "easy", 120_000, lowerIsBetter);
+    const result = setBestScoreIfBetter(
+      "sudoku",
+      "easy",
+      120_000,
+      lowerIsBetter,
+    );
     expect(result).toEqual({ best: 120_000, isNewBest: true });
     expect(getBestScore("sudoku", "easy")).toBe(120_000);
   });
 
   it("overwrites the stored best when the new value is an improvement", () => {
     setBestScoreIfBetter("sudoku", "easy", 120_000, lowerIsBetter);
-    const result = setBestScoreIfBetter("sudoku", "easy", 90_000, lowerIsBetter);
+    const result = setBestScoreIfBetter(
+      "sudoku",
+      "easy",
+      90_000,
+      lowerIsBetter,
+    );
     expect(result).toEqual({ best: 90_000, isNewBest: true });
     expect(getBestScore("sudoku", "easy")).toBe(90_000);
   });
 
   it("does not overwrite the stored best when the new value is worse", () => {
     setBestScoreIfBetter("sudoku", "easy", 90_000, lowerIsBetter);
-    const result = setBestScoreIfBetter("sudoku", "easy", 120_000, lowerIsBetter);
+    const result = setBestScoreIfBetter(
+      "sudoku",
+      "easy",
+      120_000,
+      lowerIsBetter,
+    );
     expect(result).toEqual({ best: 90_000, isNewBest: false });
     expect(getBestScore("sudoku", "easy")).toBe(90_000);
   });
