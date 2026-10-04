@@ -6,14 +6,7 @@ export interface ChatFaqLink {
 }
 
 export interface ChatFaqEntry {
-  id:
-    | "about"
-    | "skills"
-    | "works"
-    | "talks"
-    | "blogs"
-    | "hobbies"
-    | "contact";
+  id: "about" | "skills" | "works" | "talks" | "blogs" | "hobbies" | "contact";
   keywords: string[];
   answer: string;
   link?: ChatFaqLink;

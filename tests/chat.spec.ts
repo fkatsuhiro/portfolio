@@ -98,7 +98,9 @@ test.describe("Chat widget — blogs topic (ko locale)", () => {
     await page.getByRole("button", { name: "블로그" }).click();
     const log = page.locator("[role='log']");
     await expect(log).toContainText("블로그");
-    await expect(log).toContainText("Zenn에 프론트엔드 개발 관련 글을 쓰고 있습니다.");
+    await expect(log).toContainText(
+      "Zenn에 프론트엔드 개발 관련 글을 쓰고 있습니다.",
+    );
 
     const link = page
       .getByRole("dialog")
