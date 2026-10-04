@@ -121,6 +121,8 @@ export const ko: UIContent = {
   "analytics.noTopPages": "데이터가 없습니다.",
   "analytics.notConfigured":
     "아직 Google Analytics와 연동되지 않았습니다. 연동이 완료되면 이곳에 방문자 리포트가 표시됩니다.",
+  "analytics.vsPreviousPeriod": "이전 기간 대비",
+  "analytics.noChangeData": "비교 데이터 없음",
   "blogs.heading": "블로그",
   "blogs.subheading": "Zenn에 작성한 아티클을 모아봤습니다.",
   "blogs.readAria": "{title} Zenn에서 읽기",
