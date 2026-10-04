@@ -1,6 +1,12 @@
 import { useMemo, useState } from "react";
 import { useTranslations, type Lang } from "../i18n/ui";
 import {
+  formatElapsedSeconds,
+  getBestScore,
+  lowerIsBetter,
+  setBestScoreIfBetter,
+} from "../lib/highScore";
+import {
   SHIKAKU_PUZZLES,
   getPuzzle,
   getRectStatuses,
@@ -42,6 +48,11 @@ export default function Shikaku({ lang = "ja" }: ShikakuProps) {
   const [difficulty, setDifficulty] = useState<ShikakuDifficulty>("easy");
   const [rects, setRects] = useState<ShikakuRect[]>([]);
   const [anchor, setAnchor] = useState<[number, number] | null>(null);
+  const [startedAt, setStartedAt] = useState(() => Date.now());
+  const [bestMs, setBestMs] = useState<number | null>(() =>
+    getBestScore("shikaku", "easy"),
+  );
+  const [isNewBest, setIsNewBest] = useState(false);
 
   const puzzle = useMemo(() => getPuzzle(difficulty), [difficulty]);
   const statuses = useMemo(
@@ -74,11 +85,16 @@ export default function Shikaku({ lang = "ja" }: ShikakuProps) {
     setDifficulty(id);
     setRects([]);
     setAnchor(null);
+    setStartedAt(Date.now());
+    setBestMs(getBestScore("shikaku", id));
+    setIsNewBest(false);
   }
 
   function resetBoard() {
     setRects([]);
     setAnchor(null);
+    setStartedAt(Date.now());
+    setIsNewBest(false);
   }
 
   function handleCellClick(row: number, col: number) {
@@ -100,8 +116,21 @@ export default function Shikaku({ lang = "ja" }: ShikakuProps) {
       return;
     }
     const rect = makeRect(anchor, [row, col]);
-    setRects((prev) => [...prev, rect]);
+    const nextRects = [...rects, rect];
+    setRects(nextRects);
     setAnchor(null);
+
+    if (isSolved(puzzle, nextRects)) {
+      const elapsed = Date.now() - startedAt;
+      const result = setBestScoreIfBetter(
+        "shikaku",
+        difficulty,
+        elapsed,
+        lowerIsBetter,
+      );
+      setBestMs(result.best);
+      setIsNewBest(result.isNewBest);
+    }
   }
 
   return (
@@ -128,13 +157,23 @@ export default function Shikaku({ lang = "ja" }: ShikakuProps) {
             </button>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={resetBoard}
-          className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-        >
-          {t("game.reset")}
-        </button>
+        <div className="flex items-center gap-3">
+          {bestMs !== null && (
+            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+              {t("game.bestTime").replace(
+                "{time}",
+                formatElapsedSeconds(bestMs),
+              )}
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={resetBoard}
+            className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          >
+            {t("game.reset")}
+          </button>
+        </div>
       </div>
 
       {/* Kept right under the controls (not just below the grid) so a win
@@ -148,6 +187,11 @@ export default function Shikaku({ lang = "ja" }: ShikakuProps) {
       >
         {solved ? t("game.solved") : ""}
       </p>
+      {solved && isNewBest && (
+        <p className="mb-4 text-center text-base font-bold text-amber-600 dark:text-amber-400">
+          {t("game.newBest")}
+        </p>
+      )}
 
       <div
         role="group"

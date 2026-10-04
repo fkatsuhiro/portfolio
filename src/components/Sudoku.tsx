@@ -1,6 +1,12 @@
 import { useMemo, useState } from "react";
 import { useTranslations, type Lang } from "../i18n/ui";
 import {
+  formatElapsedSeconds,
+  getBestScore,
+  lowerIsBetter,
+  setBestScoreIfBetter,
+} from "../lib/highScore";
+import {
   cloneGrid,
   getConflicts,
   getPuzzle,
@@ -32,6 +38,12 @@ export default function Sudoku({ lang = "ja" }: SudokuProps) {
   const [difficulty, setDifficulty] = useState<SudokuDifficulty>("easy");
   const [board, setBoard] = useState<SudokuGrid>(() => boardFromPuzzle("easy"));
   const [selected, setSelected] = useState<[number, number] | null>(null);
+  const [startedAt, setStartedAt] = useState(() => Date.now());
+  const [bestMs, setBestMs] = useState<number | null>(() =>
+    getBestScore("sudoku", "easy"),
+  );
+  const [finishedMs, setFinishedMs] = useState<number | null>(null);
+  const [isNewBest, setIsNewBest] = useState(false);
 
   const fixedMask = useMemo(() => {
     const clues = getPuzzle(difficulty).clues;
@@ -45,22 +57,40 @@ export default function Sudoku({ lang = "ja" }: SudokuProps) {
     setDifficulty(id);
     setBoard(boardFromPuzzle(id));
     setSelected(null);
+    setStartedAt(Date.now());
+    setBestMs(getBestScore("sudoku", id));
+    setFinishedMs(null);
+    setIsNewBest(false);
   }
 
   function resetBoard() {
     setBoard(boardFromPuzzle(difficulty));
     setSelected(null);
+    setStartedAt(Date.now());
+    setFinishedMs(null);
+    setIsNewBest(false);
   }
 
   function placeNumber(value: number) {
     if (!selected) return;
     const [row, col] = selected;
     if (fixedMask[row][col]) return;
-    setBoard((prev) => {
-      const next = cloneGrid(prev);
-      next[row][col] = value;
-      return next;
-    });
+    const next = cloneGrid(board);
+    next[row][col] = value;
+    setBoard(next);
+
+    if (finishedMs === null && isSolved(next)) {
+      const elapsed = Date.now() - startedAt;
+      const result = setBestScoreIfBetter(
+        "sudoku",
+        difficulty,
+        elapsed,
+        lowerIsBetter,
+      );
+      setFinishedMs(elapsed);
+      setBestMs(result.best);
+      setIsNewBest(result.isNewBest);
+    }
   }
 
   return (
@@ -87,13 +117,23 @@ export default function Sudoku({ lang = "ja" }: SudokuProps) {
             </button>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={resetBoard}
-          className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-        >
-          {t("game.reset")}
-        </button>
+        <div className="flex items-center gap-3">
+          {bestMs !== null && (
+            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+              {t("game.bestTime").replace(
+                "{time}",
+                formatElapsedSeconds(bestMs),
+              )}
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={resetBoard}
+            className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          >
+            {t("game.reset")}
+          </button>
+        </div>
       </div>
 
       <div
@@ -185,6 +225,11 @@ export default function Sudoku({ lang = "ja" }: SudokuProps) {
       >
         {solved ? t("game.solved") : ""}
       </p>
+      {solved && isNewBest && (
+        <p className="mt-1 text-center text-base font-bold text-amber-600 dark:text-amber-400">
+          {t("game.newBest")}
+        </p>
+      )}
     </div>
   );
 }

@@ -167,6 +167,28 @@ test.describe("Sudoku game", () => {
     }
     await expect(page.locator("[role='status']")).toHaveText("クリア！🎉");
   });
+
+  test("solving the puzzle records a best time that persists across reload", async ({
+    page,
+  }) => {
+    for (let r = 0; r < 9; r++) {
+      for (let c = 0; c < 9; c++) {
+        const cell = page.locator(`[aria-label="${r + 1}行 ${c + 1}列"]`);
+        if (await cell.isDisabled()) continue;
+        await cell.click();
+        await page
+          .getByRole("button", { name: `${EASY_SOLUTION[r][c]} を入力` })
+          .click();
+      }
+    }
+    await expect(page.locator("[role='status']")).toHaveText("クリア！🎉");
+    await expect(page.getByText("自己ベスト更新！🏆")).toBeVisible();
+    await expect(page.getByText(/自己ベスト \d+\.\d 秒/)).toBeVisible();
+
+    await page.reload();
+    await selectGameFromHub(page, "数独");
+    await expect(page.getByText(/自己ベスト \d+\.\d 秒/)).toBeVisible();
+  });
 });
 
 test.describe("Shikaku game", () => {
@@ -254,6 +276,31 @@ test.describe("Shikaku game", () => {
       .click({ force: true });
     await expect(page.locator("[role='status']")).toHaveText("クリア！🎉");
   });
+
+  test("solving the puzzle records a best time that persists across reload", async ({
+    page,
+  }) => {
+    const rects: [string, string][] = [
+      ["1行 1列", "2行 2列"],
+      ["1行 3列", "5行 3列"],
+      ["1行 4列", "5行 4列"],
+      ["1行 5列", "5行 5列"],
+      ["3行 1列", "4行 2列"],
+      ["5行 1列", "5行 2列"],
+    ];
+    for (const [a, b] of rects) {
+      await page.locator(`[aria-label='${a}']`).click();
+      await page.locator(`[aria-label='${b}']`).click();
+    }
+
+    await expect(page.locator("[role='status']")).toHaveText("クリア！🎉");
+    await expect(page.getByText("自己ベスト更新！🏆")).toBeVisible();
+    await expect(page.getByText(/自己ベスト \d+\.\d 秒/)).toBeVisible();
+
+    await page.reload();
+    await selectGameFromHub(page, "シカク");
+    await expect(page.getByText(/自己ベスト \d+\.\d 秒/)).toBeVisible();
+  });
 });
 
 test.describe("Typing game", () => {
@@ -323,6 +370,23 @@ test.describe("Typing game", () => {
     }
     await expect(page.locator("[role='status']")).toContainText("WPM");
     await expect(input).toBeDisabled();
+  });
+
+  test("clearing all 10 prompts records a best WPM that persists across reload", async ({
+    page,
+  }) => {
+    await page.getByRole("button", { name: "スタート" }).click();
+    const input = page.getByLabel("入力欄");
+    for (const word of EASY_PROMPTS) {
+      await input.fill(word);
+    }
+    await expect(page.locator("[role='status']")).toContainText("WPM");
+    await expect(page.getByText("自己ベスト更新！🏆")).toBeVisible();
+    await expect(page.getByText(/自己ベスト \d+ WPM/)).toBeVisible();
+
+    await page.reload();
+    await selectGameFromHub(page, "タイピング");
+    await expect(page.getByText(/自己ベスト \d+ WPM/)).toBeVisible();
   });
 
   test("switching difficulty mid-round resets to the not-started state", async ({

@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations, type Lang } from "../i18n/ui";
 import {
+  getBestScore,
+  higherIsBetter,
+  setBestScoreIfBetter,
+} from "../lib/highScore";
+import {
   TYPING_ROUNDS,
   computeStats,
   getCharStatuses,
@@ -39,6 +44,10 @@ export default function TypingGame({ lang = "ja" }: TypingGameProps) {
   const [outcome, setOutcome] = useState<RoundOutcome>("playing");
   const [finishedElapsedMs, setFinishedElapsedMs] = useState(0);
   const [now, setNow] = useState(() => Date.now());
+  const [bestWpm, setBestWpm] = useState<number | null>(() =>
+    getBestScore("typing", "easy"),
+  );
+  const [isNewBest, setIsNewBest] = useState(false);
 
   const round = useMemo(() => getRound(difficulty), [difficulty]);
   const timeLimitMs = round.timeLimitSec * 1000;
@@ -79,6 +88,8 @@ export default function TypingGame({ lang = "ja" }: TypingGameProps) {
     setStartTime(null);
     setOutcome("playing");
     setFinishedElapsedMs(0);
+    setBestWpm(getBestScore("typing", nextDifficulty));
+    setIsNewBest(false);
   }
 
   function selectDifficulty(id: TypingDifficulty) {
@@ -91,6 +102,7 @@ export default function TypingGame({ lang = "ja" }: TypingGameProps) {
     setTally(EMPTY_TALLY);
     setOutcome("playing");
     setFinishedElapsedMs(0);
+    setIsNewBest(false);
     setStartTime(Date.now());
     requestAnimationFrame(() => inputRef.current?.focus());
   }
@@ -105,7 +117,8 @@ export default function TypingGame({ lang = "ja" }: TypingGameProps) {
 
   function handleChange(value: string) {
     if (finished || !started) return;
-    setTally((prev) => recordKeystroke(typed, value, currentPrompt, prev));
+    const updatedTally = recordKeystroke(typed, value, currentPrompt, tally);
+    setTally(updatedTally);
     setTyped(value);
 
     if (isPromptCleared(currentPrompt, value)) {
@@ -116,8 +129,23 @@ export default function TypingGame({ lang = "ja" }: TypingGameProps) {
         timeRemainingMs,
       );
       if (nextOutcome === "win") {
+        const elapsed = startTime === null ? 0 : Date.now() - startTime;
         setOutcome("win");
-        setFinishedElapsedMs(startTime === null ? 0 : Date.now() - startTime);
+        setFinishedElapsedMs(elapsed);
+
+        const stats = computeStats(
+          updatedTally.correctChars,
+          updatedTally.totalTyped,
+          elapsed,
+        );
+        const result = setBestScoreIfBetter(
+          "typing",
+          difficulty,
+          stats.wpm,
+          higherIsBetter,
+        );
+        setBestWpm(result.best);
+        setIsNewBest(result.isNewBest);
       } else {
         setPromptIndex(nextIndex);
         setTyped("");
@@ -153,13 +181,20 @@ export default function TypingGame({ lang = "ja" }: TypingGameProps) {
             </button>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={handleStartOrReset}
-          className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-        >
-          {started ? t("game.reset") : t("game.typing.start")}
-        </button>
+        <div className="flex items-center gap-3">
+          {bestWpm !== null && (
+            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+              {t("game.typing.bestWpm").replace("{wpm}", String(bestWpm))}
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={handleStartOrReset}
+            className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          >
+            {started ? t("game.reset") : t("game.typing.start")}
+          </button>
+        </div>
       </div>
 
       <div className="mb-3 flex items-center justify-between text-sm font-semibold text-gray-500 dark:text-gray-400">
@@ -239,6 +274,11 @@ export default function TypingGame({ lang = "ja" }: TypingGameProps) {
                 .replace("{total}", String(round.prompts.length))
             : ""}
       </p>
+      {finished && outcome === "win" && isNewBest && (
+        <p className="mt-1 text-center text-base font-bold text-amber-600 dark:text-amber-400">
+          {t("game.newBest")}
+        </p>
+      )}
     </div>
   );
 }
