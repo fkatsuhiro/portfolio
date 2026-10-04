@@ -119,6 +119,8 @@ export const ja = {
   "analytics.noTopPages": "データがありません。",
   "analytics.notConfigured":
     "Google Analyticsとまだ連携していません。連携が完了すると、ここにアクセスレポートが表示されます。",
+  "analytics.vsPreviousPeriod": "前の期間比",
+  "analytics.noChangeData": "比較データなし",
   "blogs.heading": "Blogs",
   "blogs.subheading": "Zennで書いた記事をピックアップしています。",
   "blogs.readAria": "{title} をZennで読む",

@@ -121,6 +121,8 @@ export const en: UIContent = {
   "analytics.noTopPages": "No data yet.",
   "analytics.notConfigured":
     "This site isn't connected to Google Analytics yet. Once it is, a traffic report will show up here.",
+  "analytics.vsPreviousPeriod": "vs. previous period",
+  "analytics.noChangeData": "No comparison data",
   "blogs.heading": "Blogs",
   "blogs.subheading": "Selected articles from my Zenn blog.",
   "blogs.readAria": "Read {title} on Zenn",
