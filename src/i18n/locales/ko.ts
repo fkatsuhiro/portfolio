@@ -137,6 +137,7 @@ export const ko: UIContent = {
   "chat.tag.skills": "기술",
   "chat.tag.works": "작품",
   "chat.tag.talks": "강연",
+  "chat.tag.blogs": "블로그",
   "chat.tag.hobbies": "취미",
   "chat.tag.contact": "연락처",
 } as const;

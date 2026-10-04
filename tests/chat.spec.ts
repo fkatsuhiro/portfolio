@@ -23,6 +23,7 @@ test.describe("Chat widget", () => {
       "スキル",
       "作品",
       "登壇",
+      "ブログ",
       "趣味",
       "連絡先",
     ]) {
@@ -79,6 +80,32 @@ test.describe("Chat widget", () => {
       .getByRole("button", { name: "チャットを閉じる" })
       .click();
     await expect(page.getByRole("dialog")).not.toBeVisible();
+  });
+});
+
+test.describe("Chat widget — blogs topic (ko locale)", () => {
+  test("clicking the blogs tag replies with a working Blogs link", async ({
+    page,
+  }) => {
+    await page.goto("/portfolio/ko/blogs");
+
+    const toggle = page.getByRole("button", { name: "채팅 열기" });
+    await expect(async () => {
+      await toggle.click();
+      await expect(page.getByRole("dialog")).toBeVisible();
+    }).toPass({ timeout: 10000 });
+
+    await page.getByRole("button", { name: "블로그" }).click();
+    const log = page.locator("[role='log']");
+    await expect(log).toContainText("블로그");
+    await expect(log).toContainText(
+      "Zenn에 프론트엔드 개발 관련 글을 쓰고 있습니다.",
+    );
+
+    const link = page
+      .getByRole("dialog")
+      .getByRole("link", { name: "블로그 →" });
+    await expect(link).toHaveAttribute("href", "/portfolio/ko/blogs");
   });
 });
 

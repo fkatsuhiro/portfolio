@@ -66,7 +66,9 @@ export default function ChatWidget({ lang = "ja" }: ChatWidgetProps) {
         ? "nav.works"
         : entry.id === "talks"
           ? "nav.talks"
-          : "nav.about";
+          : entry.id === "blogs"
+            ? "nav.blogs"
+            : "nav.about";
     return { href: `${prefix}${entry.link.path}`, label: t(navKey) };
   }
 

@@ -138,6 +138,7 @@ export const en: UIContent = {
   "chat.tag.skills": "Skills",
   "chat.tag.works": "Works",
   "chat.tag.talks": "Talks",
+  "chat.tag.blogs": "Blogs",
   "chat.tag.hobbies": "Hobbies",
   "chat.tag.contact": "Contact",
 } as const;

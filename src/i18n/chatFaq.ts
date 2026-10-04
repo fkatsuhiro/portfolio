@@ -6,7 +6,7 @@ export interface ChatFaqLink {
 }
 
 export interface ChatFaqEntry {
-  id: "about" | "skills" | "works" | "talks" | "hobbies" | "contact";
+  id: "about" | "skills" | "works" | "talks" | "blogs" | "hobbies" | "contact";
   keywords: string[];
   answer: string;
   link?: ChatFaqLink;
@@ -48,6 +48,13 @@ export const chatFaqByLang: Record<Lang, ChatFaqEntry[]> = {
       link: { path: "/talks" },
     },
     {
+      id: "blogs",
+      keywords: ["ブログ", "記事", "zenn", "執筆", "blog"],
+      answer:
+        "Zennでフロントエンド開発に関する記事を書いています。詳しくはBlogsページをどうぞ。",
+      link: { path: "/blogs" },
+    },
+    {
       id: "hobbies",
       keywords: ["趣味", "休日", "好きなこと", "hobby"],
       answer: "コーヒー、テニス、寝ることが趣味です。",
@@ -87,6 +94,13 @@ export const chatFaqByLang: Record<Lang, ChatFaqEntry[]> = {
       link: { path: "/talks" },
     },
     {
+      id: "blogs",
+      keywords: ["blog", "blogs", "article", "writing", "zenn"],
+      answer:
+        "I write about frontend development on Zenn. Check out the Blogs page for a selection of my articles.",
+      link: { path: "/blogs" },
+    },
+    {
       id: "hobbies",
       keywords: ["hobby", "hobbies", "free time", "fun"],
       answer: "My hobbies are coffee, tennis, and sleeping.",
@@ -124,6 +138,13 @@ export const chatFaqByLang: Record<Lang, ChatFaqEntry[]> = {
       answer:
         "TSKaigi, React Tokyo Fes 등의 컨퍼런스에서 강연했습니다. 자세한 내용은 강연 페이지를 확인해주세요.",
       link: { path: "/talks" },
+    },
+    {
+      id: "blogs",
+      keywords: ["블로그", "글", "아티클", "zenn"],
+      answer:
+        "Zenn에 프론트엔드 개발 관련 글을 쓰고 있습니다. 자세한 내용은 블로그 페이지를 확인해주세요.",
+      link: { path: "/blogs" },
     },
     {
       id: "hobbies",
