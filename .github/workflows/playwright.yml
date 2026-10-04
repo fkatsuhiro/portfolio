@@ -36,10 +36,22 @@ jobs:
           CI: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Write accessibility summary
+        if: always()
+        run: node scripts/a11y-report.mjs
+
       - name: Upload Playwright report
         uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-report
           path: playwright-report/
+          retention-days: 7
+
+      - name: Upload axe-core results (JSON)
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: a11y-results
+          path: test-results/results.json
           retention-days: 7

@@ -6,6 +6,16 @@ export default defineConfig({
   fullyParallel: true,
   retries: process.env.CI ? 1 : 0,
 
+  // In CI, also emit a JSON report (consumed by scripts/a11y-report.mjs to
+  // build the GitHub Actions job summary) alongside the usual HTML report.
+  reporter: process.env.CI
+    ? [
+        ["list"],
+        ["json", { outputFile: "test-results/results.json" }],
+        ["html", { outputFolder: "playwright-report", open: "never" }],
+      ]
+    : "list",
+
   projects: process.env.CI
     ? [{ name: "chrome", use: { ...devices["Desktop Chrome"] } }]
     : [
