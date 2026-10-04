@@ -39,10 +39,8 @@ describe("buildRssXml", () => {
 
     const xml = buildRssXml(posts, channel);
 
-    expect(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')).toBe(
-      true,
-    );
-    expect(xml).toContain("<rss version=\"2.0\">");
+    expect(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')).toBe(true);
+    expect(xml).toContain('<rss version="2.0">');
     expect(xml).toContain(`<title>${channel.title}</title>`);
     expect(xml).toContain(`<link>${channel.link}</link>`);
     expect(xml).toContain(`<description>${channel.description}</description>`);
@@ -51,9 +49,7 @@ describe("buildRssXml", () => {
     expect(itemMatches).toHaveLength(2);
 
     expect(xml).toContain("<title>First Post</title>");
-    expect(xml).toContain(
-      "<link>https://zenn.dev/kattu/articles/one</link>",
-    );
+    expect(xml).toContain("<link>https://zenn.dev/kattu/articles/one</link>");
     expect(xml).toContain(
       '<guid isPermaLink="true">https://zenn.dev/kattu/articles/one</guid>',
     );
@@ -63,7 +59,7 @@ describe("buildRssXml", () => {
   it("escapes special characters found in post titles and descriptions", () => {
     const posts: BlogPost[] = [
       {
-        title: "A & B <Tags> \"Quoted\"",
+        title: 'A & B <Tags> "Quoted"',
         description: "Summary with <html> & 'quotes'",
         image: null,
         url: "https://zenn.dev/kattu/articles/escape",
@@ -87,7 +83,7 @@ describe("buildRssXml", () => {
 
     expect(xml).not.toContain("<item>");
     expect(xml).toContain(`<title>${channel.title}</title>`);
-    expect(xml).toContain("<rss version=\"2.0\">");
+    expect(xml).toContain('<rss version="2.0">');
     expect(xml).toContain("</channel>");
     expect(xml).toContain("</rss>");
   });
