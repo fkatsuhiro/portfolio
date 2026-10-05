@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import GameHub from "../components/GameHub";
-import { useTranslations, type Lang } from "../i18n/ui";
+import { useTranslations } from "../i18n/ui";
 
-const lang = (Astro.currentLocale ?? "ja") as Lang;
+const lang = "en";
 const t = useTranslations(lang);
 ---
 
